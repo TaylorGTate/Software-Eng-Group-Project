@@ -6,10 +6,15 @@ import java.sql.Time;
 public class Appointment {
 	Date date;
 	Time time;
+	String notes;
+	String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
+	String status;
 
-	public Appointment(Date apptDate, Time apptTime) {
+	public Appointment(Date apptDate, Time apptTime, String note) {
 		date = apptDate;
 		time = apptTime;
+		notes += "\n"+note;
+		status = statuses[0];
 	}
 	
 	public Time getTime() {
@@ -26,5 +31,13 @@ public class Appointment {
 	
 	public void setDate(Date apptDate) {
 		this.date = apptDate;
+	}
+	
+	public String getNotes() {
+		return notes;
+	}
+	
+	public void setnotes(String note) {
+		this.notes += "\n"+note;
 	}
 }

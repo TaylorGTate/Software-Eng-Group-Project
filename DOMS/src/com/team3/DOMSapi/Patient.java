@@ -4,14 +4,14 @@ import java.sql.Time;
 import java.sql.Date;
 
 public class Patient {
-	String patientName;
+	String name;
 	Date birthDate;
 	String ssn;
 	String allergies;
 	String preferredDoctor;
 	
-	public Patient(String name, Date birthDay, String social, String allergy, String preferredDoc) {
-		patientName = name;
+	public Patient(String patientName, Date birthDay, String social, String allergy, String preferredDoc) {
+		name = patientName;
 		birthDate = birthDay;
 		ssn = social;
 		allergies = allergy;
@@ -19,11 +19,11 @@ public class Patient {
 	}
 	
 	public String getName() {
-		return patientName;
+		return name;
 	}
 	
-	public void setName(String name) {
-		this.patientName = name;
+	public void setName(String patientName) {
+		this.name = patientName;
 	}
 	
 	public String getSSN() {
