@@ -26,6 +26,5 @@ public class Appointment {
 	
 	public void setDate(Date apptDate) {
 		this.date = apptDate;
-		//test
 	}
 }
