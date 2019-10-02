@@ -21,6 +21,14 @@ public class AppointmentManager {
 		this.name = apptMgrName;
 	}
 	
+	public Date getBirthDate() {
+		return birthDate;
+	}
+	
+	public void setBirthDate(Date birthday) {
+		this.birthDate = birthday;
+	}
+	
 	public boolean isBirthday(Patient patient) {
 		//if patient.birthDate == today 
 		return true;
