@@ -40,4 +40,17 @@ public class Appointment {
 	public void setnotes(String note) {
 		this.notes += "\n"+note;
 	}
+	
+	public String getStatus() {
+		return status;
+	}
+	
+	public void setStatus(String stat) {
+		for (int i = 0; i < statuses.length; i++) {
+			if (stat.equals(statuses[i])) {
+				status = statuses[i];
+				break;
+			}
+		}
+	}
 }
