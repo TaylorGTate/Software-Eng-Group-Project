@@ -4,33 +4,33 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class Appointment {
-	Date date;
-	Time time;
+	Date apptDate;
+	Time apptTime;
 	String notes;
 	String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
 	String status;
 
-	public Appointment(Date apptDate, Time apptTime, String note) {
-		date = apptDate;
-		time = apptTime;
+	public Appointment(Date date, Time time, String note) {
+		apptDate = date;
+		apptTime = time;
 		notes += "\n"+note;
 		status = statuses[0];
 	}
 	
 	public Time getTime() {
-		return time;
+		return apptTime;
 	}
 	
-	public void setTime(Time apptTime) {
-		this.time = apptTime;
+	public void setTime(Time time) {
+		this.apptTime = time;
 	}
 	
 	public Date getDate() {
-		return date;
+		return apptDate;
 	}
 	
-	public void setDate(Date apptDate) {
-		this.date = apptDate;
+	public void setDate(Date date) {
+		this.apptDate = date;
 	}
 	
 	public String getNotes() {
