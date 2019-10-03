@@ -1,17 +1,14 @@
 package com.team3.DOMSapi;
 
-import java.sql.Time;
-import java.sql.Date;
-
 public class Patient {
 	String name;
-	Date birthDate;
+	String birthDate;
 	String ssn;
 	String allergies;
 	String preferredDoctor;
 	String bloodType;
 	
-	public Patient(String patientName, Date birthDay, String social, String allergy, String preferredDoc, String blood) {
+	public Patient(String patientName, String birthDay, String social, String allergy, String preferredDoc, String blood) {
 		name = patientName;
 		birthDate = birthDay;
 		ssn = social;
@@ -28,11 +25,11 @@ public class Patient {
 		this.name = patientName;
 	}
 	
-	public Date getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
 	
-	public void setBirthDate(Date birthday) {
+	public void setBirthDate(String birthday) {
 		this.birthDate = birthday;
 	}
 	
@@ -68,7 +65,7 @@ public class Patient {
 		this.bloodType = blood;
 	}
 	
-	public void requestAppt(Date date, Time time) {
+	public void requestAppt(String date, String time) {
 		//request appt
 	}
 }

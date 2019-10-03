@@ -1,14 +1,12 @@
 package com.team3.DOMSapi;
 
-import java.sql.Date;
-
 public class AppointmentManager {
 	String name;
-	Date birthDate;
+	String birthDate;
 	String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
 
 	
-	public AppointmentManager(String apptMgrName, Date apptMgrBirthDate) {
+	public AppointmentManager(String apptMgrName, String apptMgrBirthDate) {
 		name = apptMgrName;
 		birthDate = apptMgrBirthDate;
 	}
@@ -21,11 +19,11 @@ public class AppointmentManager {
 		this.name = apptMgrName;
 	}
 	
-	public Date getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
 	
-	public void setBirthDate(Date birthday) {
+	public void setBirthDate(String birthday) {
 		this.birthDate = birthday;
 	}
 	

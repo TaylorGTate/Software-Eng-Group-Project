@@ -1,35 +1,32 @@
 package com.team3.DOMSapi;
 
-import java.sql.Date;
-import java.sql.Time;
-
 public class Appointment {
-	Date apptDate;
-	Time apptTime;
+	String apptDate;
+	String apptTime;
 	String notes;
 	String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
 	String status;
 
-	public Appointment(Date date, Time time, String note) {
+	public Appointment(String date, String time, String note) {
 		apptDate = date;
 		apptTime = time;
 		notes += "\n"+note;
 		status = statuses[0];
 	}
 	
-	public Time getTime() {
+	public String getTime() {
 		return apptTime;
 	}
 	
-	public void setTime(Time time) {
+	public void setTime(String time) {
 		this.apptTime = time;
 	}
 	
-	public Date getDate() {
+	public String getDate() {
 		return apptDate;
 	}
 	
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.apptDate = date;
 	}
 	
