@@ -3,12 +3,21 @@ package com.team3.DOMSapi;
 public class Room {
 	
 	int roomNumber = 0, buildingNumber = 0;
-	boolean avaliable = true;
+	String avaliable, patientSSN;
 	
-	public Room (int roomNumber, int buildingNumber, boolean avaliable) {
+	public Room (int roomNumber, int buildingNumber, String avaliable, String patientSSN) {
 		this.roomNumber = roomNumber;
 		this.buildingNumber = buildingNumber;
 		this.avaliable = avaliable;
+		this.patientSSN = patientSSN;
+	}
+	
+	public String getPatientSSN() {
+		return patientSSN;
+	}
+	
+	public void setPatientSSN(String patientSSN) {
+		this.patientSSN = patientSSN;
 	}
 	
 	public int getRoomNumber() {
@@ -27,7 +36,7 @@ public class Room {
 		this.buildingNumber = buildingNumber;
 	}
 	
-	public boolean isAvaliable() {
+	public String isAvaliable() {
 		return avaliable;
 	}
 }
