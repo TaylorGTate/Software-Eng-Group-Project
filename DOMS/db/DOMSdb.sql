@@ -26,11 +26,13 @@ create table Patient(
 	name varchar(50),
     birthDate date,
     primary key(manager_id)
- );
- */
-  #select * from Patient;
+ );*/
+ 
+#  select * from Patient;
   /*
   drop table Patient;
   drop table Appointment;
   drop table AppointmentManager;
+  
   */
+  
