@@ -34,11 +34,6 @@ public class Main {
 	    //System.out.print(query1);
 	    //mystmt.executeUpdate(query1);
 	    
-	    Manager testDoctorManager = new Manager(0, "MandyManager", "2020-12-12");
-	    String testManagerQuery = "insert into Manager values('" + testDoctorManager.manager_id + "', '"+ testDoctorManager.name + "', '" + testDoctorManager.birthDate + "');";
-	    System.out.print(testManagerQuery);
-	    mystmt.executeUpdate(testManagerQuery);
-	    
 	    System.out.println("Are you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile");
 	    int typeOfAccountChoice = input.nextInt();
 	    switch (typeOfAccountChoice) {
