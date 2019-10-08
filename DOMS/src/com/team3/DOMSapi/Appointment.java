@@ -1,16 +1,20 @@
 package com.team3.DOMSapi;
 
 public class Appointment {
+	int apptID;
+	String patientSSN;
 	String apptDate;
 	String apptTime;
 	String notes;
 	String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
 	String status;
 
-	public Appointment(String date, String time, String note) {
+	public Appointment(int ID, String pSSN, String date, String time, String note, String status) {
+		apptID = ID;
+		patientSSN = pSSN;
 		apptDate = date;
 		apptTime = time;
-		notes += "\n"+note;
+		notes = note;
 		status = statuses[0];
 	}
 	
