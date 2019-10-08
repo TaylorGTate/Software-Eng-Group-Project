@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 public class Main {
-
+	
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException{
 	    //Load MySql JDBC Driver
 	    try {
@@ -35,7 +35,26 @@ public class Main {
 	    
 	    //mystmt.executeUpdate(query1);
 	    
+
 	    System.out.println("Would you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Create a user profile.");
+
+	    Room testRoom = new Room(1, 20, "Clean and Ready", null);
+	    Room testRoom1 = new Room(1, 10, "Occupied", "123-45-6789");
+
+	    RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");
+	    
+	    String query4 = "insert into Room values('" + testRoom1.roomNumber + "', '" + testRoom1.buildingNumber + "', '" + testRoom1.avaliable + "', '" + testRoom1.patientSSN + "');";
+	    String query2 = "insert into Room values('" + testRoom.roomNumber + "', '" + testRoom.buildingNumber + "', '" + testRoom.avaliable + "', '" + testRoom.patientSSN + "');";
+	    String query3 = "insert into RoomManager values('" + testRoomManager.id + "', '"  + testRoomManager.name + "', '" + testRoomManager.birthDate + "');";
+
+	    mystmt.executeUpdate(query2);
+	    mystmt.executeUpdate(query4);
+
+	    //mystmt.executeUpdate(query3);
+	    
+	    /*
+	    System.out.println("Would you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment");
+
 	    int choice = input.nextInt();
 	    
 	    /*if (choice == 1) {
