@@ -28,7 +28,7 @@ create table Patient(
     primary key(manager_id)
  );*/
  
-#  select * from Patient;
+  select * from Patient;
   /*
   drop table Patient;
   drop table Appointment;

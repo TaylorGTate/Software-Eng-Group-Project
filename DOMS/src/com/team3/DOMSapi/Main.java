@@ -35,6 +35,8 @@ public class Main {
 	    
 	    //mystmt.executeUpdate(query1);
 	    
+	    
+	    
 	    System.out.println("Would you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Create a user profile.");
 	    int choice = input.nextInt();
 	    
