@@ -11,18 +11,20 @@
  );
     
  create table Appointment(
-	appt_id int(11) AUTO_INCREMENT,
+	appt_id int(11) AUTO_INCREMENT NOT NULL,
     Pssn varchar(11),
 	apptDate date,
-    apptTime datetime,
+    apptTime time,
     notes varchar(500),
     status varchar(9),
+    roomNum int(11),
     primary key(appt_id),
     foreign key(Pssn) references Patient(ssn)
+    foreign key(roomNum) references Room(roomNumber)
  );
  
  create table AppointmentManager(
-	manager_id int(11) AUTO_INCREMENT,
+	manager_id int(11) AUTO_INCREMENT NOT NULL,
 	name varchar(50),
     birthDate date,
     primary key(manager_id)
