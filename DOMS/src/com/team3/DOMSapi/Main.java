@@ -2,7 +2,6 @@ package com.team3.DOMSapi;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,12 +30,11 @@ public class Main {
 	    
 	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 	    System.out.println("DB connected..");
-
 	    Statement mystmt = myconn.createStatement();
-
+	    
 	    //Patient testPatient = new Patient("John Smith", "1996-03-02", "123-45-6789", "N/A", "Dr. Smith", "O+");
-	    //String query1 = "insert into Patient values('" + testPatient.name + "', '" + testPatient.birthDate + "', '" + testPatient.ssn + "', '" + testPatient.allergies + "', '" + testPatient.preferredDoctor + "', '" + testPatient.bloodType + "');";
-	    //System.out.print(query1);
+	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
+	    //System.out.println(query1);
 	    
 	    //mystmt.executeUpdate(query1);
 
@@ -55,13 +53,13 @@ public class Main {
 	    //mystmt.executeUpdate(query4);
 
 	    //mystmt.executeUpdate(query3);
-	   
-	    System.out.println("Would you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment");
+	   	    
 	    int choice = input.nextInt();
 	    switch (choice) {
 	      case 1: //Schedule an appointment
           System.out.println("Please enter SSN:");
           String ssn = input.next();
+          System.out.println(ssn);
           try {
             String query2 = "select * from Patient where ssn=('" + ssn + "');";
             ResultSet r = mystmt.executeQuery(query2);
@@ -85,7 +83,7 @@ public class Main {
           System.out.println("Please enter any notes you would like to include: ");
           String notes = input.nextLine();
           Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0]);
-          String query3 = "insert into Appointment values('" + newAppt.apptID + "', '" + newAppt.patientSSN + "', '" + newAppt.apptDate + "', '" + newAppt.apptTime + "', '" + newAppt.notes + "', '" + newAppt.status + "');";
+          String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
           mystmt.executeUpdate(query3);
 	        break;
 	      case 2:// View my appointments.
@@ -106,8 +104,8 @@ public class Main {
 		        String birthDate = input.next();
 		        Patient.setBirthDate(birthDate);
 		        System.out.println("Please enter SSN:");
-		        String ssn = input.next();
-		        Patient.setSSN(ssn);
+		        String ssn1 = input.next();
+		        Patient.setSSN(ssn1);
 		        System.out.println("Please enter any allergies:");
 		        String allergies = input.next();
 		        Patient.updateAllergies(allergies);
@@ -117,7 +115,7 @@ public class Main {
 		        System.out.println("Please enter your blood type:");
 		        String bloodType = input.next();
 		        Patient.setbloodType(bloodType);
-		        String newPatientQuery= "insert into Patient values('" + name + "', '" + birthDate + "', '" + ssn + "', '" + allergies + "', '" + preferredDoctor + "', '" + bloodType + "');";
+		        String newPatientQuery= "insert into Patient values('" + name + "', '" + birthDate + "', '" + ssn1 + "', '" + allergies + "', '" + preferredDoctor + "', '" + bloodType + "');";
 			    System.out.print(newPatientQuery);
 			    
 			    mystmt.executeUpdate(newPatientQuery);
