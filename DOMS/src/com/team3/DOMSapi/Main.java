@@ -32,8 +32,12 @@ public class Main {
 	    //Patient testPatient = new Patient("John Smith", "1996-04-02", "122-45-6789", "N/A", "Dr. Smith", "O+");
 	    //String query1 = "insert into Patient values('" + testPatient.name + "', '" + testPatient.birthDate + "', '" + testPatient.ssn + "', '" + testPatient.allergies + "', '" + testPatient.preferredDoctor + "', '" + testPatient.bloodType + "');";
 	    //System.out.print(query1);
-	    
 	    //mystmt.executeUpdate(query1);
+	    
+	    Manager testDoctorManager = new Manager(0, "MandyManager", "2020-12-12");
+	    String testManagerQuery = "insert into Manager values('" + testDoctorManager.manager_id + "', '"+ testDoctorManager.name + "', '" + testDoctorManager.birthDate + "');";
+	    System.out.print(testManagerQuery);
+	    mystmt.executeUpdate(testManagerQuery);
 	    
 	    System.out.println("Are you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile");
 	    int typeOfAccountChoice = input.nextInt();
@@ -70,26 +74,18 @@ public class Main {
 		  	      case 1: //Create doctor user profile
 		  	    	System.out.println("Please enter the doctor's name:");
 	  		        String name = input.next();
-	  		        Patient.setName(name);
+	  		        Doctor.setName(name);
 	  		        System.out.println("Please enter birthday in the form of YYYY-MM-DD:");
 	  		        String birthDate = input.next();
-	  		        Patient.setBirthDate(birthDate);
+	  		        Doctor.setBirthDate(birthDate);
 	  		        System.out.println("Please enter SSN:");
 	  		        String ssn = input.next();
-	  		        Patient.setSSN(ssn);
-	  		        System.out.println("Please enter any allergies:");
-	  		        String allergies = input.next();
-	  		        Patient.updateAllergies(allergies);
-	  		        System.out.println("Please enter your preferred doctor:");
-	  		        String preferredDoctor = input.next();
-	  		        Patient.setDoctor(preferredDoctor);
-	  		        System.out.println("Please enter your blood type:");
-	  		        String bloodType = input.next();
-	  		        Patient.setbloodType(bloodType);
-	  		        String newPatientQuery= "insert into Patient values('" + name + "', '" + birthDate + "', '" + ssn + "', '" + allergies + "', '" + preferredDoctor + "', '" + bloodType + "');";
-	  			    System.out.print(newPatientQuery);
+	  		        Doctor.setSSN(ssn);
+	  		        
+	  		        String newDoctorQuery= "insert into Doctor values('" + name + "', '" + birthDate + "', '" + ssn + "');";
+	  			    System.out.print(newDoctorQuery);
 	  			    
-	  			    mystmt.executeUpdate(newPatientQuery);
+	  			    mystmt.executeUpdate(newDoctorQuery);
 	  			    
 		  	        break;
 		  	      case 2:// Edit doctor user profile
