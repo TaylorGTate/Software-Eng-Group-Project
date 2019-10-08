@@ -1,12 +1,12 @@
 package com.team3.DOMSapi;
 
-public class Manager {
+public class DoctorManager {
 	static Integer manager_id;
 	static String name;
 	static String birthDate;
 
 	
-	public Manager(Integer manager_id, String name, String birth_date) {
+	public DoctorManager(Integer manager_id, String name, String birth_date) {
 		manager_id = manager_id;
 		name = name;
 		birthDate = birthDate;
