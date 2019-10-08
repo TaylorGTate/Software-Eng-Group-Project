@@ -1,6 +1,27 @@
 #create schema DOMSdb;
 
-/*create table Patient(
+/*
+ create table AppointmentManager(
+	manager_id int(11) AUTO_INCREMENT NOT NULL,
+	name varchar(50),
+    birthDate date,
+    primary key(manager_id)
+ );
+ 
+ create table Room (
+	roomNumber int(11) NOT NULL,
+    avaliable varchar(20),
+    primary key(roomNumber)
+ );
+ 
+ create table RoomManager (
+	manager_id int(11) AUTO_INCREMENT NOT NULL,
+    name varchar (50),
+    birthDate date,
+    primary key (manager_id)
+ );
+ 
+create table Patient(
 	patientName varchar(50),
     birthDate date,
     ssn varchar(11),
@@ -9,7 +30,7 @@
     bloodtype varchar(3),
     primary key(ssn)
  );
-    
+
  create table Appointment(
 	appt_id int(11) AUTO_INCREMENT NOT NULL,
     Pssn varchar(11),
@@ -19,10 +40,10 @@
     status varchar(9),
     roomNum int(11),
     primary key(appt_id),
-    foreign key(Pssn) references Patient(ssn)
+    foreign key(Pssn) references Patient(ssn),
     foreign key(roomNum) references Room(roomNumber)
  );
- 
+
  create table AppointmentManager(
 	manager_id int(11) AUTO_INCREMENT NOT NULL,
 	name varchar(50),
@@ -44,10 +65,7 @@
     birthDate date,
     primary key (manager_id)
  );*/
-	
- 
 
-  select * from Patient;
   #select * from RoomManager;
   #select * from Room;
 
