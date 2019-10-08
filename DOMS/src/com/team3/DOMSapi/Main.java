@@ -43,12 +43,12 @@ public class Main {
 
 	    RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");
 	    
-	    String query4 = "insert into Room values('" + testRoom1.roomNumber + "', '" + testRoom1.buildingNumber + "', '" + testRoom1.avaliable + "', '" + testRoom1.patientSSN + "');";
-	    String query2 = "insert into Room values('" + testRoom.roomNumber + "', '" + testRoom.buildingNumber + "', '" + testRoom.avaliable + "', '" + testRoom.patientSSN + "');";
-	    String query3 = "insert into RoomManager values('" + testRoomManager.id + "', '"  + testRoomManager.name + "', '" + testRoomManager.birthDate + "');";
+	    //String query4 = "insert into Room values('" + testRoom1.roomNumber + "', '" + testRoom1.buildingNumber + "', '" + testRoom1.avaliable + "', '" + testRoom1.patientSSN + "');";
+	    //String query2 = "insert into Room values('" + testRoom.roomNumber + "', '" + testRoom.buildingNumber + "', '" + testRoom.avaliable + "', '" + testRoom.patientSSN + "');";
+	    //String query3 = "insert into RoomManager values('" + testRoomManager.id + "', '"  + testRoomManager.name + "', '" + testRoomManager.birthDate + "');";
 
-	    mystmt.executeUpdate(query2);
-	    mystmt.executeUpdate(query4);
+	    //mystmt.executeUpdate(query2);
+	    //mystmt.executeUpdate(query4);
 
 	    //mystmt.executeUpdate(query3);
 	    
