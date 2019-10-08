@@ -1,6 +1,6 @@
 #create schema DOMSdb;
-/*
-create table Patient(
+
+/*create table Patient(
 	patientName varchar(50),
     birthDate date,
     ssn varchar(11),
@@ -8,7 +8,7 @@ create table Patient(
     preferredDoctor varchar(50),
     bloodtype varchar(3),
     primary key(ssn)
-);
+ );
     
  create table Appointment(
 	appt_id int(11) AUTO_INCREMENT,
@@ -26,13 +26,31 @@ create table Patient(
 	name varchar(50),
     birthDate date,
     primary key(manager_id)
- );*/
+ );
  
-#  select * from Patient;
+ create table Room (
+	roomNumber int(11) NOT NULL,
+    buildingNumber int(11) NOT NULL,
+    avaliable varchar(20),
+    Pssn varchar(11),
+    primary key(buildingNumber, roomNumber)
+ );
+ 
+ create table RoomManager (
+	manager_id int(11) AUTO_INCREMENT NOT NULL,
+    name varchar (50),
+    birthDate date,
+    primary key (manager_id)
+ );*/
+	
+ 
+  #select * from RoomManager;
+  #select * from Room;
+
   /*
+  drop table Room;
+  drop table RoomManager;
   drop table Patient;
   drop table Appointment;
   drop table AppointmentManager;
-  
   */
-  
