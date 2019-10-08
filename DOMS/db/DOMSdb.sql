@@ -46,9 +46,13 @@
  );*/
 	
  
+<<<<<<< HEAD
+  select * from Patient;
+=======
   #select * from RoomManager;
   #select * from Room;
 
+>>>>>>> aa4013d4c13053ebd26127049e9f364e3fc13a5a
   /*
   drop table Room;
   drop table RoomManager;
