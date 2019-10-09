@@ -1,4 +1,5 @@
 #create schema DOMSdb;
+
 /*
  create table AppointmentManager(
 	manager_id int(11) AUTO_INCREMENT NOT NULL,
