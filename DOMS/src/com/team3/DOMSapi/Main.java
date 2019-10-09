@@ -12,6 +12,15 @@ public class Main {
 	static String patientName;
 	static String patientSSN;
 	static String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
+	static String userSSN;
+	static String apptDate = "";
+	static String apptTime = "";
+	static String apptNotes;
+	static String apptStatus;
+	static String apptID;
+	static int selectedAppt;
+	static String updateQuery;
+	static int rowCount=0;
   
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException{
 	    //Load MySql JDBC Driver
@@ -62,25 +71,32 @@ public class Main {
 	  	      case 1: //Schedule an appointment
 	  	    	  System.out.println("Fill out the below information to schedule an appointment.");
 		  	      System.out.println("Please enter SSN:");
-		  	      String ssn = input.next();
-		          System.out.println(ssn);
-		          try {
-		            String query2 = "select * from Patient where ssn=('" + ssn + "');";
+		  	      userSSN = input.next();
+		  	      try {
+		            String query2 = "select * from Patient where ssn=('" + userSSN + "');";
 		            ResultSet r = mystmt.executeQuery(query2);
 		               while (r.next ()) {
 		                   patientName = r.getString(1);
 		                   patientSSN = r.getString(3);
-		               }      
-		               // Display results
-		               System.out.println("\nPatient name: " + patientName + "\n"); 
+		                   rowCount++;
+		               }
+		               if (rowCount == 0) {
+		            	   System.out.println("Sorry, no patient exists with that SSN.");
+		            	   break;
+		               }
+		               else {
+			               // Display results
+			               System.out.println("\nPatient name: " + patientName + "\n"); 
+		               }
+		               rowCount=0;
 		          }
 		          catch (Exception e) {
 		            System.out.println(e);
 		          }
 		          System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
-		          String apptDate = input.next();
+		          apptDate = input.next();
 		          System.out.println("Please enter a time for your appointment: (in the form hh:mm) ");
-		          String apptTime = input.next();
+		          apptTime = input.next();
 		          //need to add the seconds for the database entry
 		          apptTime += ":00";
 		          input.nextLine();
@@ -90,15 +106,196 @@ public class Main {
 		          String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
 		          mystmt.executeUpdate(query3);
 	  	          break;
+	  	          
 	  	      case 2:// View my appointments.
 	  	        System.out.println("Please enter your SSN to view your appointments");
-	  	        break;
+	  	        userSSN = input.next();
+	  	        System.out.println("Current Appointments:");
+	  	        try {
+		            String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
+		            ResultSet r = mystmt.executeQuery(query2);
+		               while (r.next ()) {
+		            	   apptID = r.getString(1);
+		                   apptDate = r.getString(3);
+		                   apptTime = r.getString(4);
+		                   apptNotes = r.getString(5);
+		                   apptStatus = r.getString(6);
+		                   
+		                   // Display results
+		                   System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+		                   rowCount++;
+		               } 
+		               if (rowCount == 0) {
+		            	   System.out.println("Sorry, no patient exists with that SSN.");
+		            	   break;
+		               }
+		               rowCount=0;
+		          }
+		          catch (Exception e) {
+		            System.out.println(e);
+		          }
+	  	          break;
+	  	        
 	  	      case 3:// Edit my appointment
-	  	        System.out.println("Please enter your SSN to edit your appointments");
-	  	        break;
+	  	    	System.out.println("Please enter your SSN to edit your appointments");
+	  	        userSSN = input.next();
+	  	        
+		  	    try {
+		  	        String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
+		            ResultSet r = mystmt.executeQuery(query2);
+		               while (r.next ()) {
+		            	   apptID = r.getString(1);
+		                   apptDate = r.getString(3);
+		                   apptTime = r.getString(4);
+		                   apptNotes = r.getString(5);
+		                   apptStatus = r.getString(6);
+		                   
+		                   // Display results
+		                   System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+		                   rowCount++;
+		               } 
+		               if (rowCount == 0) {
+		            	   System.out.println("Sorry, no patient exists with that SSN.");
+		            	   break;
+		               }
+		               rowCount=0;
+		          }
+		          catch (Exception e) {
+		            System.out.println(e);
+		          }
+	  	          System.out.println("Which appt would you like to edit? (enter an appt ID to select an appt)");
+
+		  	      selectedAppt = input.nextInt();
+		  	      
+		  	    try {
+		  	        String query2 = "select * from Appointment where appt_id=('" + selectedAppt + "');";
+		            ResultSet r = mystmt.executeQuery(query2);
+		            
+		               while (r.next ()) {
+		            	   apptID = r.getString(1);
+		                   apptDate = r.getString(3);
+		                   apptTime = r.getString(4);
+		                   apptNotes = r.getString(5);
+		                   apptStatus = r.getString(6);
+		                   
+		                   // Display results
+		                   System.out.println("Appt ID: " + apptID + "\n\t1. Appt Date: " + apptDate + "\n\t2. Appt Time: " + apptTime + "\n\t3. Appt Notes: " + apptNotes);
+		                   rowCount++;
+		               } 
+		               if (rowCount == 0) {
+		            	   System.out.println("Sorry, no appointment exists with that Appt ID.");
+		            	   break;
+		               }
+		               rowCount=0;
+		          }
+		          catch (Exception e) {
+		            System.out.println(e);
+		          }
+		  	    
+		  	      System.out.println("What would you like to edit? (input an integer to select)");
+		  	      int selectedInput = input.nextInt();
+		  	      
+		  	      switch(selectedInput) {
+		  	      	case 1:
+		  	    	  System.out.println("Current Appt Date: " + apptDate);
+		  	    	  System.out.println("What date would you like to change it to? (in the form YYYY-MM-DD)");
+		  	    	  apptDate = input.next();
+		  	    	  //changes status back to requested so new date can be approved by appointment manager
+		  	    	  updateQuery = "update Appointment set apptDate=('" + apptDate + "'), status=('Requested') where appt_id=('" + selectedAppt + "');";
+		  	    	  mystmt.executeUpdate(updateQuery);
+			  	      System.out.println("Appointment details updated.");
+		  	    	  break;
+		  	      	case 2:
+		  	      	  System.out.println("Current Appt Time: " + apptTime);
+		  	    	  System.out.println("What time would you like to change it to? (in the form hh:mm)");
+		  	    	  apptTime = input.next();
+		  	    	  apptTime += ":00";
+		  	    	  //changes status back to requested so new date can be approved by appointment manager
+		  	    	  updateQuery = "update Appointment set apptTime=('" + apptTime + "'), status=('Requested') where appt_id=('" + selectedAppt + "');";
+		  	    	  mystmt.executeUpdate(updateQuery);
+			  	      System.out.println("Appointment details updated.");
+		  	    	  break;
+		  	      	case 3:
+		  	      	  System.out.println("Current Appt Notes: " + apptNotes);
+		  	    	  System.out.println("What would you like to change the notes to?");
+		  	    	  apptNotes = input.nextLine();
+		  	    	  updateQuery = "update Appointment set notes=('" + apptNotes + "') where appt_id=('" + selectedAppt + "');";
+		  	    	  mystmt.executeUpdate(updateQuery);
+			  	      System.out.println("Appointment details updated.");
+		  	    	  break;
+		  	      	default:
+		  	      		System.out.println("Sorry, you did not enter a valid option. Bye.");
+		  	      }
+	  	          break;
+	  	        
 	  	      case 4:// Cancel my appointment
-	  	        System.out.println("Please enter your SSN to cancel your appointments");
-	  	        System.out.println("Are you sure you want to cancel your appointment? (y/n)");
+	  	    	System.out.println("Please enter your SSN to view your appointments");
+	  	        userSSN = input.next();
+	  	        
+		  	    try {
+		  	        String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
+		            ResultSet r = mystmt.executeQuery(query2);
+		               while (r.next ()) {
+		            	   apptID = r.getString(1);
+		                   apptDate = r.getString(3);
+		                   apptTime = r.getString(4);
+		                   apptNotes = r.getString(5);
+		                   apptStatus = r.getString(6);
+		                   
+		                   // Display results
+		                   System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+		                   rowCount++;
+		               } 
+		               if (rowCount == 0) {
+		            	   System.out.println("Sorry, no patient exists with that SSN.");
+		            	   break;
+		               }
+		               rowCount=0;
+		          }
+		          catch (Exception e) {
+		            System.out.println(e);
+		          }
+	  	          System.out.println("Which appt would you like to cancel? (enter an appt ID to select an appt)");
+		  	      selectedAppt = input.nextInt();
+		  	   
+			  	    try {
+			  	        String query2 = "select * from Appointment where appt_id=('" + selectedAppt + "');";
+			            ResultSet r = mystmt.executeQuery(query2);
+			               while (r.next ()) {
+			            	   apptID = r.getString(1);
+			                   apptDate = r.getString(3);
+			                   apptTime = r.getString(4);
+			                   apptNotes = r.getString(5);
+			                   apptStatus = r.getString(6);
+			                   
+			                   // Display results
+			                   System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+			                   rowCount++;
+			               } 
+			               if (rowCount == 0) {
+			            	   System.out.println("Sorry, no appointments exists with that Appt ID.");
+			            	   break;
+			               }
+			               rowCount=0;
+			          }
+			          catch (Exception e) {
+			            System.out.println(e);
+			          }
+			  	    System.out.println("Are you sure you want to cancel the above appointment? (y/n)");
+
+			  	    String deleteInput = input.next();
+			  	    switch(deleteInput) {
+			  	    	case ("y"):
+			  	    		updateQuery = "delete from Appointment where appt_id=('" + selectedAppt + "');";
+		  	    			System.out.print("Appointment cancelled.");
+		  	    			break;
+			  	    	case ("n"):
+			  	    		System.out.print("Appointment not cancelled.");
+			  	    		break;
+			  	    	default:
+				  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
+			  	    }
+			  	    mystmt.executeUpdate(updateQuery);
 	  	        break;
 	  	      default:
 	  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
