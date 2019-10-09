@@ -43,29 +43,9 @@ create table Patient(
     foreign key(Pssn) references Patient(ssn),
     foreign key(roomNum) references Room(roomNumber)
  );
-
- create table AppointmentManager(
-	manager_id int(11) AUTO_INCREMENT NOT NULL,
-	name varchar(50),
-    birthDate date,
-    primary key(manager_id)
- );
- 
- create table Room (
-	roomNumber int(11) NOT NULL,
-    buildingNumber int(11) NOT NULL,
-    avaliable varchar(20),
-    Pssn varchar(11),
-    primary key(buildingNumber, roomNumber)
- );
- 
- create table RoomManager (
-	manager_id int(11) AUTO_INCREMENT NOT NULL,
-    name varchar (50),
-    birthDate date,
-    primary key (manager_id)
- );*/
-
+ */
+  #select * from Patient;
+  #select * from Appointment;
   #select * from RoomManager;
   #select * from Room;
 

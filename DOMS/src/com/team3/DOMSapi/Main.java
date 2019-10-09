@@ -37,17 +37,10 @@ public class Main {
 	    //System.out.println(query1);
 	    //mystmt.executeUpdate(query1);
 
-	    System.out.println("Would you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Create a user profile.");
-
 	    Room testRoom = new Room(1, 20, "Clean and Ready", null);
 	    Room testRoom1 = new Room(1, 10, "Occupied", "123-45-6789");
 
 	    RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");
-	    
-		Room testRoom = new Room(1, 20, "Clean and Ready", null);
-		Room testRoom1 = new Room(1, 10, "Occupied", "123-45-6789");
-		
-		RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");
 		
 		//String query4 = "insert into Room values('" + testRoom1.roomNumber + "', '" + testRoom1.buildingNumber + "', '" + testRoom1.avaliable + "', '" + testRoom1.patientSSN + "');";
 		//String query2 = "insert into Room values('" + testRoom.roomNumber + "', '" + testRoom.buildingNumber + "', '" + testRoom.avaliable + "', '" + testRoom.patientSSN + "');";
@@ -57,47 +50,46 @@ public class Main {
 		//mystmt.executeUpdate(query4);
 		
 		//mystmt.executeUpdate(query3);
-
-
+	    //System.out.println("Here");
 	    System.out.println("Are you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile");
 	    int typeOfAccountChoice = input.nextInt();
 	    switch (typeOfAccountChoice) {
 	      case 1: //Patient
-	    	System.out.println("Would you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.");
+	  	    System.out.println("Would you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Create a user profile.");
 	  	    int choice = input.nextInt();
 	  	    
 	  	    switch (choice) {
 	  	      case 1: //Schedule an appointment
-	  	    	System.out.println("Fill out the below information to schedule an appointment.");
-	  	      System.out.println("Please enter SSN:");
-          String ssn = input.next();
-          System.out.println(ssn);
-          try {
-            String query2 = "select * from Patient where ssn=('" + ssn + "');";
-            ResultSet r = mystmt.executeQuery(query2);
-               while (r.next ()) {
-                   patientName = r.getString(1);
-                   patientSSN = r.getString(3);
-               }      
-               // Display results
-               System.out.println("\nPatient name: " + patientName + "\n"); 
-          }
-          catch (Exception e) {
-            System.out.println(e);
-          }
-          System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
-          String apptDate = input.next();
-          System.out.println("Please enter a time for your appointment: (in the form hh:mm) ");
-          String apptTime = input.next();
-          //need to add the seconds for the database entry
-          apptTime += ":00";
-          input.nextLine();
-          System.out.println("Please enter any notes you would like to include: ");
-          String notes = input.nextLine();
-          Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0]);
-          String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
-          mystmt.executeUpdate(query3);
-	  	        break;
+	  	    	  System.out.println("Fill out the below information to schedule an appointment.");
+		  	      System.out.println("Please enter SSN:");
+		  	      String ssn = input.next();
+		          System.out.println(ssn);
+		          try {
+		            String query2 = "select * from Patient where ssn=('" + ssn + "');";
+		            ResultSet r = mystmt.executeQuery(query2);
+		               while (r.next ()) {
+		                   patientName = r.getString(1);
+		                   patientSSN = r.getString(3);
+		               }      
+		               // Display results
+		               System.out.println("\nPatient name: " + patientName + "\n"); 
+		          }
+		          catch (Exception e) {
+		            System.out.println(e);
+		          }
+		          System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
+		          String apptDate = input.next();
+		          System.out.println("Please enter a time for your appointment: (in the form hh:mm) ");
+		          String apptTime = input.next();
+		          //need to add the seconds for the database entry
+		          apptTime += ":00";
+		          input.nextLine();
+		          System.out.println("Please enter any notes you would like to include: ");
+		          String notes = input.nextLine();
+		          Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0]);
+		          String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
+		          mystmt.executeUpdate(query3);
+	  	          break;
 	  	      case 2:// View my appointments.
 	  	        System.out.println("Please enter your SSN to view your appointments");
 	  	        break;
