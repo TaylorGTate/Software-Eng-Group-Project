@@ -1,9 +1,9 @@
 package com.team3.DOMSapi;
 
 public class AppointmentManager {
-	String name;
-	String birthDate;
-	String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
+	static String name;
+	static String birthDate;
+	static String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
 
 	
 	public AppointmentManager(String apptMgrName, String apptMgrBirthDate) {
@@ -16,7 +16,7 @@ public class AppointmentManager {
 	}
 	
 	public void setName(String apptMgrName) {
-		this.name = apptMgrName;
+		name = apptMgrName;
 	}
 	
 	public String getBirthDate() {
@@ -24,7 +24,7 @@ public class AppointmentManager {
 	}
 	
 	public void setBirthDate(String birthday) {
-		this.birthDate = birthday;
+		birthDate = birthday;
 	}
 	
 	public boolean isBirthday(Patient patient) {
