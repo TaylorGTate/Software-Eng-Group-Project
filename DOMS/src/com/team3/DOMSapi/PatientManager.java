@@ -23,5 +23,6 @@ public class PatientManager {
 	public String getBirthDate() {
 		return birthDate;
 	}
-		
+	
+	
 }
