@@ -358,7 +358,9 @@ public class Main {
 		                     patientSSN = deadResult.getString(3);
 		                 }      
 		                 // Display results
-		                 System.out.println("\nPatient name: " + patientName + "\n"); 
+		                 System.out.println("\nDead Patient name: " + patientName + "\n"); 
+		                 String deadDeleteQuery = "delete from Patient where ssn=('" + deadSSN + "');";
+			             mystmt.executeUpdate (deadDeleteQuery);
 		            }
 		            catch (Exception e) {
 		              System.out.println(e);
