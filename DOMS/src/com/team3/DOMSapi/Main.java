@@ -46,10 +46,10 @@ public class Main {
 	    //System.out.println(query1);
 	    //mystmt.executeUpdate(query1);
 
-	    Room testRoom = new Room(1, 20, "Clean and Ready", null);
+	    /*Room testRoom = new Room(1, 20, "Clean and Ready", null);
 	    Room testRoom1 = new Room(1, 10, "Occupied", "123-45-6789");
 
-	    RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");
+	    RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");*/
 		
 		//String query4 = "insert into Room values('" + testRoom1.roomNumber + "', '" + testRoom1.buildingNumber + "', '" + testRoom1.avaliable + "', '" + testRoom1.patientSSN + "');";
 		//String query2 = "insert into Room values('" + testRoom.roomNumber + "', '" + testRoom.buildingNumber + "', '" + testRoom.avaliable + "', '" + testRoom.patientSSN + "');";
@@ -336,6 +336,68 @@ public class Main {
 		  	    }
 	    	  break;
 	      case 4: //Room Manager
+	    	  System.out.println("Would you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity.");
+	    	  int RMchoice = input.nextInt();
+	    	  
+	    	  switch (RMchoice) {
+	    	  	case 1:// Assign checked in patients to a room
+	    	  		
+	    	  		//Headers for all checked-in appointments
+	    	  		System.out.println();
+    	  			System.out.println("All checked-in appointments:");
+    	  			System.out.println("Appointment ID" + "\t" + " Patient SSN" + "\t" + " Appointment Date" + "\t" + " Appointment Time" + "\t" + " Appointment Status");	    	  		
+	    	  		
+	    	  		//Query for all the appointments that are currently checked-in
+	    	  		String checkedInPatients = "SELECT * From Appointment WHERE status = 'Checked-in'";
+	    	  		//ResultSet of all the checked in the appointments
+	    	  		ResultSet rs = mystmt.executeQuery(checkedInPatients);
+	    	  		//iterate through the resultset
+	    	  		while (rs.next()) {
+	    	  			int id = rs.getInt("appt_id");
+	    	  			String Pssn = rs.getString("Pssn");
+	    	  			String apptDate = rs.getString("apptDate");
+	    	  			String apptTime = rs.getString("apptTime");
+	    	  			String status = rs.getString("status");
+	    	  			
+	    	  			//Print the results
+	    	  			System.out.format("%s\t\t %s\t %s\t\t %s\t\t %s\t\n", id, Pssn, apptDate, apptTime, status);
+	    	  		}
+	    	  		
+	    	  		//Headers for clean and ready Room list
+	    	  		System.out.println();
+    	  			System.out.println("All avaliable rooms:");
+    	  			System.out.println("Room Number" + "\t" + " Room Status");
+
+	    	  		//Query for all the appointments that are currently checked-in
+	    	  		String avaliableRooms = "SELECT * From Room WHERE avaliable = 'Clean and Ready'";
+	    	  		//ResultSet of all the checked in the appointments
+	    	  		ResultSet rs1 = mystmt.executeQuery(avaliableRooms);
+	    	  		//iterate through the ResultSet
+	    	  		while (rs1.next()) {
+	    	  			int id = rs1.getInt("roomNumber");
+	    	  			String avaliable = rs1.getString("avaliable");
+	    	  			
+	    	  			//Print the results
+	    	  			System.out.format("%s\t\t %s\t \n", id, avaliable);
+	    	  		}
+	    	  		
+	    	  		//Get the appointment ID of the appointment to assign it to a room
+	    	  		System.out.println();
+	    	  		System.out.println("Enter appointment ID to assign to a room.");
+	    	  		int appointmentID = input.nextInt();
+	    	  		System.out.println("Enter the room number you would like to assign to appointment ID " + appointmentID + ".");
+	    	  		int roomNumber = input.nextInt();
+	    	  		
+	    	  		//Query to assign room number to appointment
+	    	  		String assignRoomNumToAppointment = ("UPDATE Appointment SET roomNum = " + "'" + roomNumber + "'" + "WHERE appt_id = " + "'" + appointmentID +"'");
+	    	  		//execute update on appointment table to assign room number to appointment
+	    	  		mystmt.executeUpdate(assignRoomNumToAppointment);
+	    	  		
+	    	  		
+	    	  		break;
+	    	  	case 2:// Set room availability
+	    	  		break;
+	    	  }
 	    	  break;
 	      case 5: //Appointment Manager
 	    	  break;
