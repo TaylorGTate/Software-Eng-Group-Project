@@ -392,8 +392,6 @@ public class Main {
 	    	  		String assignRoomNumToAppointment = ("UPDATE Appointment SET roomNum = " + "'" + roomNumber + "'" + "WHERE appt_id = " + "'" + appointmentID +"'");
 	    	  		//execute update on appointment table to assign room number to appointment
 	    	  		mystmt.executeUpdate(assignRoomNumToAppointment);
-	    	  		
-	    	  		
 	    	  		break;
 	    	  	case 2:// Set room availability
 	    	  		break;
@@ -402,6 +400,69 @@ public class Main {
 	      case 5: //Appointment Manager
 	    	  break;
 	      case 6: //Patient Manager
+	    	  System.out.println("Would you like to:\n\t1. Check a patient in. \n\t2. Remove a patient.");
+	    	  int PMchoice = input.nextInt();
+	    	  
+	    	  switch(PMchoice) {
+		    	  case 1://change the appointment status of the patient to checked in
+		    		  
+		    		  //Print statements to get the patient's ssn that is checking-in
+		    		  System.out.println();
+		    		  System.out.println("Enter the SSN of the patient you would like to check-in in the following format 123-45-6789");
+		    		  String pSSN = input.next();
+		    		  
+		    		  //Headers for the patient's appointments
+		    	  	  System.out.println();
+		    	  	  System.out.println("All of the Patient's appointments:");
+		    	  	  System.out.println("Appointment ID" + "\t" + " Patient SSN"+ "\t" + " Appointment Date"+ "\t" + " Appointment Time"+ "\t" + " Appointment Status");
+		    		  
+		    		  //Query to get the patient's appointment info
+		    		  String patientAppointmentInfo = ("SELECT * from Appointment WHERE Pssn = " + "'" + pSSN + "'");
+		    		  //ResultSet of all the appointments the patient has
+		    		  ResultSet rs = mystmt.executeQuery(patientAppointmentInfo);
+		    		  //Iterate through the ResultSet
+		    		  while(rs.next()) {
+		    			  int id = rs.getInt("appt_id");
+		    			  String Pssn = rs.getString("Pssn");
+		    			  String apptDate = rs.getString("apptDate");
+		    			  String apptTime = rs.getString("apptTime");
+		    			  String status = rs.getString("status");
+		    			  
+		    		   //Print the results
+		    	  	   System.out.format("%s\t\t %s\t %s\t\t %s\t\t %s\t \n", id, Pssn, apptDate, apptTime, status);
+		    		  }
+		    		  
+		    		  //Get the appointment ID of the appointment that needs to be checked-in
+		    		  System.out.println();
+		    		  System.out.println("Enter appointment ID that needs to be checked-in.");
+		    		  int appointmentID = input.nextInt();
+		    		  
+		    		  //Query to assign appointment status to checked-in
+		    		  String apptCheckIn = ("UPDATE Appointment set status = 'Checked-in' WHERE appt_id = " + "'" + appointmentID + "'");
+		    		  //execute update on appointment table to assign room number to appointment
+		    		  mystmt.executeUpdate(apptCheckIn);
+
+		    		  break;
+		    	  case 2://Remove patient from database
+		    		  
+		    		  //Print statements to get the patient's ssn that is checking-in
+		    		  System.out.println();
+		    		  System.out.println("Enter the SSN of the patient you would like to delete in the following format 123-45-6789");
+		    		  String pSSN1 = input.next();
+		    		  
+		    		  //Queries to delete the patient from the database
+		    		  String rmPatientsAppointments = ("DELETE from Appointment where Pssn = " + "'" + pSSN1 + "'");
+		    		  String rmPatient = ("DELETE from Patient where ssn = " + "'" + pSSN1 + "'");
+		    		  //Execute the delete queries on the database to remove the patient's information
+		    		  mystmt.executeUpdate(rmPatientsAppointments);
+		    		  mystmt.executeUpdate(rmPatient);
+		    		  
+		    		  System.out.println();
+		    		  System.out.println("Patient successfully removed from the database");
+		    		  
+		    		  break;
+		    	  }
+	    	  
 	    	  break;
 	      case 7: //create a new patient profile
 
