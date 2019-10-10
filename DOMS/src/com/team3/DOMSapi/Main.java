@@ -319,7 +319,7 @@ public class Main {
 	  		        String ssn = input.next();
 	  		        Doctor.setSSN(ssn);
 	  		        
-	  		        String newDoctorQuery= "insert into Doctor values('" + name + "', '" + birthDate + "', '" + ssn + "');";
+	  		        String newDoctorQuery= "insert into Doctor values('" + 0 + "', '" + name + "', '" + birthDate + "', '" + ssn + "');";
 	  			    System.out.print(newDoctorQuery);
 	  			    
 	  			    mystmt.executeUpdate(newDoctorQuery);
