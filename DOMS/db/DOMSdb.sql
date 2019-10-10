@@ -6,8 +6,8 @@
 	name varchar(50),
     birthDate date,
     primary key(manager_id)
- );
- 
+ );*/
+ /*
  create table Room (
 	roomNumber int(11) NOT NULL,
     avaliable varchar(20),
@@ -19,8 +19,8 @@
     name varchar (50),
     birthDate date,
     primary key (manager_id)
- );
- 
+ );*/
+ /*
 create table Patient(
 	patientName varchar(50),
     birthDate date,
@@ -29,8 +29,8 @@ create table Patient(
     preferredDoctor varchar(50),
     bloodtype varchar(3),
     primary key(ssn)
- );
-
+ );*/
+/*
  create table Appointment(
 	appt_id int(11) AUTO_INCREMENT NOT NULL,
     Pssn varchar(11),
@@ -42,17 +42,26 @@ create table Patient(
     primary key(appt_id),
     foreign key(Pssn) references Patient(ssn),
     foreign key(roomNum) references Room(roomNumber)
- );
- */
+ );*/
+ /*
+ create table Doctor(
+	doctor_id int(11) AUTO_INCREMENT NOT NULL,
+	doctorName varchar(50),
+    birthDate date,
+    ssn varchar(11),
+    primary key(doctor_id)
+ );*/
+ 
   #select * from Patient;
   #select * from Appointment;
   #select * from RoomManager;
   #select * from Room;
-
-  /*
-  drop table Room;
-  drop table RoomManager;
-  drop table Patient;
-  drop table Appointment;
-  drop table AppointmentManager;
-  */
+select * from Doctor;
+  
+  #drop table Room;
+ # drop table RoomManager;
+ # drop table Patient;
+ # drop table Appointment;
+ # drop table AppointmentManager;
+ # drop table Doctor;
+  

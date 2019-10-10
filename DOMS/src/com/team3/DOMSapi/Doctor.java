@@ -6,8 +6,8 @@ public class Doctor {
 	static String ssn;
 
 	
-	public Doctor(String patientName, String birthDay, String social) {
-		name = patientName;
+	public Doctor(String doctorName, String birthDay, String social) {
+		name = doctorName;
 		birthDate = birthDay;
 		ssn = social;
 	}
@@ -16,8 +16,8 @@ public class Doctor {
 		return name;
 	}
 	
-	public static void setName(String patientName) {
-		name = patientName;
+	public static void setName(String doctorName) {
+		name = doctorName;
 	}
 	
 	public String getBirthDate() {

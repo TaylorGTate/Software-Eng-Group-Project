@@ -319,7 +319,7 @@ public class Main {
 	  		        String ssn = input.next();
 	  		        Doctor.setSSN(ssn);
 	  		        
-	  		        String newDoctorQuery= "insert into Doctor values('" + name + "', '" + birthDate + "', '" + ssn + "');";
+	  		        String newDoctorQuery= "insert into Doctor values('" + 0 + "', '" + name + "', '" + birthDate + "', '" + ssn + "');";
 	  			    System.out.print(newDoctorQuery);
 	  			    
 	  			    mystmt.executeUpdate(newDoctorQuery);
@@ -340,7 +340,34 @@ public class Main {
 	      case 5: //Appointment Manager
 	    	  break;
 	      case 6: //Patient Manager
-	    	  break;
+	    	  System.out.println("Would you like to:\n\t1. Check-in patient.\n\t2. Edit patient user profile.\n\t3. Remove dead patient from database.");
+		  	   int PMchoice = input.nextInt();
+		  	   switch (PMchoice) {
+		  	      case 1: //Check-in patient
+		  	    	  break;
+		  	      case 2: //Edit patient user profile
+		  	    	  break;
+		  	      case 3: //Remove dead patient from database
+		  	    	System.out.println("Please enter SSN of dead patient:");
+		            String deadSSN = input.next();
+		            try {
+		              String deadSSNquery = "select * from Patient where ssn=('" + deadSSN + "');";
+		              ResultSet deadResult = mystmt.executeQuery(deadSSNquery);
+		                 while (deadResult.next ()) {
+		                     patientName = deadResult.getString(1);
+		                     patientSSN = deadResult.getString(3);
+		                 }      
+		                 // Display results
+		                 System.out.println("\nPatient name: " + patientName + "\n"); 
+		            }
+		            catch (Exception e) {
+		              System.out.println(e);
+		            }
+		  	    	break;
+		  	      default:
+		  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
+		  	    }
+		  	   	break;
 	      case 7: //create a new patient profile
 
   	    	    System.out.println("Please enter first name:");
