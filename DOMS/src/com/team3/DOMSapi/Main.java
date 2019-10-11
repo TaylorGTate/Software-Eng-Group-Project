@@ -53,10 +53,10 @@ public class Main {
 	    String queryMan = "insert into AppointmentManager values('" + testApptMan.getManID() + "','" + testApptMan.getName() + "', '" + testApptMan.getBirthDate() + "');";
 	    mystmt.executeUpdate(queryMan);
 
-	    Room testRoom = new Room(1, 20, "Clean and Ready", null);
+	    /*Room testRoom = new Room(1, 20, "Clean and Ready", null);
 	    Room testRoom1 = new Room(1, 10, "Occupied", "123-45-6789");
 
-	    RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");
+	    RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");*/
 		
 		//String query4 = "insert into Room values('" + testRoom1.roomNumber + "', '" + testRoom1.buildingNumber + "', '" + testRoom1.avaliable + "', '" + testRoom1.patientSSN + "');";
 		//String query2 = "insert into Room values('" + testRoom.roomNumber + "', '" + testRoom.buildingNumber + "', '" + testRoom.avaliable + "', '" + testRoom.patientSSN + "');";
@@ -326,7 +326,7 @@ public class Main {
 	  		        String ssn = input.next();
 	  		        Doctor.setSSN(ssn);
 	  		        
-	  		        String newDoctorQuery= "insert into Doctor values('" + name + "', '" + birthDate + "', '" + ssn + "');";
+	  		        String newDoctorQuery= "insert into Doctor values('" + 0 + "', '" + name + "', '" + birthDate + "', '" + ssn + "');";
 	  			    System.out.print(newDoctorQuery);
 	  			    
 	  			    mystmt.executeUpdate(newDoctorQuery);
@@ -343,6 +343,66 @@ public class Main {
 		  	    }
 	    	  break;
 	      case 4: //Room Manager
+	    	  System.out.println("Would you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity.");
+	    	  int RMchoice = input.nextInt();
+	    	  
+	    	  switch (RMchoice) {
+	    	  	case 1:// Assign checked in patients to a room
+	    	  		
+	    	  		//Headers for all checked-in appointments
+	    	  		System.out.println();
+    	  			System.out.println("All checked-in appointments:");
+    	  			System.out.println("Appointment ID" + "\t" + " Patient SSN" + "\t" + " Appointment Date" + "\t" + " Appointment Time" + "\t" + " Appointment Status");	    	  		
+	    	  		
+	    	  		//Query for all the appointments that are currently checked-in
+	    	  		String checkedInPatients = "SELECT * From Appointment WHERE status = 'Checked-in'";
+	    	  		//ResultSet of all the checked in the appointments
+	    	  		ResultSet rs = mystmt.executeQuery(checkedInPatients);
+	    	  		//iterate through the resultset
+	    	  		while (rs.next()) {
+	    	  			int id = rs.getInt("appt_id");
+	    	  			String Pssn = rs.getString("Pssn");
+	    	  			String apptDate = rs.getString("apptDate");
+	    	  			String apptTime = rs.getString("apptTime");
+	    	  			String status = rs.getString("status");
+	    	  			
+	    	  			//Print the results
+	    	  			System.out.format("%s\t\t %s\t %s\t\t %s\t\t %s\t\n", id, Pssn, apptDate, apptTime, status);
+	    	  		}
+	    	  		
+	    	  		//Headers for clean and ready Room list
+	    	  		System.out.println();
+    	  			System.out.println("All avaliable rooms:");
+    	  			System.out.println("Room Number" + "\t" + " Room Status");
+
+	    	  		//Query for all the appointments that are currently checked-in
+	    	  		String avaliableRooms = "SELECT * From Room WHERE avaliable = 'Clean and Ready'";
+	    	  		//ResultSet of all the checked in the appointments
+	    	  		ResultSet rs1 = mystmt.executeQuery(avaliableRooms);
+	    	  		//iterate through the ResultSet
+	    	  		while (rs1.next()) {
+	    	  			int id = rs1.getInt("roomNumber");
+	    	  			String avaliable = rs1.getString("avaliable");
+	    	  			
+	    	  			//Print the results
+	    	  			System.out.format("%s\t\t %s\t \n", id, avaliable);
+	    	  		}
+	    	  		
+	    	  		//Get the appointment ID of the appointment to assign it to a room
+	    	  		System.out.println();
+	    	  		System.out.println("Enter appointment ID to assign to a room.");
+	    	  		int appointmentID = input.nextInt();
+	    	  		System.out.println("Enter the room number you would like to assign to appointment ID " + appointmentID + ".");
+	    	  		int roomNumber = input.nextInt();
+	    	  		
+	    	  		//Query to assign room number to appointment
+	    	  		String assignRoomNumToAppointment = ("UPDATE Appointment SET roomNum = " + "'" + roomNumber + "'" + "WHERE appt_id = " + "'" + appointmentID +"'");
+	    	  		//execute update on appointment table to assign room number to appointment
+	    	  		mystmt.executeUpdate(assignRoomNumToAppointment);
+	    	  		break;
+	    	  	case 2:// Set room availability
+	    	  		break;
+	    	  }
 	    	  break;
 	      case 5: //Appointment Manager
 	    	  System.out.println("Please enter Manager ID: ");
@@ -391,6 +451,82 @@ public class Main {
 	    	  
 	    	  break;
 	      case 6: //Patient Manager
+	    	  System.out.println("Would you like to:\n\t1. Check-in patient.\n\t2. Edit patient user profile.\n\t3. Remove dead patient from database.");
+	    	  int PMchoice = input.nextInt();
+	    	  
+	    	  switch(PMchoice) {
+		    	  case 1://check-in patient
+		    		  
+		    		  //Print statements to get the patient's ssn that is checking-in
+		    		  System.out.println();
+		    		  System.out.println("Enter the SSN of the patient you would like to check-in in the following format 123-45-6789");
+		    		  String pSSN = input.next();
+		    		  
+		    		  //Headers for the patient's appointments
+		    	  	  System.out.println();
+		    	  	  System.out.println("All of the Patient's appointments:");
+		    	  	  System.out.println("Appointment ID" + "\t" + " Patient SSN"+ "\t" + " Appointment Date"+ "\t" + " Appointment Time"+ "\t" + " Appointment Status");
+		    		  
+		    		  //Query to get the patient's appointment info
+		    		  String patientAppointmentInfo = ("SELECT * from Appointment WHERE Pssn = " + "'" + pSSN + "'");
+		    		  //ResultSet of all the appointments the patient has
+		    		  ResultSet rs = mystmt.executeQuery(patientAppointmentInfo);
+		    		  //Iterate through the ResultSet
+		    		  while(rs.next()) {
+		    			  int id = rs.getInt("appt_id");
+		    			  String Pssn = rs.getString("Pssn");
+		    			  String apptDate = rs.getString("apptDate");
+		    			  String apptTime = rs.getString("apptTime");
+		    			  String status = rs.getString("status");
+		    			  
+		    		   //Print the results
+		    	  	   System.out.format("%s\t\t %s\t %s\t\t %s\t\t %s\t \n", id, Pssn, apptDate, apptTime, status);
+		    		  }
+		    		  
+		    		  //Get the appointment ID of the appointment that needs to be checked-in
+		    		  System.out.println();
+		    		  System.out.println("Enter appointment ID that needs to be checked-in.");
+		    		  int appointmentID = input.nextInt();
+		    		  
+		    		  //Query to assign appointment status to checked-in
+		    		  String apptCheckIn = ("UPDATE Appointment set status = 'Checked-in' WHERE appt_id = " + "'" + appointmentID + "'");
+		    		  //execute update on appointment table to assign room number to appointment
+		    		  mystmt.executeUpdate(apptCheckIn);
+		    		  
+		    		  System.out.println();
+		    		  System.out.println("Patient sucessfully checked");
+
+		    		  break;
+		    		  
+		    	  case 2://edit a patient's user profile
+		    		  break;
+		    		  
+		    	  case 3: //Remove dead patient from database
+			  	    	System.out.println("Please enter SSN of dead patient:");
+			            String deadSSN = input.next();
+			            try {
+			              String deadSSNquery = "select * from Patient where ssn=('" + deadSSN + "');";
+			              ResultSet deadResult = mystmt.executeQuery(deadSSNquery);
+			                 while (deadResult.next ()) {
+			                     patientName = deadResult.getString(1);
+			                     patientSSN = deadResult.getString(3);
+			                 }      
+			                 // Display results
+			                 System.out.println("\nDead Patient name: " + patientName + "\n"); 
+			                 String deadDeleteQuery = "delete from Patient where ssn=('" + deadSSN + "');";
+			                 String deadDeleteQuery2 = "delete from Appointment where Pssn=('" + deadSSN + "');";
+				             mystmt.executeUpdate (deadDeleteQuery);
+				             mystmt.executeUpdate (deadDeleteQuery2);
+				             System.out.println(patientName + " has been sucessfully deleted");
+			            }
+			            catch (Exception e) {
+			              System.out.println(e);
+			            }
+			  	    	break;
+			  	      default:
+			  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
+			  	   
+		    	  }
 	    	  
 	    	  break;
 	      case 7: //create a new patient profile

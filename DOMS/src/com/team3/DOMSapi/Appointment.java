@@ -6,7 +6,7 @@ public class Appointment {
 	static String apptDate;
 	static String apptTime;
 	static String notes;
-	static String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
+	static String statuses[] = {"Requested", "Approved", "Denied", "Edited", "Checked-in"};
 	static String status;
 
 	public Appointment(int ID, String pSSN, String date, String time, String note, String stat) {

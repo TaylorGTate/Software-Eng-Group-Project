@@ -2,22 +2,12 @@ package com.team3.DOMSapi;
 
 public class Room {
 	
-	int roomNumber = 0, buildingNumber = 0;
-	String avaliable, patientSSN;
+	int roomNumber = 0;
+	String avaliable;
 	
-	public Room (int roomNumber, int buildingNumber, String avaliable, String patientSSN) {
+	public Room (int roomNumber, String avaliable) {
 		this.roomNumber = roomNumber;
-		this.buildingNumber = buildingNumber;
 		this.avaliable = avaliable;
-		this.patientSSN = patientSSN;
-	}
-	
-	public String getPatientSSN() {
-		return patientSSN;
-	}
-	
-	public void setPatientSSN(String patientSSN) {
-		this.patientSSN = patientSSN;
 	}
 	
 	public int getRoomNumber() {
@@ -26,14 +16,6 @@ public class Room {
 	
 	public void setRoomNumber(int roomNumber) {
 		this.roomNumber = roomNumber;
-	}
-	
-	public int getBuildingNumber() {
-		return buildingNumber;
-	}
-	
-	public void setBuildingNumber(int buildingNumber) {
-		this.buildingNumber = buildingNumber;
 	}
 	
 	public String isAvaliable() {
