@@ -54,8 +54,8 @@ public class Appointment {
 		return notes;
 	}
 	
-	public static void setnotes(String note) {
-		notes += "\n"+note;
+	public static void setNotes(String note) {
+		notes = note;
 	}
 	
 	public String getStatus() {

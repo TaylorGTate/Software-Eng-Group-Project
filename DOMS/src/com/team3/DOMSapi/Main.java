@@ -19,8 +19,11 @@ public class Main {
 	static String apptStatus;
 	static String apptID;
 	static int selectedAppt;
+	static int selectedInput;
 	static String updateQuery;
 	static int rowCount=0;
+	static int manID;
+	static int manIDDB;
   
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException{
 	    //Load MySql JDBC Driver
@@ -45,6 +48,10 @@ public class Main {
 	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
 	    //System.out.println(query1);
 	    //mystmt.executeUpdate(query1);
+	    
+	    AppointmentManager testApptMan = new AppointmentManager(0, "Becky Smith", "1984-03-24");
+	    String queryMan = "insert into AppointmentManager values('" + testApptMan.getManID() + "','" + testApptMan.getName() + "', '" + testApptMan.getBirthDate() + "');";
+	    mystmt.executeUpdate(queryMan);
 
 	    Room testRoom = new Room(1, 20, "Clean and Ready", null);
 	    Room testRoom1 = new Room(1, 10, "Occupied", "123-45-6789");
@@ -193,7 +200,7 @@ public class Main {
 		          }
 		  	    
 		  	      System.out.println("What would you like to edit? (input an integer to select)");
-		  	      int selectedInput = input.nextInt();
+		  	      selectedInput = input.nextInt();
 		  	      
 		  	      switch(selectedInput) {
 		  	      	case 1:
@@ -338,8 +345,53 @@ public class Main {
 	      case 4: //Room Manager
 	    	  break;
 	      case 5: //Appointment Manager
+	    	  System.out.println("Please enter Manager ID: ");
+	    	  manID = input.nextInt();
+	    	  
+	    	  queryMan = "select * from AppointmentManager where manager_id=('" + manID + "');";
+
+	    	  ResultSet r = mystmt.executeQuery(queryMan);
+              while (r.next ()) {
+           	   	  manIDDB = r.getInt(1);
+                  
+                  // Display results
+           	   	  if (manID != manIDDB) {
+                      System.out.println("There is no manager ID that matches: " + manID);
+                      break;
+           	   	  }
+                  System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+                  rowCount++;
+              } 
+              if (rowCount == 0) {
+           	   System.out.println("Sorry, no appt managers exist with that Manager ID.");
+           	   break;
+              }
+              rowCount=0;
+	    	  System.out.println("Would you like to:\n\t1. View all appts.\n\t.2. View 'Approved' Appts. \n\t3. Edit 'Approved' Appts.\n\t4. View 'Requested' Appts.\n\t5. Edit 'Requested' Appts.\n\t6. Approve 'Requested' Appts.");
+	    	  selectedInput = input.nextInt();
+	    	  
+	    	  switch(selectedInput) {
+	    	  	case 1: //View all appts
+	    	  		try {
+	    	  			String query2 = "select * from Appointment;";
+	    	  		}
+	    	  		catch(Exception e) {
+	    	  			
+	    	  		}
+	    	  	case 2: //view approved appts
+	    	  	case 3: //edit approved appts
+	    	  	case 4: //view requested appts
+	    	  	case 5: //edit requested appts
+	    	  	case 6: //approve requested appts
+	    	  	default:
+	     	    	 System.out.println("Sorry, you did not enter a valid option. Bye.");
+	    	  }
+	    	  
+	    	  
+	    	  
 	    	  break;
 	      case 6: //Patient Manager
+	    	  
 	    	  break;
 	      case 7: //create a new patient profile
 

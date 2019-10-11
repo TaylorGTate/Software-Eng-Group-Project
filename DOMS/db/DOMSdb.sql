@@ -48,6 +48,7 @@ create table Patient(
   #select * from Appointment;
   #select * from RoomManager;
   #select * from Room;
+  select * from AppointmentManager;
 
   /*
   drop table Room;
