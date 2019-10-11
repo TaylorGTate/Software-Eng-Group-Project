@@ -1,15 +1,15 @@
 package com.team3.DOMSapi;
 
 public class DoctorManager {
-	static Integer manager_id;
+	static int manager_id;
 	static String name;
 	static String birthDate;
 
 	
-	public DoctorManager(Integer manager_id, String name, String birth_date) {
-		manager_id = manager_id;
-		name = name;
-		birthDate = birthDate;
+	public DoctorManager(int managerID, String docName, String birth_date) {
+		manager_id = managerID;
+		name = docName;
+		birthDate = birth_date;
 	}
 	
 	public String getName() {
@@ -28,11 +28,11 @@ public class DoctorManager {
 		birthDate = birthday;
 	}
 	
-	public Integer getID() {
+	public int getID() {
 		return manager_id;
 	}
 	
-	public static void setID(Integer manager_id) {
-		manager_id = manager_id;
+	public static void setID(int managerID) {
+		manager_id = managerID;
 	}
 }
