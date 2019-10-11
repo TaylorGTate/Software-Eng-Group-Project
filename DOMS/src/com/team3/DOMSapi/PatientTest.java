@@ -5,7 +5,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class PatientTest {
-	
+	@Test
+	void test_Patient() {
+		String expectedSSN = "123-01-1234";
+		Patient p = new Patient("Mandy Seasholtz", "1998-01-01", "123-01-1234", "pollen", "Dr. Williams", "A+");
+		String actualSSN = p.getSSN();
+		assertEquals(expectedSSN, actualSSN);
+	}
 	@Test
 	void test_getName() {
 		String expectedName = "Mandy Seasholtz";
