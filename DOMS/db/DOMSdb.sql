@@ -56,12 +56,12 @@ create table Patient(
   #select * from Appointment;
   #select * from RoomManager;
   #select * from Room;
-select * from Doctor;
-  
-  #drop table Room;
- # drop table RoomManager;
- # drop table Patient;
- # drop table Appointment;
- # drop table AppointmentManager;
- # drop table Doctor;
-  
+  #select * from AppointmentManager;
+
+  /*
+  drop table Room;
+  drop table RoomManager;
+  drop table Patient;
+  drop table Appointment;
+  drop table AppointmentManager;
+  */
