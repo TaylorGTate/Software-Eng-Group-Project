@@ -31,7 +31,7 @@ public class Main {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 	    } catch (Exception e) {
 	    	//Need to specify specific exception
-	        System.out.println ("Could not load the driver");
+	        //System.out.println (e);
 		}
 
 	    Scanner input = new Scanner(System.in);
