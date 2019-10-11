@@ -400,11 +400,11 @@ public class Main {
 	      case 5: //Appointment Manager
 	    	  break;
 	      case 6: //Patient Manager
-	    	  System.out.println("Would you like to:\n\t1. Check a patient in. \n\t2. Remove a patient.");
+	    	  System.out.println("Would you like to:\n\t1. Check-in patient.\n\t2. Edit patient user profile.\n\t3. Remove dead patient from database.");
 	    	  int PMchoice = input.nextInt();
 	    	  
 	    	  switch(PMchoice) {
-		    	  case 1://change the appointment status of the patient to checked in
+		    	  case 1://check-in patient
 		    		  
 		    		  //Print statements to get the patient's ssn that is checking-in
 		    		  System.out.println();
@@ -441,26 +441,40 @@ public class Main {
 		    		  String apptCheckIn = ("UPDATE Appointment set status = 'Checked-in' WHERE appt_id = " + "'" + appointmentID + "'");
 		    		  //execute update on appointment table to assign room number to appointment
 		    		  mystmt.executeUpdate(apptCheckIn);
+		    		  
+		    		  System.out.println();
+		    		  System.out.println("Patient sucessfully checked");
 
 		    		  break;
-		    	  case 2://Remove patient from database
 		    		  
-		    		  //Print statements to get the patient's ssn that is checking-in
-		    		  System.out.println();
-		    		  System.out.println("Enter the SSN of the patient you would like to delete in the following format 123-45-6789");
-		    		  String pSSN1 = input.next();
-		    		  
-		    		  //Queries to delete the patient from the database
-		    		  String rmPatientsAppointments = ("DELETE from Appointment where Pssn = " + "'" + pSSN1 + "'");
-		    		  String rmPatient = ("DELETE from Patient where ssn = " + "'" + pSSN1 + "'");
-		    		  //Execute the delete queries on the database to remove the patient's information
-		    		  mystmt.executeUpdate(rmPatientsAppointments);
-		    		  mystmt.executeUpdate(rmPatient);
-		    		  
-		    		  System.out.println();
-		    		  System.out.println("Patient successfully removed from the database");
-		    		  
+		    	  case 2://edit a patient's user profile
 		    		  break;
+		    		  
+		    	  case 3: //Remove dead patient from database
+			  	    	System.out.println("Please enter SSN of dead patient:");
+			            String deadSSN = input.next();
+			            try {
+			              String deadSSNquery = "select * from Patient where ssn=('" + deadSSN + "');";
+			              ResultSet deadResult = mystmt.executeQuery(deadSSNquery);
+			                 while (deadResult.next ()) {
+			                     patientName = deadResult.getString(1);
+			                     patientSSN = deadResult.getString(3);
+			                 }      
+			                 // Display results
+			                 System.out.println("\nDead Patient name: " + patientName + "\n"); 
+			                 String deadDeleteQuery = "delete from Patient where ssn=('" + deadSSN + "');";
+			                 String deadDeleteQuery2 = "delete from Appointment where Pssn=('" + deadSSN + "');";
+				             mystmt.executeUpdate (deadDeleteQuery);
+				             mystmt.executeUpdate (deadDeleteQuery2);
+				             System.out.println(patientName + " has been sucessfully deleted");
+			            }
+			            catch (Exception e) {
+			              System.out.println(e);
+			            }
+			  	    	break;
+			  	      default:
+			  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
+			  	   
 		    	  }
 	    	  
 	    	  break;
