@@ -1,8 +1,7 @@
 package com.team3.DOMSapi;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+
 
 import org.junit.jupiter.api.Test;
 
