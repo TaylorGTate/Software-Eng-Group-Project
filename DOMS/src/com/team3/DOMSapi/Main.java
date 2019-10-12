@@ -51,7 +51,7 @@ public class Main {
 	    
 	    AppointmentManager testApptMan = new AppointmentManager(0, "Becky Smith", "1984-03-24");
 	    String queryMan = "insert into AppointmentManager values('" + testApptMan.getManID() + "','" + testApptMan.getName() + "', '" + testApptMan.getBirthDate() + "');";
-	    mystmt.executeUpdate(queryMan);
+	    DateBase.executeQuery(queryMan, usrname, pswd);
 
 	    /*Room testRoom = new Room(1, 20, "Clean and Ready", null);
 	    Room testRoom1 = new Room(1, 10, "Occupied", "123-45-6789");
@@ -81,7 +81,7 @@ public class Main {
 		  	      userSSN = input.next();
 		  	      try {
 		            String query2 = "select * from Patient where ssn=('" + userSSN + "');";
-		            ResultSet r = mystmt.executeQuery(query2);
+		            ResultSet r = DateBase.executeQuery(query2, usrname, pswd);
 		               while (r.next ()) {
 		                   patientName = r.getString(1);
 		                   patientSSN = r.getString(3);
@@ -120,7 +120,7 @@ public class Main {
 	  	        System.out.println("Current Appointments:");
 	  	        try {
 		            String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
-		            ResultSet r = mystmt.executeQuery(query2);
+		            ResultSet r = DateBase.executeQuery(query2, usrname, pswd);
 		               while (r.next ()) {
 		            	   apptID = r.getString(1);
 		                   apptDate = r.getString(3);
@@ -149,7 +149,7 @@ public class Main {
 	  	        
 		  	    try {
 		  	        String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
-		            ResultSet r = mystmt.executeQuery(query2);
+		            ResultSet r = DateBase.executeQuery(query2, usrname, pswd);
 		               while (r.next ()) {
 		            	   apptID = r.getString(1);
 		                   apptDate = r.getString(3);
@@ -176,7 +176,7 @@ public class Main {
 		  	      
 		  	    try {
 		  	        String query2 = "select * from Appointment where appt_id=('" + selectedAppt + "');";
-		            ResultSet r = mystmt.executeQuery(query2);
+		            ResultSet r = DateBase.executeQuery(query2, usrname, pswd);
 		            
 		               while (r.next ()) {
 		            	   apptID = r.getString(1);
@@ -241,7 +241,7 @@ public class Main {
 	  	        
 		  	    try {
 		  	        String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
-		            ResultSet r = mystmt.executeQuery(query2);
+		            ResultSet r = DateBase.executeQuery(query2, usrname, pswd);
 		               while (r.next ()) {
 		            	   apptID = r.getString(1);
 		                   apptDate = r.getString(3);
@@ -267,7 +267,7 @@ public class Main {
 		  	   
 			  	    try {
 			  	        String query2 = "select * from Appointment where appt_id=('" + selectedAppt + "');";
-			            ResultSet r = mystmt.executeQuery(query2);
+			            ResultSet r = DateBase.executeQuery(query2, usrname, pswd);
 			               while (r.next ()) {
 			            	   apptID = r.getString(1);
 			                   apptDate = r.getString(3);
@@ -357,7 +357,7 @@ public class Main {
 	    	  		//Query for all the appointments that are currently checked-in
 	    	  		String checkedInPatients = "SELECT * From Appointment WHERE status = 'Checked-in'";
 	    	  		//ResultSet of all the checked in the appointments
-	    	  		ResultSet rs = mystmt.executeQuery(checkedInPatients);
+	    	  		ResultSet rs = DateBase.executeQuery(checkedInPatients, usrname, pswd);
 	    	  		//iterate through the resultset
 	    	  		while (rs.next()) {
 	    	  			int id = rs.getInt("appt_id");
@@ -378,7 +378,7 @@ public class Main {
 	    	  		//Query for all the appointments that are currently checked-in
 	    	  		String avaliableRooms = "SELECT * From Room WHERE avaliable = 'Clean and Ready'";
 	    	  		//ResultSet of all the checked in the appointments
-	    	  		ResultSet rs1 = mystmt.executeQuery(avaliableRooms);
+	    	  		ResultSet rs1 = DateBase.executeQuery(avaliableRooms, usrname, pswd);
 	    	  		//iterate through the ResultSet
 	    	  		while (rs1.next()) {
 	    	  			int id = rs1.getInt("roomNumber");
@@ -410,7 +410,7 @@ public class Main {
 	    	  
 	    	  queryMan = "select * from AppointmentManager where manager_id=('" + manID + "');";
 
-	    	  ResultSet r = mystmt.executeQuery(queryMan);
+	    	  ResultSet r = DateBase.executeQuery(queryMan, usrname, pswd);
               while (r.next ()) {
            	   	  manIDDB = r.getInt(1);
                   
@@ -470,7 +470,7 @@ public class Main {
 		    		  //Query to get the patient's appointment info
 		    		  String patientAppointmentInfo = ("SELECT * from Appointment WHERE Pssn = " + "'" + pSSN + "'");
 		    		  //ResultSet of all the appointments the patient has
-		    		  ResultSet rs = mystmt.executeQuery(patientAppointmentInfo);
+		    		  ResultSet rs = DateBase.executeQuery(patientAppointmentInfo, usrname, pswd);
 		    		  //Iterate through the ResultSet
 		    		  while(rs.next()) {
 		    			  int id = rs.getInt("appt_id");
@@ -506,7 +506,7 @@ public class Main {
 			            String deadSSN = input.next();
 			            try {
 			              String deadSSNquery = "select * from Patient where ssn=('" + deadSSN + "');";
-			              ResultSet deadResult = mystmt.executeQuery(deadSSNquery);
+			              ResultSet deadResult = DateBase.executeQuery(deadSSNquery, usrname, pswd);
 			                 while (deadResult.next ()) {
 			                     patientName = deadResult.getString(1);
 			                     patientSSN = deadResult.getString(3);
@@ -515,8 +515,8 @@ public class Main {
 			                 System.out.println("\nDead Patient name: " + patientName + "\n"); 
 			                 String deadDeleteQuery = "delete from Patient where ssn=('" + deadSSN + "');";
 			                 String deadDeleteQuery2 = "delete from Appointment where Pssn=('" + deadSSN + "');";
-				             mystmt.executeUpdate (deadDeleteQuery);
-				             mystmt.executeUpdate (deadDeleteQuery2);
+			                 DateBase.executeQuery(deadDeleteQuery, usrname, pswd);
+			                 DateBase.executeQuery(deadDeleteQuery2, usrname, pswd);
 				             System.out.println(patientName + " has been sucessfully deleted");
 			            }
 			            catch (Exception e) {
@@ -551,8 +551,7 @@ public class Main {
   		        Patient.setbloodType(bloodType);
   		        String newPatientQuery= "insert into Patient values('" + name + "', '" + birthDate + "', '" + ssn + "', '" + allergies + "', '" + preferredDoctor + "', '" + bloodType + "');";
   			    System.out.print(newPatientQuery);
-  			    
-  			    mystmt.executeUpdate(newPatientQuery);
+  			    DateBase.executeQuery(newPatientQuery, usrname, pswd);
   			    
   			    break;
 	    
