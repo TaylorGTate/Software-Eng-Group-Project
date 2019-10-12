@@ -19,8 +19,11 @@ public class Main {
 	static String apptStatus;
 	static String apptID;
 	static int selectedAppt;
+	static int selectedInput;
 	static String updateQuery;
 	static int rowCount=0;
+	static int manID;
+	static int manIDDB;
   
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException{
 	    //Load MySql JDBC Driver
@@ -28,7 +31,7 @@ public class Main {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 	    } catch (Exception e) {
 	    	//Need to specify specific exception
-	        System.out.println ("Could not load the driver");
+	        //System.out.println (e);
 		}
 
 	    Scanner input = new Scanner(System.in);
@@ -45,6 +48,10 @@ public class Main {
 	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
 	    //System.out.println(query1);
 	    //mystmt.executeUpdate(query1);
+	    
+	    AppointmentManager testApptMan = new AppointmentManager(0, "Becky Smith", "1984-03-24");
+	    String queryMan = "insert into AppointmentManager values('" + testApptMan.getManID() + "','" + testApptMan.getName() + "', '" + testApptMan.getBirthDate() + "');";
+	    DataBase.executeQuery(queryMan, usrname, pswd);
 
 	    /*Room testRoom = new Room(1, 20, "Clean and Ready", null);
 	    Room testRoom1 = new Room(1, 10, "Occupied", "123-45-6789");
@@ -74,7 +81,7 @@ public class Main {
 		  	      userSSN = input.next();
 		  	      try {
 		            String query2 = "select * from Patient where ssn=('" + userSSN + "');";
-		            ResultSet r = mystmt.executeQuery(query2);
+		            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
 		               while (r.next ()) {
 		                   patientName = r.getString(1);
 		                   patientSSN = r.getString(3);
@@ -113,7 +120,7 @@ public class Main {
 	  	        System.out.println("Current Appointments:");
 	  	        try {
 		            String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
-		            ResultSet r = mystmt.executeQuery(query2);
+		            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
 		               while (r.next ()) {
 		            	   apptID = r.getString(1);
 		                   apptDate = r.getString(3);
@@ -142,7 +149,7 @@ public class Main {
 	  	        
 		  	    try {
 		  	        String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
-		            ResultSet r = mystmt.executeQuery(query2);
+		            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
 		               while (r.next ()) {
 		            	   apptID = r.getString(1);
 		                   apptDate = r.getString(3);
@@ -169,7 +176,7 @@ public class Main {
 		  	      
 		  	    try {
 		  	        String query2 = "select * from Appointment where appt_id=('" + selectedAppt + "');";
-		            ResultSet r = mystmt.executeQuery(query2);
+		            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
 		            
 		               while (r.next ()) {
 		            	   apptID = r.getString(1);
@@ -193,7 +200,7 @@ public class Main {
 		          }
 		  	    
 		  	      System.out.println("What would you like to edit? (input an integer to select)");
-		  	      int selectedInput = input.nextInt();
+		  	      selectedInput = input.nextInt();
 		  	      
 		  	      switch(selectedInput) {
 		  	      	case 1:
@@ -234,7 +241,7 @@ public class Main {
 	  	        
 		  	    try {
 		  	        String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
-		            ResultSet r = mystmt.executeQuery(query2);
+		            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
 		               while (r.next ()) {
 		            	   apptID = r.getString(1);
 		                   apptDate = r.getString(3);
@@ -260,7 +267,7 @@ public class Main {
 		  	   
 			  	    try {
 			  	        String query2 = "select * from Appointment where appt_id=('" + selectedAppt + "');";
-			            ResultSet r = mystmt.executeQuery(query2);
+			            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
 			               while (r.next ()) {
 			            	   apptID = r.getString(1);
 			                   apptDate = r.getString(3);
@@ -350,7 +357,7 @@ public class Main {
 	    	  		//Query for all the appointments that are currently checked-in
 	    	  		String checkedInPatients = "SELECT * From Appointment WHERE status = 'Checked-in'";
 	    	  		//ResultSet of all the checked in the appointments
-	    	  		ResultSet rs = mystmt.executeQuery(checkedInPatients);
+	    	  		ResultSet rs = DataBase.executeQuery(checkedInPatients, usrname, pswd);
 	    	  		//iterate through the resultset
 	    	  		while (rs.next()) {
 	    	  			int id = rs.getInt("appt_id");
@@ -371,7 +378,7 @@ public class Main {
 	    	  		//Query for all the appointments that are currently checked-in
 	    	  		String avaliableRooms = "SELECT * From Room WHERE avaliable = 'Clean and Ready'";
 	    	  		//ResultSet of all the checked in the appointments
-	    	  		ResultSet rs1 = mystmt.executeQuery(avaliableRooms);
+	    	  		ResultSet rs1 = DataBase.executeQuery(avaliableRooms, usrname, pswd);
 	    	  		//iterate through the ResultSet
 	    	  		while (rs1.next()) {
 	    	  			int id = rs1.getInt("roomNumber");
@@ -398,6 +405,50 @@ public class Main {
 	    	  }
 	    	  break;
 	      case 5: //Appointment Manager
+	    	  System.out.println("Please enter Manager ID: ");
+	    	  manID = input.nextInt();
+	    	  
+	    	  queryMan = "select * from AppointmentManager where manager_id=('" + manID + "');";
+
+	    	  ResultSet r = DataBase.executeQuery(queryMan, usrname, pswd);
+              while (r.next ()) {
+           	   	  manIDDB = r.getInt(1);
+                  
+                  // Display results
+           	   	  if (manID != manIDDB) {
+                      System.out.println("There is no manager ID that matches: " + manID);
+                      break;
+           	   	  }
+                  System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+                  rowCount++;
+              } 
+              if (rowCount == 0) {
+           	   System.out.println("Sorry, no appt managers exist with that Manager ID.");
+           	   break;
+              }
+              rowCount=0;
+	    	  System.out.println("Would you like to:\n\t1. View all appts.\n\t.2. View 'Approved' Appts. \n\t3. Edit 'Approved' Appts.\n\t4. View 'Requested' Appts.\n\t5. Edit 'Requested' Appts.\n\t6. Approve 'Requested' Appts.");
+	    	  selectedInput = input.nextInt();
+	    	  
+	    	  switch(selectedInput) {
+	    	  	case 1: //View all appts
+	    	  		try {
+	    	  			String query2 = "select * from Appointment;";
+	    	  		}
+	    	  		catch(Exception e) {
+	    	  			
+	    	  		}
+	    	  	case 2: //view approved appts
+	    	  	case 3: //edit approved appts
+	    	  	case 4: //view requested appts
+	    	  	case 5: //edit requested appts
+	    	  	case 6: //approve requested appts
+	    	  	default:
+	     	    	 System.out.println("Sorry, you did not enter a valid option. Bye.");
+	    	  }
+	    	  
+	    	  
+	    	  
 	    	  break;
 	      case 6: //Patient Manager
 	    	  System.out.println("Would you like to:\n\t1. Check-in patient.\n\t2. Edit patient user profile.\n\t3. Remove dead patient from database.");
@@ -419,7 +470,7 @@ public class Main {
 		    		  //Query to get the patient's appointment info
 		    		  String patientAppointmentInfo = ("SELECT * from Appointment WHERE Pssn = " + "'" + pSSN + "'");
 		    		  //ResultSet of all the appointments the patient has
-		    		  ResultSet rs = mystmt.executeQuery(patientAppointmentInfo);
+		    		  ResultSet rs = DataBase.executeQuery(patientAppointmentInfo, usrname, pswd);
 		    		  //Iterate through the ResultSet
 		    		  while(rs.next()) {
 		    			  int id = rs.getInt("appt_id");
@@ -455,7 +506,7 @@ public class Main {
 			            String deadSSN = input.next();
 			            try {
 			              String deadSSNquery = "select * from Patient where ssn=('" + deadSSN + "');";
-			              ResultSet deadResult = mystmt.executeQuery(deadSSNquery);
+			              ResultSet deadResult = DataBase.executeQuery(deadSSNquery, usrname, pswd);
 			                 while (deadResult.next ()) {
 			                     patientName = deadResult.getString(1);
 			                     patientSSN = deadResult.getString(3);
@@ -464,8 +515,8 @@ public class Main {
 			                 System.out.println("\nDead Patient name: " + patientName + "\n"); 
 			                 String deadDeleteQuery = "delete from Patient where ssn=('" + deadSSN + "');";
 			                 String deadDeleteQuery2 = "delete from Appointment where Pssn=('" + deadSSN + "');";
-				             mystmt.executeUpdate (deadDeleteQuery);
-				             mystmt.executeUpdate (deadDeleteQuery2);
+			                 DataBase.executeQuery(deadDeleteQuery, usrname, pswd);
+			                 DataBase.executeQuery(deadDeleteQuery2, usrname, pswd);
 				             System.out.println(patientName + " has been sucessfully deleted");
 			            }
 			            catch (Exception e) {
@@ -500,8 +551,8 @@ public class Main {
   		        Patient.setbloodType(bloodType);
   		        String newPatientQuery= "insert into Patient values('" + name + "', '" + birthDate + "', '" + ssn + "', '" + allergies + "', '" + preferredDoctor + "', '" + bloodType + "');";
   			    System.out.print(newPatientQuery);
+  			    DataBase.executeQuery(newPatientQuery, usrname, pswd);
   			    
-  			    mystmt.executeUpdate(newPatientQuery);
   			    
   			    break;
 	    

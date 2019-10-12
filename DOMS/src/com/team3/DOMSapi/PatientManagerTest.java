@@ -7,6 +7,27 @@ import org.junit.jupiter.api.Test;
 class PatientManagerTest {
 
 	@Test
+	void test_PatientManager() {
+		int expectedID = 1;
+		PatientManager p = new PatientManager(1, "Mandy Seasholtz", "1998-01-01");
+		int actualID = p.getID();
+		assertEquals(expectedID, actualID);
+	}
+	@Test
+	void test_getID() {
+		int expectedID = 1;
+		PatientManager p = new PatientManager(1, "Mandy Seasholtz", "1998-01-01");
+		int actualID = p.getID();
+		assertEquals(expectedID, actualID);
+	}
+	@Test
+	void test_setID() {
+		int expectedID = 2;
+		PatientManager p = new PatientManager(1, "Mandy Seasholtz", "1998-01-01");
+		p.setID(expectedID);
+		assertEquals(expectedID, p.getID());
+	}
+	@Test
 	void test_getName() {
 		String expectedName = "Mandy Seasholtz";
 		PatientManager p = new PatientManager(1, "Mandy Seasholtz", "1998-01-01");
@@ -18,7 +39,6 @@ class PatientManagerTest {
 		String expectedName = "Cindy Jones";
 		PatientManager p = new PatientManager(1, "Mandy Seasholtz", "1998-01-01");
 		p.setName(expectedName);
-		String actualName = p.getName();
 		assertEquals(expectedName, p.getName());
 	}
 	@Test

@@ -11,6 +11,14 @@ public class PatientManager {
 		this.birthDate = birthDate;
 	}
 	
+	public int getID() {
+		return id;
+	}
+	
+	public void setID(int id) {
+		this.id = id;
+	}
+	
 	public String getName() {
 		return name;
 	}
