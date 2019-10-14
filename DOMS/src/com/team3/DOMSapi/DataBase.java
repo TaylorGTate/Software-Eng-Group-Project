@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-	
+/**
+ * Represents a doctor's office database.
+ */
 public class DataBase{
 		
 	private String username;
@@ -16,7 +18,15 @@ public class DataBase{
 		this.password = password;
 	}
 		
+  	/**
+	   * Executes the query in the database.
+	   * @param Query Database Query to be executed.
+	   * @param usrname Database connection user name.
+	   * @param pswd Database connection password.
+	   */
+  
 	public static ResultSet executeUpdate(String Query, String usrname, String pswd) throws SQLException {
+
 		Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 		Statement mystmt = myconn.createStatement();
 		mystmt.executeUpdate(Query);
