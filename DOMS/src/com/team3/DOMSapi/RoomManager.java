@@ -37,7 +37,7 @@ public class RoomManager {
 	}
 	/**
 	   * Changes the name of this room manager.
-	   * @param Name This room manager's new name.  
+	   * @param name This room manager's new name.  
 	   *                Should include both first
 	   *                and last name.
 	   */
@@ -46,7 +46,7 @@ public class RoomManager {
 	}
 	/**
 	   * Changes the room manager's birthday.
-	   * @param birthday This room manager's birthday.  
+	   * @param birthDate This room manager's birthday.  
 	   */
 	public void setBirthday(String birthDate) {
 		this.birthDate = birthDate;
@@ -73,7 +73,6 @@ public class RoomManager {
 	/**
 	   * Sets the room status to clean for the specified room.
 	   * @param room The room to set the status for
-	   * @return this room's status = clean
 	   */
 	public void setRoomStatusToClean(Room room) {
 		room.avaliable = status[1];
@@ -81,7 +80,6 @@ public class RoomManager {
 	/**
 	   * Sets the room status to occupied for the specified room.
 	   * @param room The room to set the status for
-	   * @return this room's status = occupied
 	   */
 	public void setRoomStatusToOccupied(Room room) {
 		room.avaliable = status[2];
@@ -89,7 +87,6 @@ public class RoomManager {
 	/**
 	   * Sets the room status to dirty for the specified room.
 	   * @param room The room to set the status for
-	   * @return this room's status = dirty
 	   */
 	public void setRoomStatusToDirty(Room room) {
 		room.avaliable = status[3];
