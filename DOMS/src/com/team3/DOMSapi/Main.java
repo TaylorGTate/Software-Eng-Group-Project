@@ -27,7 +27,8 @@ public class Main {
   
 	
 	 /**
-	   * Connects to DB. Displays menu on login of choices to select from. 
+	   * Connects to Database. Displays menu on login of choices to select from. 
+	   * Depending on switch cases, will run the appropriate methods from the appropriate classes. 
 	   */
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException{
 	    //Load MySql JDBC Driver

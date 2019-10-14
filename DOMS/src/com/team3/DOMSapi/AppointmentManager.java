@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 /**
  * Represents an appointment manager at a doctor's office.
- * A patient manager can approve, deny, or edit appointments requests.
+ * A appointment manager can approve, deny, or edit appointment requests.
  */
 public class AppointmentManager {
 	static int man_id;

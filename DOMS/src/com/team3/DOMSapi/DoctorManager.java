@@ -27,8 +27,8 @@ public class DoctorManager {
 	   *                Should include both first
 	   *                and last name.
 	   */
-	public static void setName(String Name) {
-		name = Name;
+	public static void setName(String doctorName) {
+		name = doctorName;
 	}
 	/**
 	   * Gets the birthday of this doctor manager.
