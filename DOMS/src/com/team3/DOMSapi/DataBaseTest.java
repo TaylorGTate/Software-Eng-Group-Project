@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 class DataBaseTest {
 
 	@Test
-	void test_executeUpdate_newPatientThroughDataBase() throws SQLException {
+	void int_test_executeUpdate_executeQuery_newPatient() throws SQLException {
         String patientSSN = null;
 		String usrname = "root";
 		String pswd = "toor";		
