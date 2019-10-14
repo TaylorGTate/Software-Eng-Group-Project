@@ -25,6 +25,10 @@ public class Main {
 	static int manID;
 	static int manIDDB;
   
+	
+	 /**
+	   * Connects to DB. Displays menu on login of choices to select from. 
+	   */
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException{
 	    //Load MySql JDBC Driver
 	    try {
