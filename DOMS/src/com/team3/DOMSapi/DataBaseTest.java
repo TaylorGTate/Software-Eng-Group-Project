@@ -13,15 +13,14 @@ import org.junit.jupiter.api.Test;
 class DataBaseTest {
 
 	@Test
-	void test_executeQuery_newPatientThroughDataBase() throws SQLException {
+	void test_executeUpdate_newPatientThroughDataBase() throws SQLException {
         String patientSSN = null;
 		String usrname = "root";
 		String pswd = "toor";		
 		Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 		Statement mystmt = myconn.createStatement();
-		//Patient p = new Patient("Mandy", "2000-12-12", "123-12-4321", "none", "none", "A+");
 		String queryMan = "insert into Patient values('" + "Mandy" + "', '" + "2000-12-12" + "', '" + "123-12-4321" + "', '" + "none" + "', '" + "none" + "', '" + "A+" + "');";
-		DataBase.executeQuery(queryMan, usrname, pswd);
+		DataBase.executeUpdate(queryMan, usrname, pswd);
 		String deadSSN = "123-12-4321";
         try {
           String deadSSNquery = "select * from Patient where ssn=('" + deadSSN + "');";
@@ -34,9 +33,9 @@ class DataBaseTest {
           System.out.println(e);
         }
 		assertEquals(deadSSN, patientSSN);
-		//delete for next test
+		
+		//delete for patient next test
 		String deadDeleteQuery = "delete from Patient where ssn=('" + deadSSN + "');";
-		DataBase.executeQuery(deadDeleteQuery, usrname, pswd);
 		mystmt.executeUpdate(deadDeleteQuery);
 	}
 }

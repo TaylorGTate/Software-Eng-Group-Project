@@ -1,12 +1,20 @@
 package com.team3.DOMSapi;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
 /**
  * Represents an room for an appointment at a doctor's office.
  * A room can have one appointment at a time, but many appointments in a day.
  */
+
 public class Room {
 	
 	int roomNumber = 0;
 	String avaliable;
+    Scanner input = new Scanner(System.in);
+
 	
 	public Room (int roomNumber, String avaliable) {
 		this.roomNumber = roomNumber;
