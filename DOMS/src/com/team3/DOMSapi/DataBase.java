@@ -16,11 +16,17 @@ public class DataBase{
 		this.password = password;
 	}
 		
-	public static ResultSet executeQuery(String Query, String usrname, String pswd) throws SQLException {
+	public static ResultSet executeUpdate(String Query, String usrname, String pswd) throws SQLException {
 		Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 		Statement mystmt = myconn.createStatement();
 		mystmt.executeUpdate(Query);
 		return null;
+	}
+	
+	public static ResultSet executeQuery(String Query, String usrname, String pswd) throws SQLException {
+		Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
+		Statement mystmt = myconn.createStatement();
+		return mystmt.executeQuery(Query);
 	}
 }
 

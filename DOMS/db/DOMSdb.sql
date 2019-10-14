@@ -37,7 +37,7 @@ create table Patient(
 	apptDate date,
     apptTime time,
     notes varchar(500),
-    status varchar(9),
+    status varchar(11),
     roomNum int(11),
     primary key(appt_id),
     foreign key(Pssn) references Patient(ssn),
@@ -57,7 +57,37 @@ create table Patient(
   #select * from RoomManager;
   #select * from Room;
   #select * from AppointmentManager;
-
+  
+  /*insert into appointment (Pssn, apptDate, apptTime, notes, status, roomNum)
+  values ('123-45-6789','2000-05-03','12:30:00','N/A','Checked-in', null);
+  
+  insert into appointment (Pssn, apptDate, apptTime, notes, status, roomNum)
+  values ('123-45-6788','2000-05-03','12:30:00','N/A','Checked-in', null);
+  
+  insert into appointment (Pssn, apptDate, apptTime, notes, status, roomNum)
+  values ('123-45-6787','2000-05-03','12:30:00','N/A','Checked-in', null);
+  
+  insert into patient
+  values ('Taylor', '1997-05-03', '123-45-6789', 'N/A', 'N/A', 'A+');
+  
+  insert into patient
+  values ('James', '1997-05-03', '123-45-6788', 'N/A', 'N/A', 'A+');
+  
+  insert into patient
+  values ('Tori', '1997-05-03', '123-45-6787', 'N/A', 'N/A', 'A+');
+  
+  insert into room
+  values ('1', 'Clean and Ready');
+  
+  insert into room
+  values ('2', 'Clean and Ready');
+  
+  insert into room
+  values ('3', 'Clean and Ready');
+  
+  insert into room
+  values ('4', 'Clean and Ready');*/
+  
   /*
   drop table Room;
   drop table RoomManager;
