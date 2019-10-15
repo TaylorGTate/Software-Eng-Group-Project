@@ -12,8 +12,7 @@ import java.util.Scanner;
 public class RoomManager {
 	
 	int id;
-	static String name;
-	String birthDate;
+	String name, birthDate;
 	String status[] = {"Clean and Ready", "Occupied", "Empty and Dirty"};
 	
 	public RoomManager (int id, String name, String birthDate) {
@@ -39,7 +38,7 @@ public class RoomManager {
 	   * Gets the first and last name of this room manager.
 	   * @return this room manager's name.
 	   */
-	public static String getName() {
+	public String getName() {
 		return name;
 	}
 	/**
@@ -48,8 +47,8 @@ public class RoomManager {
 	   *                Should include both first
 	   *                and last name.
 	   */
-	public static void setName(String name) {
-		name = name;
+	public void setName(String name) {
+		this.name = name;
 	}
 	/**
 	   * Changes the room manager's birthday.
