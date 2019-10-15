@@ -86,7 +86,9 @@ public class Main {
 		          String notes = input.nextLine();
 		          Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0]);
 		          String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
+
 		          DataBase.executeUpdate(query3, usrname, pswd);
+
 	  	          break;
 	  	          
 	  	      case 2:// View my appointments.
@@ -116,6 +118,7 @@ public class Main {
 		          catch (Exception e) {
 		            System.out.println(e);
 		          }
+	  	          System.out.println("Thank you. Have a good day.");
 	  	          break;
 	  	        
 	  	      case 3:// Edit my appointment
@@ -199,8 +202,8 @@ public class Main {
 		  	    	  break;
 		  	      	case 3:
 		  	      	  System.out.println("Current Appt Notes: " + apptNotes);
-		  	    	  System.out.println("What would you like to change the notes to?");
-		  	    	  apptNotes = input.nextLine();
+		  	    	  System.out.println("What would you like to change the notes to? (no spaces)");
+		  	    	  apptNotes = input.next();
 		  	    	  updateQuery = "update Appointment set notes=('" + apptNotes + "') where appt_id=('" + selectedAppt + "');";
 		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
 			  	      System.out.println("Appointment details updated.");
@@ -208,6 +211,7 @@ public class Main {
 		  	      	default:
 		  	      		System.out.println("Sorry, you did not enter a valid option. Bye.");
 		  	      }
+		  	    System.out.println("Thank you. Have a good day.");
 	  	          break;
 	  	        
 	  	      case 4:// Cancel my appointment
@@ -269,15 +273,18 @@ public class Main {
 			  	    switch(deleteInput) {
 			  	    	case ("y"):
 			  	    		updateQuery = "delete from Appointment where appt_id=('" + selectedAppt + "');";
-		  	    			System.out.print("Appointment cancelled.");
+		  	    			System.out.println("Appointment cancelled.");
 		  	    			break;
 			  	    	case ("n"):
-			  	    		System.out.print("Appointment not cancelled.");
+			  	    		System.out.println("Appointment not cancelled.");
 			  	    		break;
 			  	    	default:
 				  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
 			  	    }
+
+			  	    
 			  	    DataBase.executeUpdate(updateQuery, usrname, pswd);
+
 	  	        break;
 	  	      default:
 	  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
@@ -291,7 +298,7 @@ public class Main {
 		  	    
 		  	    switch (DMchoice) {
 		  	      case 1: //Create doctor user profile
-		  	    	System.out.println("Please enter the doctor's name:");
+		  	    	System.out.println("Please enter the doctor's name (no spaces):");
 	  		        String name = input.next();
 	  		        Doctor.setName(name);
 	  		        System.out.println("Please enter birthday in the form of YYYY-MM-DD:");
@@ -474,7 +481,7 @@ public class Main {
   		        System.out.println("Please enter any allergies:");
   		        String allergies = input.next();
   		        Patient.updateAllergies(allergies);
-  		        System.out.println("Please enter your preferred doctor:");
+  		        System.out.println("Please enter your preferred doctor (no spaces):");
   		        String preferredDoctor = input.next();
   		        Patient.setDoctor(preferredDoctor);
   		        System.out.println("Please enter your blood type:");
@@ -482,7 +489,7 @@ public class Main {
   		        Patient.setbloodType(bloodType);
   		        String newPatientQuery= "insert into Patient values('" + name + "', '" + birthDate + "', '" + ssn + "', '" + allergies + "', '" + preferredDoctor + "', '" + bloodType + "');";
   			    System.out.print(newPatientQuery);
-  			    DataBase.executeQuery(newPatientQuery, usrname, pswd);
+  			    DataBase.executeUpdate(newPatientQuery, usrname, pswd);
   			    
   			    
   			    break;

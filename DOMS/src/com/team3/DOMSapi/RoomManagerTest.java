@@ -66,6 +66,7 @@ class RoomManagerTest {
 	@Test
 	void testGetBirthday() {
 		RoomManager roomManager = new RoomManager (1, "Mitchell", "1996-4-14");
+
 		String expectedBirthday = "1996-4-14";
 		String actualBirthday = roomManager.getBirthday();
 		assertEquals(expectedBirthday, actualBirthday);
