@@ -82,21 +82,21 @@ public class RoomManager {
 	   * @param room The room to set the status for
 	   */
 	public void setRoomStatusToClean(Room room) {
-		room.avaliable = status[1];
+		room.avaliable = status[0];
 	}
 	/**
 	   * Sets the room status to occupied for the specified room.
 	   * @param room The room to set the status for
 	   */
 	public void setRoomStatusToOccupied(Room room) {
-		room.avaliable = status[2];
+		room.avaliable = status[1];
 	}
 	/**
 	   * Sets the room status to dirty for the specified room.
 	   * @param room The room to set the status for
 	   */
 	public void setRoomStatusToDirty(Room room) {
-		room.avaliable = status[3];
+		room.avaliable = status[2];
 	}
 	
 	public static void assignPatientRoom() throws SQLException {
@@ -151,8 +151,12 @@ public class RoomManager {
   		
   		//Query to assign room number to appointment
   		String assignRoomNumToAppointment = ("UPDATE Appointment SET roomNum = " + "'" + roomNumber + "'" + "WHERE appt_id = " + "'" + appointmentID +"'");
-  		//execute update on appointment table to assign room number to appointment
+  		
+  		//Execute update on appointment table to assign room number to appointment
   		DataBase.executeUpdate(assignRoomNumToAppointment, username, password);
   		input.close();
+  		
+  		//Print statement confirming appointment has been assigned to a room
+  		System.out.println("Appointment " + appointmentID + " has been assigned to room " + roomNumber);
 	}
 }
