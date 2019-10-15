@@ -52,7 +52,7 @@ class RoomManagerTest {
 	
 	//****************************************************
 	//****************************************************
-	//Methods below this line do now run correctly
+	//Methods below this line do not run correctly
 
 	@Test
 	void testSetName() {
@@ -68,7 +68,7 @@ class RoomManagerTest {
 		RoomManager roomManager = new RoomManager (1, "Mitchell", "1996-4-14");
 		String expectedBirthDay = "1996-4-14";
 		String actualBirthday = roomManager.setBirthday["1996-4-14"]();
-		assertEquals(expectedBirthday, actualBirthday);
+		assertEquals(expectedBirthDay, actualBirthday);
 	}
 
 	@Test
