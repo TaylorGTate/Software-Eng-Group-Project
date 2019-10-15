@@ -31,48 +31,18 @@ public class Main {
 	   * Depending on switch cases, will run the appropriate methods from the appropriate classes. 
 	   */
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException{
-	    //Load MySql JDBC Driver
-	    try {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-	    } catch (Exception e) {
-	    	//Need to specify specific exception
-	        //System.out.println (e);
-		}
 
 	    Scanner input = new Scanner(System.in);
 	    System.out.println("Enter DB user name: ");
 	    String usrname = input.next();
 	    System.out.println("Enter password: ");
 	    String pswd = input.next();
-	    
-	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
-	    System.out.println("DB connected..");
-	    Statement mystmt = myconn.createStatement();
-
-	    //Patient testPatient = new Patient("John Smith", "1996-03-02", "123-45-6789", "N/A", "Dr. Smith", "O+");
-	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
-	    //System.out.println(query1);
-	    //mystmt.executeUpdate(query1);
-	    
+	    int flag = 0;
+		
 	    AppointmentManager testApptMan = new AppointmentManager(0, "Becky Smith", "1984-03-24");
 	    String queryMan = "insert into AppointmentManager values('" + testApptMan.getManID() + "','" + testApptMan.getName() + "', '" + testApptMan.getBirthDate() + "');";
 	    DataBase.executeUpdate(queryMan, usrname, pswd);
-
-	    /*Room testRoom = new Room(1, 20, "Clean and Ready", null);
-	    Room testRoom1 = new Room(1, 10, "Occupied", "123-45-6789");
-
-	    RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");*/
-		
-		//String query4 = "insert into Room values('" + testRoom1.roomNumber + "', '" + testRoom1.buildingNumber + "', '" + testRoom1.avaliable + "', '" + testRoom1.patientSSN + "');";
-		//String query2 = "insert into Room values('" + testRoom.roomNumber + "', '" + testRoom.buildingNumber + "', '" + testRoom.avaliable + "', '" + testRoom.patientSSN + "');";
-		//String query3 = "insert into RoomManager values('" + testRoomManager.id + "', '"  + testRoomManager.name + "', '" + testRoomManager.birthDate + "');";
-		
-		//mystmt.executeUpdate(query2);
-		//mystmt.executeUpdate(query4);
-		
-		//mystmt.executeUpdate(query3);
-	    //System.out.println("Here");
-	    System.out.println("Are you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile");
+	    System.out.println("Are you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile \n\t8. Quit");
 	    int typeOfAccountChoice = input.nextInt();
 	    switch (typeOfAccountChoice) {
 	      case 1: //Patient
@@ -116,8 +86,9 @@ public class Main {
 		          String notes = input.nextLine();
 		          Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0]);
 		          String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
-		          mystmt.executeUpdate(query3);
-		          System.out.print(query3);
+
+		          DataBase.executeUpdate(query3, usrname, pswd);
+
 	  	          break;
 	  	          
 	  	      case 2:// View my appointments.
@@ -216,7 +187,7 @@ public class Main {
 		  	    	  apptDate = input.next();
 		  	    	  //changes status back to requested so new date can be approved by appointment manager
 		  	    	  updateQuery = "update Appointment set apptDate=('" + apptDate + "'), status=('Requested') where appt_id=('" + selectedAppt + "');";
-		  	    	  mystmt.executeUpdate(updateQuery);
+		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
 			  	      System.out.println("Appointment details updated.");
 		  	    	  break;
 		  	      	case 2:
@@ -226,7 +197,7 @@ public class Main {
 		  	    	  apptTime += ":00";
 		  	    	  //changes status back to requested so new date can be approved by appointment manager
 		  	    	  updateQuery = "update Appointment set apptTime=('" + apptTime + "'), status=('Requested') where appt_id=('" + selectedAppt + "');";
-		  	    	  mystmt.executeUpdate(updateQuery);
+		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
 			  	      System.out.println("Appointment details updated.");
 		  	    	  break;
 		  	      	case 3:
@@ -234,7 +205,7 @@ public class Main {
 		  	    	  System.out.println("What would you like to change the notes to? (no spaces)");
 		  	    	  apptNotes = input.next();
 		  	    	  updateQuery = "update Appointment set notes=('" + apptNotes + "') where appt_id=('" + selectedAppt + "');";
-		  	    	  mystmt.executeUpdate(updateQuery);
+		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
 			  	      System.out.println("Appointment details updated.");
 		  	    	  break;
 		  	      	default:
@@ -310,9 +281,10 @@ public class Main {
 			  	    	default:
 				  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
 			  	    }
-			  	    mystmt.executeUpdate(updateQuery);
-			  	  System.out.print(updateQuery);
+
 			  	    
+			  	    DataBase.executeUpdate(updateQuery, usrname, pswd);
+
 	  	        break;
 	  	      default:
 	  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
@@ -339,7 +311,7 @@ public class Main {
 	  		        String newDoctorQuery= "insert into Doctor values('" + 0 + "', '" + name + "', '" + birthDate + "', '" + ssn + "');";
 	  			    System.out.print(newDoctorQuery);
 	  			    
-	  			    mystmt.executeUpdate(newDoctorQuery);
+	  			    DataBase.executeUpdate(newDoctorQuery,  usrname, pswd);
 	  			    
 		  	        break;
 		  	      case 2:// Edit doctor user profile
@@ -353,7 +325,7 @@ public class Main {
 		  	    }
 	    	  break;
 	      case 4: //Room Manager
-	    	  System.out.println("Would you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity.");
+	    	  System.out.println("Would you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity. \n\t3. Check room availablilty");
 	    	  int RMchoice = input.nextInt();
 	    	  
 	    	  switch (RMchoice) {
@@ -361,6 +333,70 @@ public class Main {
 	    	  		RoomManager.assignPatientRoom();
 	    	  		break;
 	    	  	case 2:// Set room availability
+	    	  		
+	    	  		//Headers for clean and ready Room list
+	    	  		System.out.println();
+    				System.out.println("All Rooms:");
+    				System.out.println("Room Number" + "\t" + " Room Status");
+	    				
+	    	  	    //Query for all the Rooms
+	    	  		String allRooms = "SELECT * From Room";
+	    	  		
+	    	  		//ResultSet of all the checked in the appointments
+	    	  		ResultSet rs1 = DataBase.executeQuery(allRooms, usrname, pswd);
+	    	  		
+	    	  		//iterate through the ResultSet
+	    	  		while (rs1.next()) {
+	    	  			int id = rs1.getInt("roomNumber");
+	    	  			String avaliable = rs1.getString("avaliable");
+	    	  			
+	    	  			//Print the results
+	    	  			System.out.format("%s\t\t %s\t \n", id, avaliable);
+	    	  		}
+	    	  		
+	    	  		//Declare needed variables
+	    	  		String roomNum = null;
+	    	  		int statusChoice = 0;
+	    	  		
+	    	  		//Get number of room that status' needs to be changed
+	    	  		System.out.println("What is the number of the room you would like to set the availability for?");
+	    	  		roomNum = input.next();
+	    	  		
+	    	  		//Ask the user what status they are assigning to the room
+	    	  		System.out.println("What status would you like to assign to room " + roomNum +":\n\t1. Clean and Ready \n\t2. Occupied \n\t3. Empty and Dirty");
+	    	  		statusChoice = input.nextInt();
+	    	  		
+	    	  		//Switch statement to assign room selected availability
+	    	  		switch(statusChoice) {
+		    	  		case 1:// Assign room Clean and Ready status
+		    	  			RoomManager.setRoomStatusToClean(roomNum, usrname, pswd);
+		    	  			System.out.println("Room number " + roomNum + " status' has been set to Clean and Ready");
+		    	  			break;
+		    	  		case 2:// Assign room Occupied status
+		    	  			RoomManager.setRoomStatusToOccupied(roomNum, usrname, pswd);
+		    	  			System.out.println("Room number " + roomNum + " status' has been set to Occupied");
+		    	  			break;
+		    	  		case 3:// Assign room Empty and Dirty status
+		    	  			RoomManager.setRoomStatusToDirty(roomNum, usrname, pswd);
+		    	  			System.out.println("Room number " + roomNum + " status' has been set to Empty and Dirty");
+		    	  			break;  			
+	    	  		}
+
+	    	  		break;
+	    	  	case 3:// Check room availability
+	    	  		
+	    	  		//Declare needed variables
+	    	  		String roomNumber = null;
+	    	  		
+	    	  		//Get the room number from the RM 
+	    	  		System.out.println("Please enter the room number of the room you would like to know the status of.");
+	    	  		roomNumber = input.next();
+	    	  		
+	    	  		//Call getRoomStatusMethod
+	    	  		String roomStatus = RoomManager.getRoomStatus(roomNumber, usrname, pswd);
+	    	  		
+	    			//Print the status of the room
+	    			System.out.println("The status of room number " + roomNumber + " is " + roomStatus);
 	    	  		break;
 	    	  }
 	    	  break;
@@ -457,13 +493,14 @@ public class Main {
   			    
   			    
   			    break;
+	      case 8:// Quit
+	    	  flag = 1;
+	    	  break;
 	    
   	       default:
   	    	 System.out.println("Sorry, you did not enter a valid option. Bye.");
 	    }
 	     //Close objects
-	     mystmt.close();
-	     myconn.close();
 	     input.close();
 	}
 }
