@@ -5,11 +5,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.ByteArrayInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 
 class RoomManagerTest {
-
+	String username = "root";
+	String password = "toor";
+	
 	@Test
 	void testRoomManager() {	
 	RoomManager roomManager = new RoomManager (1, "Mitchell", "1996-4-14");
@@ -69,46 +72,131 @@ class RoomManagerTest {
 	}
 
 	@Test
-	void testGetRoomStatus() {
-		Room room = new Room (1, "Clean and Ready");
-		RoomManager roomManager = new RoomManager (1, "Mitchell", "1996-4-14");
+	void testGetRoomStatus() throws SQLException {
+		
+		//Declare needed variables
+		Scanner input = new Scanner(System.in);
 		String expectedRoomStatus = "Clean and Ready";
-		String actualRoomStatus = roomManager.getRoomStatus(room);
+		String actualRoomStatus = null;
+		
+		//Query to insert room number 20
+		String insertRoomQuery = "insert into Room values ('200', 'Clean and Ready')";
+		
+		//Execute query to put room into database
+		DataBase.executeUpdate(insertRoomQuery, username, password);
+		
+		//Getting the actual room status
+		actualRoomStatus = RoomManager.getRoomStatus("200", username, password);
+		
+		//Compare actual result and expected result
 		assertEquals(expectedRoomStatus, actualRoomStatus);
+		input.close();
+		
+		//Delete room entry 
+		String deleteRoomQuery = "delete from room where roomNumber = '200'";
+		
+		//Execute delete query 
+		DataBase.executeUpdate(deleteRoomQuery, username, password);
 	}
 
 	@Test
-	void testSetRoomStatusToClean() {
-		Room room = new Room (1, "Empty and Dirty");
-		RoomManager roomManager = new RoomManager (1, "Mitchell", "1996-4-14");
-		roomManager.setRoomStatusToClean(room);
+	void testSetRoomStatusToClean() throws SQLException {
+		
+		//Declare needed variables
+		Scanner input = new Scanner(System.in);
 		String expectedRoomStatus = "Clean and Ready";
-		String actualRoomStatus = roomManager.getRoomStatus(room);
+		
+		//Query to insert room number 200
+		String insertRoomQuery = "insert into Room values ('200', 'Empty and Dirty')";
+		
+		//Execute query to put room into database
+		DataBase.executeUpdate(insertRoomQuery, username, password);
+		
+		//Assign room number 200 the status of clean and ready
+		RoomManager.setRoomStatusToClean("200", username, password);
+		
+		//Get the actual room status of room number 200
+		String actualRoomStatus = RoomManager.getRoomStatus("200", username, password);
+		
+		//Compare the two statuses 
 		assertEquals(expectedRoomStatus, actualRoomStatus);
+		
+		//Close scanner
+		input.close();
+		
+		//Delete room entry 
+		String deleteRoomQuery = "delete from room where roomNumber = '200'";
+		
+		//Execute delete query 
+		DataBase.executeUpdate(deleteRoomQuery, username, password);
 	}
 
 	@Test
-	void testSetRoomStatusToOccupied() {
-		Room room = new Room (1, "Clean and Ready");
-		RoomManager roomManager = new RoomManager (1, "Mitchell", "1996-4-14");
-		roomManager.setRoomStatusToOccupied(room);
+	void testSetRoomStatusToOccupied() throws SQLException {
+		
+		//Declare needed variables
+		Scanner input = new Scanner(System.in);
 		String expectedRoomStatus = "Occupied";
-		String actualRoomStatus = roomManager.getRoomStatus(room);
+		
+		//Query to insert room number 200
+		String insertRoomQuery = "insert into Room values ('200', 'Clean and Ready')";
+		
+		//Execute query to put room into database
+		DataBase.executeUpdate(insertRoomQuery, username, password);
+		
+		//Assign room number 200 the status of clean and ready
+		RoomManager.setRoomStatusToOccupied("200", username, password);
+		
+		//Get the actual room status of room number 200
+		String actualRoomStatus = RoomManager.getRoomStatus("200", username, password);
+		
+		//Compare the two statuses 
 		assertEquals(expectedRoomStatus, actualRoomStatus);
+		
+		//Close scanner
+		input.close();
+		
+		//Delete room entry 
+		String deleteRoomQuery = "delete from room where roomNumber = '200'";
+		
+		//Execute delete query 
+		DataBase.executeUpdate(deleteRoomQuery, username, password);
 	}
 
 	@Test
-	void testSetRoomStatusToDirty() {
-		Room room = new Room (1, "Occupied");
-		RoomManager roomManager = new RoomManager (1, "Mitchell", "1996-4-14");
-		roomManager.setRoomStatusToDirty(room);
+	void testSetRoomStatusToDirty() throws SQLException {
+		
+		//Declare needed variables
+		Scanner input = new Scanner(System.in);
 		String expectedRoomStatus = "Empty and Dirty";
-		String actualRoomStatus = roomManager.getRoomStatus(room);
+		
+		//Query to insert room number 200
+		String insertRoomQuery = "insert into Room values (200, 'Occupied')";
+		
+		//Execute query to put room into database
+		DataBase.executeUpdate(insertRoomQuery, username, password);
+		
+		//Assign room number 200 the status of clean and ready
+		RoomManager.setRoomStatusToDirty("200", username, password);
+		
+		//Get the actual room status of room number 200
+		String actualRoomStatus = RoomManager.getRoomStatus("200", username, password);
+		
+		//Compare the two statuses 
 		assertEquals(expectedRoomStatus, actualRoomStatus);
+		
+		//Close scanner
+		input.close();
+		
+		//Delete room entry 
+		String deleteRoomQuery = "delete from room where roomNumber = '200'";
+		
+		//Execute delete query 
+		DataBase.executeUpdate(deleteRoomQuery, username, password);
 	}
 	
 	@Test
-	void testassignPatientRoom() throws SQLException {
+	void testAssignPatientRoom() throws SQLException {
 		
 		//declare variables 
 		String username = "root";

@@ -72,31 +72,69 @@ public class RoomManager {
 	   * Gets the room status for the specified room.
 	   * @param room The room to check the status for
 	   * @return this room's status
+	 * @throws SQLException 
 	   */
-	public String getRoomStatus(Room room) {
-		return room.avaliable;
+	public static String getRoomStatus(String roomNum, String username, String password) throws SQLException {
+		
+		//declare variables 
+		String roomStatus = null;
+		Scanner input = new Scanner(System.in);
+		
+		//Query to find room with specify roomNumber
+		String queryForRoom = "select * from room where roomNumber = ('" + roomNum + "');";
+		
+		//Execute query to find room in database
+		ResultSet rs = DataBase.executeQuery(queryForRoom, username, password);
+		
+		//Iterate through ResultSet to get status of room
+		while(rs.next()) {
+			roomStatus = rs.getString(2);
+		}
+		
+		//Close scanner
+		input.close();
+		
+		//Return roomStatus
+		return roomStatus;
+		
 	}
 	/**
 	   * Sets the room status to clean for the specified room.
 	   * @param room The room to set the status for
+	 * @throws SQLException 
 	   */
-	public void setRoomStatusToClean(Room room) {
-		room.avaliable = status[0];
+	public static void setRoomStatusToClean(String roomNum, String username, String password) throws SQLException {
+		
+		//Query to update the room being passed to clean
+		String cleanQuery = "update room set avaliable = 'Clean and Ready' where roomNumber = ('" + roomNum + "')";
+		
+		//Execute update query on database
+		DataBase.executeUpdate(cleanQuery, username, password);
+		
 	}
 	/**
 	   * Sets the room status to occupied for the specified room.
 	   * @param room The room to set the status for
+	   * @throws SQLException
 	   */
-	public void setRoomStatusToOccupied(Room room) {
-		room.avaliable = status[1];
+	public static void setRoomStatusToOccupied(String roomNum, String username, String password) throws SQLException {
+		//Query to update the room being passed to clean
+		String cleanQuery = "update room set avaliable = 'Occupied' where roomNumber = ('" + roomNum + "')";
+		
+		//Execute update query on database
+		DataBase.executeUpdate(cleanQuery, username, password);
 	}
 	/**
 	   * Sets the room status to dirty for the specified room.
 	   * @param room The room to set the status for
+	   * @throws SQLException
 	   */
-	public void setRoomStatusToDirty(Room room) {
-		room.avaliable = status[2];
-	}
+	public static void setRoomStatusToDirty(String roomNum, String username, String password) throws SQLException {
+		//Query to update the room being passed to clean
+		String cleanQuery = "update room set avaliable = 'Empty and Dirty' where roomNumber = ('" + roomNum + "')";
+		
+		//Execute update query on database
+		DataBase.executeUpdate(cleanQuery, username, password);	}
 	
 	public static void assignPatientRoom() throws SQLException {
 		String username = "root";
@@ -128,7 +166,7 @@ public class RoomManager {
 			System.out.println("All avaliable rooms:");
 			System.out.println("Room Number" + "\t" + " Room Status");
 
-  		//Query for all the appointments that are currently checked-in
+  		//Query for all the rooms that are currently clean and ready
   		String avaliableRooms = "SELECT * From Room WHERE avaliable = 'Clean and Ready'";
   		//ResultSet of all the checked in the appointments
   		ResultSet rs1 = DataBase.executeQuery(avaliableRooms, username, password);
