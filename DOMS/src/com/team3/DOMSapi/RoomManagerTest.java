@@ -52,8 +52,7 @@ class RoomManagerTest {
 	
 	//****************************************************
 	//****************************************************
-	//These are the ones that I copy pasted the code for syntax
-	//all of the methods below here give false positive tests
+	//Methods below this line do now run correctly
 
 	@Test
 	void testSetName() {
