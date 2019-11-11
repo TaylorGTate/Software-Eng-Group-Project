@@ -457,7 +457,7 @@ public class Main {
            	   break;
               }
               rowCount=0;
-	    	  System.out.println("Would you like to:\n\t1. View all appts.\n\t2. View 'Approved' Appts. \n\t3. View 'Requested' Appts.\n\t4. Edit Appts.\n\t5. Approve/Deny 'Requested' Appts.");
+	    	  System.out.println("Would you like to:\n\t1. View all appts.\n\t2. View 'Approved' Appts. \n\t3. View 'Requested' Appts.\n\t4. Edit Appts.\n\t5. Approve/Deny 'Requested' Appts.\n\t6. Schedule an Appt.");
 	    	  selectedInput = input.nextInt();
 	    	  
 	    	  switch(selectedInput) {
@@ -683,27 +683,64 @@ public class Main {
 		  	        System.out.println("\nWould you like to approve or deny this appointment? (input an integer to select)\n\t1. Approve\n\t2. Deny");
 		  	        selectedInput = input.nextInt();
 		  	        
-		  	        
+		  	        switch(selectedInput) {
+		  	      		case 1: //approve
+		  	      			updateQuery = "update Appointment set status=('Approved') where appt_id=('" + selectedAppt + "');";
+		  	      			mystmt.executeUpdate(updateQuery);
+		  	      			System.out.println("Appointment approved.");
+		  	      			break;
+		  	      		case 2: //deny
+		  	      			updateQuery = "update Appointment set status=('Denied') where appt_id=('" + selectedAppt + "');";
+		  	      			mystmt.executeUpdate(updateQuery);
+		  	      			System.out.println("Appointment denied.");
+		  	      			break;
+		  	      		default:
+		  	      			System.out.println("Sorry, you did not enter a valid option. Bye.");
+		  	        }
+	    	  		break;
+	    	  	case 6: //schedule appt
+	    	  		System.out.println("Fill out the below information to schedule an appointment.");
+			  	    System.out.println("Please enter Patient's SSN:");
+			  	    userSSN = input.next();
+			  	    try {
+			          String query2 = "select * from Patient where ssn=('" + userSSN + "');";
+			          ResultSet r2 = DataBase.executeQuery(query2, usrname, pswd);
+			             while (r2.next ()) {
+			                 patientName = r2.getString(1);
+			                 patientSSN = r2.getString(3);
+			                 rowCount++;
+			             }
+			             if (rowCount == 0) {
+			            	 System.out.println("Sorry, no patient exists with that SSN.");
+			            	 break;
+			             }
+			             else {
+			            	 // Display results
+				             System.out.println("\nPatient name: " + patientName + "\n"); 
+			             }
+			             rowCount=0;
+			        }
+			        catch (Exception e) {
+			        	System.out.println(e);
+			        }
+			        System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
+			        apptDate = input.next();
+			        System.out.println("Please enter a time for your appointment: (in the form hh:mm) ");
+			        apptTime = input.next();
+			        //need to add the seconds for the database entry
+			        apptTime += ":00";
+			        input.nextLine();
+			        System.out.println("Please enter any notes you would like to include: ");
+			        String notes = input.nextLine();
+			        Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0]);
+			        String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
+
+			        DataBase.executeUpdate(query3, usrname, pswd);
+			        System.out.println("Appointment created.");
 	    	  		break;
 	    	  	default:
 	     	    	 System.out.println("Sorry, you did not enter a valid option. Bye.");
-	    	  }
-	    	  
-	    	  switch(selectedInput) {
-	  	      	case 1: //approve
-	  	      		updateQuery = "update Appointment set status=('Approved') where appt_id=('" + selectedAppt + "');";
-	  	      		mystmt.executeUpdate(updateQuery);
-	  	      		System.out.println("Appointment approved.");
-	  	      		break;
-	  	      	case 2: //deny
-	  	      		updateQuery = "update Appointment set status=('Denied') where appt_id=('" + selectedAppt + "');";
-		  	    	mystmt.executeUpdate(updateQuery);
-			  	    System.out.println("Appointment denied.");
-		  	    	break;
-	  	      	default:
-	  	      		System.out.println("Sorry, you did not enter a valid option. Bye.");
-	  	      }
-	    	  
+	    	  	}
 	    	  break;
 	      case 6: //Patient Manager
 	    	  System.out.println("Would you like to:\n\t1. Check-in patient.\n\t2. Edit patient user profile.\n\t3. Remove dead patient from database.");
