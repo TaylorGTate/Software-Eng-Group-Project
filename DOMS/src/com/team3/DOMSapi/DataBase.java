@@ -27,14 +27,14 @@ public class DataBase{
   
 	public static ResultSet executeUpdate(String Query, String usrname, String pswd) throws SQLException {
 
-		Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
+		Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 		Statement mystmt = myconn.createStatement();
 		mystmt.executeUpdate(Query);
 		return null;
 	}
 	
 	public static ResultSet executeQuery(String Query, String usrname, String pswd) throws SQLException {
-		Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
+		Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 		Statement mystmt = myconn.createStatement();
 		return mystmt.executeQuery(Query);
 	}

@@ -8,10 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-import javafx.fxml.FXMLLoader;
+/*import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.stage.Stage;*/
 
 public class Main {
 	static String patientName;
@@ -43,7 +43,7 @@ public class Main {
 	    System.out.println("Enter password: ");
 	    String pswd = input.next();
 
-	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
+	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 	    System.out.println("DB connected..");
 	    Statement mystmt = myconn.createStatement();
 
@@ -752,6 +752,7 @@ public class Main {
 		    		  break;
 		    		  
 		    	  case 2://edit a patient's user profile
+		    		  PatientManager.editPatientsInfo();
 		    		  break;
 		    		  
 		    	  case 3: //Remove dead patient from database

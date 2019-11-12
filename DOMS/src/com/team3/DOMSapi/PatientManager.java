@@ -116,6 +116,183 @@ public class PatientManager {
 		input.close();
 	}
 	
+	public static void editPatientsInfo() throws SQLException {
+		
+		//Declaring needed variables and objects
+		String username = "root";
+		String password = "toor";
+		Scanner input = new Scanner(System.in);
+
+		//Print statements to get the patient's ssn that is checking-in
+		System.out.println();
+		System.out.println("Enter the SSN of the patient you would like to edit the information for in the following format 123-45-6789");
+		String SSN = input.next();
+		  
+		//Headers for the patient's information
+	  	System.out.println();
+	  	System.out.println("All of the Patient's Information:");
+	  	System.out.println(" 1.Patient SSN"+ "\t" + " 2.Patient Name"+ "\t" + " 3.Birthday"+ "\t" + " 4.Allergies" + "\t" + " 5.Perferred Doctor" + "\t" + " 6.Bloodtype");
+		  
+	  	//Query to get the patient's info
+	  	String patientInfo = ("SELECT * from Patient WHERE ssn = " + "'" + SSN + "'");
+	  	//ResultSet of all the patients information
+	  	ResultSet rs = DataBase.executeQuery(patientInfo, username, password);
+	  	//Iterate through the ResultSet
+	  	while(rs.next()) {
+	  		String patientName = rs.getString("patientName");
+	  		String ssn= rs.getString("ssn");
+	  		String birthDate = rs.getString("birthDate");
+	  		String allergies = rs.getString("allergies");
+	  		String preferredDoctor = rs.getString("preferredDoctor");
+	  		String bloodtype = rs.getString("bloodtype");
+
+	  		//Print the results
+	  		System.out.format("   %s\t   %s\t   %s\t   %s\t\t   %s\t\t\t   %s\t \n", ssn, patientName, birthDate, allergies, preferredDoctor, bloodtype);
+	  	}
+		  
+		//Get the column ID of the patient that needs to be edited
+		System.out.println();
+		System.out.println("Enter the number of the column you would like to edit");
+		int editID = input.nextInt(), num = 0;
+		
+		switch(editID) {
+			case 1:	
+				//Print statements to get the new ssn of the patient
+				System.out.println();
+				System.out.println("Enter the new SSN of the patient in the following format 123-45-6789");
+				String newSSN = input.next();
+
+				//Query to assign patient a new ssn
+				String changeSSN = ("UPDATE patient set ssn =" + "'" + newSSN + "'" + "WHERE ssn = " + "'" + SSN + "'");
+				
+				//execute update on appointment table to assign room number to appointment  
+			  	DataBase.executeUpdate(changeSSN, username, password);
+				System.out.println();
+				System.out.println("Patient's SSN sucessfully changed");
+				input.close();
+				
+				//Headers for the patient's information
+			  	System.out.println();
+			  	System.out.println("All of the Patient's Information:");
+			  	System.out.println(" 1.Patient SSN"+ "\t" + " 2.Patient Name"+ "\t" + " 3.Birthday"+ "\t" + " 4.Allergies" + "\t" + " 5.Perferred Doctor" + "\t" + " 6.Bloodtype");
+			  	//Query to get the patient's info
+			  	String patientAppointmentInfoEnd = ("SELECT * from Patient WHERE ssn = " + "'" + newSSN + "'");
+			  	//ResultSet of all the patients information
+			  	ResultSet end = DataBase.executeQuery(patientAppointmentInfoEnd, username, password);
+			  	//Iterate through the ResultSet
+			  	while(end.next()) {
+			  		String patientName = end.getString("patientName");
+			  		String ssn= end.getString("ssn");
+			  		String birthDate = end.getString("birthDate");
+			  		String allergies = end.getString("allergies");
+			  		String preferredDoctor = end.getString("preferredDoctor");
+			  		String bloodtype = end.getString("bloodtype");
+
+			  		//Print the results
+			  		System.out.format("   %s\t   %s\t   %s\t   %s\t\t   %s\t\t\t   %s\t \n", ssn, patientName, birthDate, allergies, preferredDoctor, bloodtype);
+			  	}
+			  	num = 1;
+				break;
+			case 2:
+				//Print statements to get the new ssn of the patient
+				System.out.println();
+				System.out.println("Enter the new name of the patient");
+				String newName = input.next();
+				
+				//Query to assign patient a new ssn
+				String changeName = ("UPDATE patient set patientName =" + "'" + newName + "'" + "WHERE ssn = " + "'" + SSN + "'");
+				
+				//execute update on appointment table to assign room number to appointment  
+			  	DataBase.executeUpdate(changeName, username, password);
+				System.out.println();
+				System.out.println("Patient's name sucessfully changed");
+				input.close();
+				break;
+			case 3:
+				//Print statements to get the new ssn of the patient
+				System.out.println();
+				System.out.println("Enter the new Birthday of the patient in the following format yyyy-mm-dd");
+				String newBirthday = input.next();
+				
+				//Query to assign patient a new ssn
+				String changeBirthday = ("UPDATE patient set birthDate =" + "'" + newBirthday + "'" + "WHERE ssn = " + "'" + SSN + "'");
+				
+				//execute update on appointment table to assign room number to appointment  
+			  	DataBase.executeUpdate(changeBirthday, username, password);
+				System.out.println();
+				System.out.println("Patient's birthday sucessfully changed");
+				input.close();
+				break;
+			case 4:
+				//Print statements to get the new ssn of the patient
+				System.out.println();
+				System.out.println("Enter the new allergies of the patient");
+				String newAllergies = input.next();
+				
+				//Query to assign patient a new ssn
+				String changeAllergies = ("UPDATE patient set allergies =" + "'" + newAllergies + "'" + "WHERE ssn = " + "'" + SSN + "'");
+				
+				//execute update on appointment table to assign room number to appointment  
+			  	DataBase.executeUpdate(changeAllergies, username, password);
+				System.out.println();
+				System.out.println("Patient's name sucessfully changed");
+				input.close();
+				break;
+			case 5:
+				//Print statements to get the new ssn of the patient
+				System.out.println();
+				System.out.println("Enter the new preferred doctor of the patient");
+				String newPreDoc = input.next();
+				
+				//Query to assign patient a new ssn
+				String changePreDoc = ("UPDATE patient set preferredDoctor =" + "'" + newPreDoc + "'" + "WHERE ssn = " + "'" + SSN + "'");
+				
+				//execute update on appointment table to assign room number to appointment  
+			  	DataBase.executeUpdate(changePreDoc, username, password);
+				System.out.println();
+				System.out.println("Patient's perferred doctor sucessfully changed");
+				input.close();
+				break;	
+			case 6:
+				//Print statements to get the new ssn of the patient
+				System.out.println();
+				System.out.println("Enter the new blood type of the patient");
+				String newBloodType = input.next();
+				
+				//Query to assign patient a new ssn
+				String changeBloodType = ("UPDATE patient set bloodtype =" + "'" + newBloodType + "'" + "WHERE ssn = " + "'" + SSN + "'");
+				
+				//execute update on appointment table to assign room number to appointment  
+			  	DataBase.executeUpdate(changeBloodType, username, password);
+				System.out.println();
+				System.out.println("Patient's blood type sucessfully changed");
+				input.close();
+				break;			
+		}
+		if (num != 1) {
+			//Headers for the patient's information
+		  	System.out.println();
+		  	System.out.println("All of the Patient's Information:");
+		  	System.out.println(" 1.Patient SSN"+ "\t" + " 2.Patient Name"+ "\t" + " 3.Birthday"+ "\t" + " 4.Allergies" + "\t" + " 5.Perferred Doctor" + "\t" + " 6.Bloodtype");
+		  	//ResultSet of all the patients information
+		  	rs = DataBase.executeQuery(patientInfo, username, password);
+		  	//Iterate through the ResultSet
+		  	while(rs.next()) {
+		  		String patientName = rs.getString("patientName");
+		  		String ssn= rs.getString("ssn");
+		  		String birthDate = rs.getString("birthDate");
+		  		String allergies = rs.getString("allergies");
+		  		String preferredDoctor = rs.getString("preferredDoctor");
+		  		String bloodtype = rs.getString("bloodtype");
+		
+		  		//Print the results
+		  		System.out.format("   %s\t   %s\t   %s\t   %s\t\t   %s\t\t\t   %s\t \n", ssn, patientName, birthDate, allergies, preferredDoctor, bloodtype);
+		  	}
+		}
+		
+		  
+	}
+	
 	public static void removePatientFromDB() throws SQLException {
 		
 		//Declaring needed variables and objects
