@@ -357,7 +357,7 @@ public class Main {
 		  	      switch(selectedInput) {
 		  	      	case 1://name
 		  	    	  System.out.println("Current Name: " + patName);
-		  	    	  System.out.println("What would you like to change it to?");
+		  	    	  System.out.println("What would you like to change your name to?");
 		  	    	  patName = input.next();
 		  	    	  updateQuery = "update Patient set patientName=('" + patName + "') where ssn=('" + userSSN + "');";
 		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
