@@ -357,7 +357,7 @@ public class Main {
 		  	      switch(selectedInput) {
 		  	      	case 1://name
 		  	    	  System.out.println("Current Name: " + patName);
-		  	    	  System.out.println("What would you like to change your name to?");
+		  	    	  System.out.println("What would you like to change it to?");
 		  	    	  patName = input.next();
 		  	    	  updateQuery = "update Patient set patientName=('" + patName + "') where ssn=('" + userSSN + "');";
 		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
@@ -405,6 +405,90 @@ public class Main {
 	  	    }
 	        break;
 	      case 2: //Doctor
+		  	    System.out.println("Would you like to:\n\t1. Update Patient user profile information.");
+		  	    int selected = input.nextInt();
+		  	    switch (selected) {
+		  	      case 1: //Update patient user profile
+		  	    	System.out.println("Please enter the Patient's SSN to edit the profile");
+		  	        userSSN = input.next();
+		  	        
+			  	    try {
+			  	        String query2 = "select * from Patient where ssn=('" + userSSN + "');";
+			            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
+			               while (r.next ()) {
+			            	   patName = r.getString(1);
+			                   birthDate = r.getString(2);
+			                   allergies = r.getString(4);
+			                   prefDoc = r.getString(5);
+			                   bloodType = r.getString(6);
+			                   
+			                   // Display results
+			                   System.out.println("\t1. Name: " + patName + "\n\t2. Birthday: " + birthDate + "\n\t3. Allergies: " + allergies + "\n\t4. Preferred Doctor: " + prefDoc + "\n\t5. Blood type: " + bloodType);
+			                   rowCount++;
+			               } 
+			               if (rowCount == 0) {
+			            	   System.out.println("Sorry, no patient profile exists with that SSN.");
+			            	   break;
+			               }
+			               rowCount=0;
+			          }
+			          catch (Exception e) {
+			            System.out.println(e);
+			          }
+			  	    
+			  	      System.out.println("What would you like to edit? (input an integer to select)");
+			  	      selectedInput = input.nextInt();
+			  	      
+			  	      switch(selectedInput) {
+			  	      	case 1://name
+			  	    	  System.out.println("Current Name: " + patName);
+			  	    	  System.out.println("What would you like to change your name to?");
+			  	    	  patName = input.next();
+			  	    	  updateQuery = "update Patient set patientName=('" + patName + "') where ssn=('" + userSSN + "');";
+			  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
+				  	      System.out.println("Profile details updated.");
+			  	    	  break;
+			  	      	case 2://birthday
+			  	      	  System.out.println("Current Birthday: " + birthDate);
+			  	    	  System.out.println("What date would you like to change it to?");
+			  	    	  birthDate = input.next();
+			  	    	  updateQuery = "update Patient set birthDate=('" + birthDate + "') where ssn=('" + userSSN + "');";
+			  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
+				  	      System.out.println("Profile details updated.");
+			  	    	  break;
+			  	      	case 3://allergies
+			  	      	  System.out.println("Current Allergies: " + allergies);
+			  	    	  System.out.println("What would you like to change it to?");
+			  	    	  allergies = input.next();
+			  	    	  updateQuery = "update Patient set allergies=('" + allergies + "') where ssn=('" + userSSN + "');";
+			  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
+				  	      System.out.println("Profile details updated.");
+			  	    	  break;
+			  	      	case 4://preferred doctor
+			  	      	  System.out.println("Current preferred doctor: " + prefDoc);
+			  	    	  System.out.println("Who would you like to change it to? (no spaces)");
+			  	    	  prefDoc = input.next();
+			  	    	  updateQuery = "update Patient set preferredDoctor=('" + prefDoc + "') where ssn=('" + userSSN + "');";
+			  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
+				  	      System.out.println("Profile details updated.");
+			  	    	  break;
+			  	      	case 5://blood type
+			  	      	  System.out.println("Current blood type: " + bloodType);
+			  	    	  System.out.println("What would you like to change it to?");
+			  	    	  bloodType = input.next();
+			  	    	  updateQuery = "update Patient set bloodtype=('" + bloodType + "') where ssn=('" + userSSN + "');";
+			  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
+				  	      System.out.println("Profile details updated.");
+			  	    	  break;
+			  	      	default:
+			  	      		System.out.println("Sorry, you did not enter a valid option. Bye.");
+			  	      }
+			  	    System.out.println("Thank you. Have a good day.");
+		  	          break;
+		  	      default:
+		  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
+		  	    }
+		        
 	    	  break;
 	      case 3: //Doctor Manager
 	    	  System.out.println("Would you like to:\n\t1. Create doctor user profile. \n\t2. Edit doctor user profile.\n\t3. Assign doctor to appointment.");
