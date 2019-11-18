@@ -53,10 +53,10 @@ create table Patient(
  );*/
  
   #select * from Patient;
-  #select * from Appointment;
+  select * from Appointment;
   #select * from RoomManager;
   #select * from Room;
-  #select * from AppointmentManager;
+  select * from AppointmentManager;
   
   /*insert into appointment (Pssn, apptDate, apptTime, notes, status, roomNum)
   values ('123-45-6789','2000-05-03','12:30:00','N/A','Checked-in', null);

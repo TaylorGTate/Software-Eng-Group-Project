@@ -6,12 +6,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Scanner;
-
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 public class Main {
 	static String patientName;
@@ -35,7 +31,41 @@ public class Main {
 	static String allergies;
 	static String prefDoc;
 	static String bloodType;
+	static ArrayList<Patient> patientList = new ArrayList<Patient>();
+	static Patient currentPatient = null;
 	
+	public static int logInMessage(Scanner input) {
+	    System.out.println("Are you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile");
+	    int typeOfAccountChoice = input.nextInt();
+	    
+		return typeOfAccountChoice;
+	}
+	
+	public static int patientMenu(Scanner input) {
+  	    System.out.println("Would you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Edit user profile.");
+  	    int choice = input.nextInt();
+  	    
+		return choice;
+	}
+	
+	public static String getUserSSN(Scanner input) {
+		System.out.println("Please enter SSN:");
+	    userSSN = input.next();
+	    
+		return userSSN;
+	}
+	
+	public static Patient getCurrentPatient(String userSSN) {
+  	    Patient patient = null;
+    	for (int i=0; i<patientList.size(); i++) {
+    		String ssn = patientList.get(i).getSSN();
+    		if (ssn.equals(userSSN)) {
+    			patient = patientList.get(i);
+    		}
+    	}
+    	
+    	return patient;
+	}
   
 	 /**
 	   * Connects to Database. Displays menu on login of choices to select from. 
@@ -53,11 +83,11 @@ public class Main {
 	    System.out.println("DB connected..");
 	    Statement mystmt = myconn.createStatement();
 
-	    //Patient testPatient = new Patient("John Smith", "1996-03-02", "123-45-6789", "N/A", "Dr. Smith", "O+");
+	    Patient testPatient = new Patient("Robert Hall", "1967-02-04", "222-33-4444", "N/A", "Dr. Smith", "O+");
+	    patientList.add(testPatient);
 	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
-	    //System.out.println(query1);
 	    //mystmt.executeUpdate(query1);
-	    
+	    	    
 	    //AppointmentManager testApptMan = new AppointmentManager(0, "Becky Smith", "1984-03-24");
 	    //String queryMan = "insert into AppointmentManager values('" + testApptMan.getManID() + "','" + testApptMan.getName() + "', '" + testApptMan.getBirthDate() + "');";
 	    //DataBase.executeUpdate(queryMan, usrname, pswd);
@@ -73,337 +103,112 @@ public class Main {
 		
 		//mystmt.executeUpdate(query2);
 		//mystmt.executeUpdate(query4);
-		
 		//mystmt.executeUpdate(query3);
-	    //System.out.println("Here");
-	    System.out.println("Are you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile");
     
 	    int flag = 0;
     
-	    int typeOfAccountChoice = input.nextInt();
+	    int typeOfAccountChoice = logInMessage(input);
+	    
 	    switch (typeOfAccountChoice) {
-	      case 1: //Patient
-	  	    System.out.println("Would you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Edit user profile.");
-	  	    int choice = input.nextInt();
+	    	case 1: //Patient
+	    		int choice = patientMenu(input);
 	  	    
-	  	    switch (choice) {
-	  	      case 1: //Schedule an appointment
-	  	    	  System.out.println("Fill out the below information to schedule an appointment.");
-		  	      System.out.println("Please enter SSN:");
-		  	      userSSN = input.next();
-		  	      try {
-		            String query2 = "select * from Patient where ssn=('" + userSSN + "');";
-		            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
-		               while (r.next ()) {
-		                   patientName = r.getString(1);
-		                   patientSSN = r.getString(3);
-		                   rowCount++;
-		               }
-		               if (rowCount == 0) {
-		            	   System.out.println("Sorry, no patient exists with that SSN.");
-		            	   break;
-		               }
-		               else {
-			               // Display results
-			               System.out.println("\nPatient name: " + patientName + "\n"); 
-		               }
-		               rowCount=0;
-		          }
-		          catch (Exception e) {
-		            System.out.println(e);
-		          }
-		          System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
-		          apptDate = input.next();
-		          System.out.println("Please enter a time for your appointment: (in the form hh:mm) ");
-		          apptTime = input.next();
-		          //need to add the seconds for the database entry
-		          apptTime += ":00";
-		          input.nextLine();
-		          System.out.println("Please enter any notes you would like to include: ");
-		          String notes = input.nextLine();
-		          Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0]);
-		          String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
+	    		switch (choice) {
+	  	      	case 1: //Schedule an appointment
+	  	      		System.out.println("Fill out the below information to schedule an appointment.");
+	  	      		userSSN = getUserSSN(input);
+	  	      		currentPatient = getCurrentPatient(userSSN);
 
-		          DataBase.executeUpdate(query3, usrname, pswd);
-
-	  	          break;
+	  	      		try {
+	  	      			String query2 = "select * from Patient where ssn=('" + userSSN + "');";
+	  	      			ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
+		            
+	  	      			//returns the string representing the SQL query for database
+	  	      			String query3 = currentPatient.requestAppt(r, input);
+	  	      			DataBase.executeUpdate(query3, usrname, pswd);
+	  	      		}
+	  	      		catch (Exception e) {
+	  	      			System.out.println(e);
+	  	      		}	          
+	  	      		break;
 	  	          
-	  	      case 2:// View my appointments.
-	  	        System.out.println("Please enter your SSN to view your appointments");
-	  	        userSSN = input.next();
-	  	        System.out.println("Current Appointments:");
-	  	        try {
-		            String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
-		            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
-		               while (r.next ()) {
-		            	   apptID = r.getString(1);
-		                   apptDate = r.getString(3);
-		                   apptTime = r.getString(4);
-		                   apptNotes = r.getString(5);
-		                   apptStatus = r.getString(6);
-		                   
-		                   // Display results
-		                   System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
-		                   rowCount++;
-		               } 
-		               if (rowCount == 0) {
-		            	   System.out.println("Sorry, no patient exists with that SSN.");
-		            	   break;
-		               }
-		               rowCount=0;
-		          }
-		          catch (Exception e) {
-		            System.out.println(e);
-		          }
-	  	          System.out.println("Thank you. Have a good day.");
-	  	          break;
+	  	      	case 2:// View my appointments.
+		  	        userSSN = getUserSSN(input);
+		  	        currentPatient = getCurrentPatient(userSSN);
+		  	        try {
+			            String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
+			            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
+			            currentPatient.viewAppts(r);
+			        }
+			        catch (Exception e) {
+			            System.out.println(e);
+			        }
+		  	        break;
 	  	        
 	  	      case 3:// Edit my appointment
-	  	    	System.out.println("Please enter your SSN to edit your appointments");
-	  	        userSSN = input.next();
+	  	    	  userSSN = getUserSSN(input);
+	  	    	  currentPatient = getCurrentPatient(userSSN);
 	  	        
-		  	    try {
-		  	        String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
-		            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
-		               while (r.next ()) {
-		            	   apptID = r.getString(1);
-		                   apptDate = r.getString(3);
-		                   apptTime = r.getString(4);
-		                   apptNotes = r.getString(5);
-		                   apptStatus = r.getString(6);
-		                   
-		                   // Display results
-		                   System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
-		                   rowCount++;
-		               } 
-		               if (rowCount == 0) {
-		            	   System.out.println("Sorry, no patient exists with that SSN.");
-		            	   break;
-		               }
-		               rowCount=0;
+	  	    	  try {
+	  	    		  String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
+	  	    		  ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
+	  	    		  selectedAppt = currentPatient.selectAppt(r, input);
+	  	    		  
+	  	    		  query2 = "select * from Appointment where appt_id=('" + selectedAppt + "');";
+	  	    		  r = DataBase.executeQuery(query2, usrname, pswd);
+	  	    		  updateQuery = currentPatient.editAppt(r, input);
+	  	    		  DataBase.executeUpdate(updateQuery, usrname, pswd);
+	  	    		  System.out.println("Appointment details updated.");
 		          }
 		          catch (Exception e) {
-		            System.out.println(e);
+		        	  System.out.println(e);
 		          }
-	  	          System.out.println("Which appt would you like to edit? (enter an appt ID to select an appt)");
-
-		  	      selectedAppt = input.nextInt();
-		  	      
-		  	    try {
-		  	        String query2 = "select * from Appointment where appt_id=('" + selectedAppt + "');";
-		            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
-		            
-		               while (r.next ()) {
-		            	   apptID = r.getString(1);
-		                   apptDate = r.getString(3);
-		                   apptTime = r.getString(4);
-		                   apptNotes = r.getString(5);
-		                   apptStatus = r.getString(6);
-		                   
-		                   // Display results
-		                   System.out.println("Appt ID: " + apptID + "\n\t1. Appt Date: " + apptDate + "\n\t2. Appt Time: " + apptTime + "\n\t3. Appt Notes: " + apptNotes);
-		                   rowCount++;
-		               } 
-		               if (rowCount == 0) {
-		            	   System.out.println("Sorry, no appointment exists with that Appt ID.");
-		            	   break;
-		               }
-		               rowCount=0;
-		          }
-		          catch (Exception e) {
-		            System.out.println(e);
-		          }
-		  	    
-		  	      System.out.println("What would you like to edit? (input an integer to select)");
-		  	      selectedInput = input.nextInt();
-		  	      
-		  	      switch(selectedInput) {
-		  	      	case 1:
-		  	    	  System.out.println("Current Appt Date: " + apptDate);
-		  	    	  System.out.println("What date would you like to change it to? (in the form YYYY-MM-DD)");
-		  	    	  apptDate = input.next();
-		  	    	  //changes status back to requested so new date can be approved by appointment manager
-		  	    	  updateQuery = "update Appointment set apptDate=('" + apptDate + "'), status=('Requested') where appt_id=('" + selectedAppt + "');";
-		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
-			  	      System.out.println("Appointment details updated.");
-		  	    	  break;
-		  	      	case 2:
-		  	      	  System.out.println("Current Appt Time: " + apptTime);
-		  	    	  System.out.println("What time would you like to change it to? (in the form hh:mm)");
-		  	    	  apptTime = input.next();
-		  	    	  apptTime += ":00";
-		  	    	  //changes status back to requested so new date can be approved by appointment manager
-		  	    	  updateQuery = "update Appointment set apptTime=('" + apptTime + "'), status=('Requested') where appt_id=('" + selectedAppt + "');";
-		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
-			  	      System.out.println("Appointment details updated.");
-		  	    	  break;
-		  	      	case 3:
-		  	      	  System.out.println("Current Appt Notes: " + apptNotes);
-		  	    	  System.out.println("What would you like to change the notes to? (no spaces)");
-		  	    	  apptNotes = input.next();
-		  	    	  updateQuery = "update Appointment set notes=('" + apptNotes + "') where appt_id=('" + selectedAppt + "');";
-		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
-			  	      System.out.println("Appointment details updated.");
-		  	    	  break;
-		  	      	default:
-		  	      		System.out.println("Sorry, you did not enter a valid option. Bye.");
-		  	      }
-		  	    System.out.println("Thank you. Have a good day.");
+	  	    	  System.out.println("Thank you. Have a good day.");
 	  	          break;
 	  	        
 	  	      case 4:// Cancel my appointment
-	  	    	System.out.println("Please enter your SSN to view your appointments");
-	  	        userSSN = input.next();
-	  	        
-		  	    try {
-		  	        String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
-		            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
-		               while (r.next ()) {
-		            	   apptID = r.getString(1);
-		                   apptDate = r.getString(3);
-		                   apptTime = r.getString(4);
-		                   apptNotes = r.getString(5);
-		                   apptStatus = r.getString(6);
-		                   
-		                   // Display results
-		                   System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
-		                   rowCount++;
-		               } 
-		               if (rowCount == 0) {
-		            	   System.out.println("Sorry, no patient exists with that SSN.");
-		            	   break;
-		               }
-		               rowCount=0;
-		          }
-		          catch (Exception e) {
-		            System.out.println(e);
-		          }
-	  	          System.out.println("Which appt would you like to cancel? (enter an appt ID to select an appt)");
-		  	      selectedAppt = input.nextInt();
-		  	   
+		  	        userSSN = getUserSSN(input);
+		  	        currentPatient = getCurrentPatient(userSSN);
+		  	        
 			  	    try {
-			  	        String query2 = "select * from Appointment where appt_id=('" + selectedAppt + "');";
+			  	    	String query2 = "select * from Appointment where Pssn=('" + userSSN + "');";
 			            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
-			               while (r.next ()) {
-			            	   apptID = r.getString(1);
-			                   apptDate = r.getString(3);
-			                   apptTime = r.getString(4);
-			                   apptNotes = r.getString(5);
-			                   apptStatus = r.getString(6);
-			                   
-			                   // Display results
-			                   System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
-			                   rowCount++;
-			               } 
-			               if (rowCount == 0) {
-			            	   System.out.println("Sorry, no appointments exists with that Appt ID.");
-			            	   break;
-			               }
-			               rowCount=0;
-			          }
-			          catch (Exception e) {
+			            selectedAppt = currentPatient.selectAppt(r, input);
+			            query2 = "select * from Appointment where appt_id=('" + selectedAppt + "');";
+			            r = DataBase.executeQuery(query2, usrname, pswd);
+			            updateQuery = currentPatient.cancelAppt(r, input);
+			            if (!updateQuery.equals("")){
+			            	DataBase.executeUpdate(updateQuery, usrname, pswd);
+			            }
+			        }
+			        catch (Exception e) {
 			            System.out.println(e);
-			          }
-			  	    System.out.println("Are you sure you want to cancel the above appointment? (y/n)");
-
-			  	    String deleteInput = input.next();
-			  	    switch(deleteInput) {
-			  	    	case ("y"):
-			  	    		updateQuery = "delete from Appointment where appt_id=('" + selectedAppt + "');";
-		  	    			System.out.println("Appointment cancelled.");
-		  	    			break;
-			  	    	case ("n"):
-			  	    		System.out.println("Appointment not cancelled.");
-			  	    		break;
-			  	    	default:
-				  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
-			  	    }
-
-			  	    
-			  	    DataBase.executeUpdate(updateQuery, usrname, pswd);
-
-	  	        break;
+			        }
+		  	        break;
+		  	        
 	  	      case 5:// Edit user profile
-	  	    	System.out.println("Please enter your SSN to edit your profile");
-	  	        userSSN = input.next();
+	  	    	  userSSN = getUserSSN(input);
+	  	    	  currentPatient = getCurrentPatient(userSSN);
 	  	        
-		  	    try {
-		  	        String query2 = "select * from Patient where ssn=('" + userSSN + "');";
-		            ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
-		               while (r.next ()) {
-		            	   patName = r.getString(1);
-		                   birthDate = r.getString(2);
-		                   allergies = r.getString(4);
-		                   prefDoc = r.getString(5);
-		                   bloodType = r.getString(6);
-		                   
-		                   // Display results
-		                   System.out.println("\t1. Name: " + patName + "\n\t2. Birthday: " + birthDate + "\n\t3. Allergies: " + allergies + "\n\t4. Preferred Doctor: " + prefDoc + "\n\t5. Blood type: " + bloodType);
-		                   rowCount++;
-		               } 
-		               if (rowCount == 0) {
-		            	   System.out.println("Sorry, no patient profile exists with that SSN.");
-		            	   break;
-		               }
-		               rowCount=0;
-		          }
-		          catch (Exception e) {
-		            System.out.println(e);
-		          }
+	  	    	  try {
+	  	    		  String query2 = "select * from Patient where ssn=('" + userSSN + "');";
+	  	    		  ResultSet r = DataBase.executeQuery(query2, usrname, pswd);
+	  	    		  updateQuery = currentPatient.editProfile(r, input);
+			          if (!updateQuery.equals("")){
+			        	  DataBase.executeUpdate(updateQuery, usrname, pswd);
+			        	  System.out.println("Profile details updated.");
+			          }
+	  	    	  }
+	  	    	  catch (Exception e) {
+	  	    		  System.out.println(e);
+	  	    	  }
 		  	    
-		  	      System.out.println("What would you like to edit? (input an integer to select)");
-		  	      selectedInput = input.nextInt();
-		  	      
-		  	      switch(selectedInput) {
-		  	      	case 1://name
-		  	    	  System.out.println("Current Name: " + patName);
-		  	    	  System.out.println("What would you like to change it to?");
-		  	    	  patName = input.next();
-		  	    	  updateQuery = "update Patient set patientName=('" + patName + "') where ssn=('" + userSSN + "');";
-		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
-			  	      System.out.println("Profile details updated.");
-		  	    	  break;
-		  	      	case 2://birthday
-		  	      	  System.out.println("Current Birthday: " + birthDate);
-		  	    	  System.out.println("What date would you like to change it to?");
-		  	    	  birthDate = input.next();
-		  	    	  updateQuery = "update Patient set birthDate=('" + birthDate + "') where ssn=('" + userSSN + "');";
-		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
-			  	      System.out.println("Profile details updated.");
-		  	    	  break;
-		  	      	case 3://allergies
-		  	      	  System.out.println("Current Allergies: " + allergies);
-		  	    	  System.out.println("What would you like to change it to?");
-		  	    	  allergies = input.next();
-		  	    	  updateQuery = "update Patient set allergies=('" + allergies + "') where ssn=('" + userSSN + "');";
-		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
-			  	      System.out.println("Profile details updated.");
-		  	    	  break;
-		  	      	case 4://preferred doctor
-		  	      	  System.out.println("Current preferred doctor: " + prefDoc);
-		  	    	  System.out.println("Who would you like to change it to? (no spaces)");
-		  	    	  prefDoc = input.next();
-		  	    	  updateQuery = "update Patient set preferredDoctor=('" + prefDoc + "') where ssn=('" + userSSN + "');";
-		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
-			  	      System.out.println("Profile details updated.");
-		  	    	  break;
-		  	      	case 5://blood type
-		  	      	  System.out.println("Current blood type: " + bloodType);
-		  	    	  System.out.println("What would you like to change it to?");
-		  	    	  bloodType = input.next();
-		  	    	  updateQuery = "update Patient set bloodtype=('" + bloodType + "') where ssn=('" + userSSN + "');";
-		  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
-			  	      System.out.println("Profile details updated.");
-		  	    	  break;
-		  	      	default:
-		  	      		System.out.println("Sorry, you did not enter a valid option. Bye.");
-		  	      }
-		  	    System.out.println("Thank you. Have a good day.");
+	  	    	  System.out.println("Thank you. Have a good day.");
 	  	          break;
 	  	      default:
-	  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
-	  	    }
-	        break;
+	  	    	  System.out.println("Sorry, you did not enter a valid option. Bye.");
+	      }
+	      break;
 	      case 2: //Doctor
 		  	    System.out.println("Would you like to:\n\t1. Update Patient user profile information.");
 		  	    int selected = input.nextInt();
