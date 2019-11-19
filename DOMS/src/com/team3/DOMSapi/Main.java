@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class Main {
 	static String patientName;
 	static String patientSSN;
@@ -79,7 +80,7 @@ public class Main {
 	    System.out.println("Enter password: ");
 	    String pswd = input.next();
 
-	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
+	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 	    System.out.println("DB connected..");
 	    Statement mystmt = myconn.createStatement();
 
@@ -724,6 +725,7 @@ public class Main {
 		    		  break;
 		    		  
 		    	  case 2://edit a patient's user profile
+		    		  PatientManager.editPatientsInfo();
 		    		  break;
 		    		  
 		    	  case 3: //Remove dead patient from database
