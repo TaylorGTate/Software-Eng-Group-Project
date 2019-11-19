@@ -1,8 +1,5 @@
 package com.team3.DOMSapi;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 /**
  * Represents an appointment manager at a doctor's office.
  * A appointment manager can approve, deny, or edit appointment requests.
