@@ -736,9 +736,9 @@ public class Main {
 	    	  
 	    	  break;
 	      case 7: //create a new patient profile
-
   	    	    System.out.println("Please enter first name:");
   		        String name = input.next();
+  		        Patient Patient = new Patient();
   		        Patient.setName(name);
   		        System.out.println("Please enter birthday in the form of YYYY-MM-DD:");
   		        String birthDate = input.next();
@@ -758,8 +758,7 @@ public class Main {
   		        String newPatientQuery= "insert into Patient values('" + name + "', '" + birthDate + "', '" + ssn + "', '" + allergies + "', '" + preferredDoctor + "', '" + bloodType + "');";
   			    System.out.print(newPatientQuery);
   			    DataBase.executeUpdate(newPatientQuery, usrname, pswd);
-  			    
-  			    
+
   			    break;
 	      case 8:// Quit
 	    	  flag = 1;

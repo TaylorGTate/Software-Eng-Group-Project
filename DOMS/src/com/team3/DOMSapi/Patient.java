@@ -8,22 +8,26 @@ import java.util.Scanner;
  * A patient can have many appointments.
  */
 public class Patient {
-	static String name;
-	static String birthDate;
-	static String ssn;
-	static String allergies;
-	static String preferredDoctor;
-	static String bloodType;
-	static String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
+	 String name;
+	 String birthDate;
+	 String ssn;
+	 String allergies;
+	 String preferredDoctor;
+	 String bloodType;
+	 String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
 
 	
 	public Patient(String patientName, String birthDay, String social, String allergy, String preferredDoc, String blood) {
+
 		name = patientName;
 		birthDate = birthDay;
 		ssn = social;
 		allergies = allergy;
 		preferredDoctor = preferredDoc;
 		bloodType = blood;
+	}
+	public Patient() {
+		// TODO Auto-generated constructor stub
 	}
 	/**
 	   * Gets the first and last name of this Patient.
@@ -38,7 +42,7 @@ public class Patient {
 	   *                Should include both first
 	   *                and last name.
 	   */
-	public static void setName(String patientName) {
+	public void setName(String patientName) {
 		name = patientName;
 	}
 	/**
@@ -52,7 +56,7 @@ public class Patient {
 	   * Changes the birthday of this patient.
 	   * @param birthday This patient's birthday.  
 	   */
-	public static void setBirthDate(String birthday) {
+	public void setBirthDate(String birthday) {
 		birthDate = birthday;
 	}
 	/**
@@ -66,7 +70,7 @@ public class Patient {
 	   * Changes the SSN of this patient.
 	   * @param social This patient's SSN.  
 	   */
-	public static void setSSN(String social) {
+	public void setSSN(String social) {
 		ssn = social;
 	}
 	/**
@@ -80,7 +84,7 @@ public class Patient {
 	   * Updates the allergies of this patient.
 	   * @param allergy This patient's allergies.  
 	   */
-	public static void updateAllergies(String allergy) {
+	public void updateAllergies(String allergy) {
 		allergies += "\n"+allergy;
 	}
 	/**
@@ -94,7 +98,7 @@ public class Patient {
 	   * Changes the preferred doctor of this patient.
 	   * @param docName This patient's preferred doctor.  
 	   */
-	public static void setDoctor(String docName) {
+	public void setDoctor(String docName) {
 		preferredDoctor = docName;
 	}
 	/**
@@ -108,7 +112,7 @@ public class Patient {
 	   * Changes the blood type of this patient.
 	   * @param blood This patient's blood type.  
 	   */
-	public static void setbloodType(String blood) {
+	public void setbloodType(String blood) {
 		bloodType = blood;
 	}
 	/**
