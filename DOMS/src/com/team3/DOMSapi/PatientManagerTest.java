@@ -127,7 +127,7 @@ class PatientManagerTest {
 		System.setIn(in);
 		
 		//Call check patient in method
-		patientManagerList.get(0).checkPatientIn();
+		patientManagerList.get(0).checkPatientIn(username, password);
 		
 		//Get new status of appointment after test patient has been checked in
 		ResultSet rs1 = DataBase.executeQuery(queryManApptID, username, password);
@@ -181,7 +181,7 @@ class PatientManagerTest {
 		System.setIn(in);
 		
 		//Call removePatientFromDB method
-		patientManagerList.get(0).removePatientFromDB();
+		patientManagerList.get(0).removePatientFromDB(username, password);
 		
 		//Query to remove test room from the database
 		String roomDeleteQuery = "delete from Room where roomNumber=('" + "500" + "');";
