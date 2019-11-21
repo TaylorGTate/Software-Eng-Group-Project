@@ -68,7 +68,7 @@ public class PatientManager {
 		return birthDate;
 	}
 	
-	public static void checkPatientIn() throws SQLException {
+	public void checkPatientIn() throws SQLException {
 		
 		//Declaring needed variables and objects
 		String username = "root";
@@ -86,7 +86,7 @@ public class PatientManager {
 	  	System.out.println("Appointment ID" + "\t" + " Patient SSN"+ "\t" + " Appointment Date"+ "\t" + " Appointment Time"+ "\t" + " Appointment Status");
 		  
 	  	//Query to get the patient's appointment info
-	  	String patientAppointmentInfo = ("SELECT * from Appointment WHERE Pssn = " + "'" + pSSN + "'");
+	  	String patientAppointmentInfo = ("SELECT * from Appointment WHERE Pssn = " + "'" + pSSN + "'" + " and status = 'Approved'");
 	  	//ResultSet of all the appointments the patient has
 	  	ResultSet rs = DataBase.executeQuery(patientAppointmentInfo, username, password);
 	  	//Iterate through the ResultSet
@@ -116,7 +116,7 @@ public class PatientManager {
 		input.close();
 	}
 	
-	public static void editPatientsInfo() throws SQLException {
+	public void editPatientsInfo() throws SQLException {
 		
 		//Declaring needed variables and objects
 		String username = "root";
@@ -293,7 +293,7 @@ public class PatientManager {
 		  
 	}
 	
-	public static void removePatientFromDB() throws SQLException {
+	public void removePatientFromDB() throws SQLException {
 		
 		//Declaring needed variables and objects
 		String username = "root";

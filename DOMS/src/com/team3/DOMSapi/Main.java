@@ -48,7 +48,7 @@ public class Main {
 	}
 	
 	public static String getUserSSN(Scanner input) {
-		System.out.println("Please enter SSN:");
+		System.out.println("Please enter SSN in the following format 123-45-6789:");
 	    userSSN = input.next();
 	    
 		return userSSN;
@@ -74,6 +74,7 @@ public class Main {
 
 		ArrayList<Patient> patientList = new ArrayList<Patient>();
 		ArrayList<Doctor> doctorList = new ArrayList<Doctor>();
+		ArrayList<PatientManager> patientManagerList = new ArrayList<PatientManager>();
 		Patient currentPatient = null;
 		Doctor currentDoctor = null;
 		
@@ -89,6 +90,11 @@ public class Main {
 
 	    Patient testPatient = new Patient("Robert Hall", "1967-02-04", "222-33-4444", "N/A", "Dr. Smith", "O+");
 	    patientList.add(testPatient);
+	    
+	    PatientManager testPatientManager = new PatientManager(0, "Taylor Tate", "1997-05-03");
+	    patientManagerList.add(testPatientManager);
+	    
+	    
 	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
 	    //mystmt.executeUpdate(query1);
 	    
@@ -724,20 +730,26 @@ public class Main {
 	    	  	}
 	    	  break;
 	      case 6: //Patient Manager
+	    	  
+	    	  //Getting the Patient Manager's id
+	    	  System.out.println("Please enter your Patient Manager ID.");
+	    	  int PMid = input.nextInt();
+	    	  
+	    	  //Patient Manager menu options
 	    	  System.out.println("Would you like to:\n\t1. Check-in patient.\n\t2. Edit patient user profile.\n\t3. Remove dead patient from database.");
 	    	  int PMchoice = input.nextInt();
 	    	  
 	    	  switch(PMchoice) {
 		    	  case 1://check-in patient
-		    		  PatientManager.checkPatientIn();
+		    		  patientManagerList.get(PMid).checkPatientIn();
 		    		  break;
 		    		  
 		    	  case 2://edit a patient's user profile
-		    		  PatientManager.editPatientsInfo();
+		    		  patientManagerList.get(PMid).editPatientsInfo();
 		    		  break;
 		    		  
 		    	  case 3: //Remove dead patient from database
-			  	      PatientManager.removePatientFromDB();
+			  	      patientManagerList.get(PMid).removePatientFromDB();
 			  	      break;
 			  	      default:
 			  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
