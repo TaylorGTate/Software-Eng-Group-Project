@@ -68,11 +68,9 @@ public class PatientManager {
 		return birthDate;
 	}
 	
-	public void checkPatientIn() throws SQLException {
+	public void checkPatientIn(String username, String password) throws SQLException {
 		
 		//Declaring needed variables and objects
-		String username = "root";
-		String password = "toor";
 		Scanner input = new Scanner(System.in);
 
 		//Print statements to get the patient's ssn that is checking-in
@@ -116,11 +114,9 @@ public class PatientManager {
 		input.close();
 	}
 	
-	public void editPatientsInfo() throws SQLException {
+	public void editPatientsInfo(String username, String password) throws SQLException {
 		
 		//Declaring needed variables and objects
-		String username = "root";
-		String password = "toor";
 		Scanner input = new Scanner(System.in);
 
 		//Print statements to get the patient's ssn that is checking-in
@@ -293,11 +289,9 @@ public class PatientManager {
 		  
 	}
 	
-	public void removePatientFromDB() throws SQLException {
+	public void removePatientFromDB(String username, String password) throws SQLException {
 		
 		//Declaring needed variables and objects
-		String username = "root";
-		String password = "toor";
 		Scanner input = new Scanner(System.in);
 		String patientName = null , patientSSN = null;
 		

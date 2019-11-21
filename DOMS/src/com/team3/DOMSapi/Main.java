@@ -741,15 +741,15 @@ public class Main {
 	    	  
 	    	  switch(PMchoice) {
 		    	  case 1://check-in patient
-		    		  patientManagerList.get(PMid).checkPatientIn();
+		    		  patientManagerList.get(PMid).checkPatientIn(usrname, pswd);
 		    		  break;
 		    		  
 		    	  case 2://edit a patient's user profile
-		    		  patientManagerList.get(PMid).editPatientsInfo();
+		    		  patientManagerList.get(PMid).editPatientsInfo(usrname, pswd);
 		    		  break;
 		    		  
 		    	  case 3: //Remove dead patient from database
-			  	      patientManagerList.get(PMid).removePatientFromDB();
+			  	      patientManagerList.get(PMid).removePatientFromDB(usrname, pswd);
 			  	      break;
 			  	      default:
 			  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
