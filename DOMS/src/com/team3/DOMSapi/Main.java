@@ -96,6 +96,7 @@ public class Main {
 		return userSSN;
 	}
 	
+	
 	/*
 	 * Input: the Scanner input
 	 * Output: Prints the prompt message for the user 
