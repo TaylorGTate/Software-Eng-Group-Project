@@ -22,6 +22,11 @@ public class Appointment {
 		status = stat;
 		roomNum = room;
 	}
+	
+	//empty constructor
+	public Appointment() {
+	}
+	
 	/**
 	   * Gets the appointment ID of this appointment.
 	   * @return this appointment's ID.

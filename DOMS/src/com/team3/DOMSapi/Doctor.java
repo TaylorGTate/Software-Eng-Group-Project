@@ -73,21 +73,33 @@ public class Doctor {
 		docID = doc_ID;
 	}
 	
+	/**
+	   * Allows the doctor to edit the user profile
+	   * @param input Scanner object 
+	   * @param currentPatient Patient object of the patient to be edited  
+	   * @return updatedPatient Patient object that contains the new details that were supplied by the doctor
+	   */ 
 	public Patient editUserProfile(Patient currentPatient, Scanner input) {
-		Patient updatedPatient = null;
+		Patient updatedPatient = new Patient();
 		
 		updatedPatient = currentPatient.editProfile(input);
 		
 		return updatedPatient;
 	}
 	
+	/**
+	   * Allows the doctor to edit the notes of their user's appt
+	   * @param input Scanner object 
+	   * @param currentAppt Appointment object of the appt to be edited  
+	   * @return updatedAppt Appointment object that contains the new details that were supplied by the doctor
+	   */ 
 	public Appointment editApptNotes(Appointment currentAppt, Scanner input) {
 		int apptID = currentAppt.getApptID();
 		String apptDate = currentAppt.getDate();
 		String apptTime = currentAppt.getTime();
 		String apptNotes = currentAppt.getNotes();
 		String apptStatus = currentAppt.getStatus();
-		Appointment updatedAppt = null;
+		Appointment updatedAppt = new Appointment();
 		
         System.out.println("Appt ID: " + apptID + "\n\t1. Appt Date: " + apptDate + "\n\t2. Appt Time: " + apptTime + "\n\t3. Appt Notes: " + apptNotes+ "\n\t4. Appt Status: " + apptStatus);
 

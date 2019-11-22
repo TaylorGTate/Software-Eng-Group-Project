@@ -116,9 +116,9 @@ public class Patient {
 		bloodType = blood;
 	}
 	/**
-	   * Patient requests an appointment date and time.
-	   * @param date This patient's requested appointment date  
-	   * @param time This patient's requested appointment time
+	   * Patient requests an appointment.
+	   * @param Scanner input  
+	   * @return newAppt Appointment object that contains the new appointment details
 	   */
 	public Appointment requestAppt(Scanner input) {
 		String patientName = this.name;
@@ -139,6 +139,10 @@ public class Patient {
         return newAppt;
 	}
 	
+	/**
+	   * Allows the patient to view all of their current appts.
+	   * @param apptList ArrayList containing all current appts.
+	   */
 	public void viewAppts(ArrayList<Appointment> apptList) {
 		
 		try {
@@ -162,8 +166,14 @@ public class Patient {
 
 	}
 	
+	/**
+	   * Displays all the appts and prompts the user to select an appt
+	   * @param input Scanner object  
+	   * @param apptList ArrayList containing all the appts
+	   * @return selectedAppt Appointment object that the user selected
+	   */
 	public Appointment selectAppt(ArrayList<Appointment> apptList, Scanner input) {
-		Appointment selectedAppt = null;
+		Appointment selectedAppt = new Appointment();
 		
 		try {
 			for (int i=0; i<apptList.size(); i++) {
@@ -197,12 +207,19 @@ public class Patient {
         return selectedAppt;
 	}
 	
+	/**
+	   * Allows the user to edit the details of a selected appt
+	   * @param input Scanner object  
+	   * @param currentAppt Appointment object of the Appointment the user is editing
+	   * @return editedAppt Appointment object that contains the new details that were supplied by the user
+	   */ 
 	public Appointment editAppt(Appointment currentAppt, Scanner input) {
 		int apptID = currentAppt.getApptID();
 		String apptDate = currentAppt.getDate();
 		String apptTime = currentAppt.getTime();
 		String apptNotes = currentAppt.getNotes();
 		int selectedInput = 0;
+		Appointment editedAppt = currentAppt;
 		
 		try {
             System.out.println("Appt ID: " + apptID + "\n\t1. Appt Date: " + apptDate + "\n\t2. Appt Time: " + apptTime + "\n\t3. Appt Notes: " + apptNotes);
@@ -216,7 +233,7 @@ public class Patient {
 	  	    		System.out.println("Current Appt Date: " + apptDate);
 		  	    	System.out.println("What date would you like to change it to? (in the form YYYY-MM-DD)");
 		  	    	apptDate = input.next();
-		  	    	currentAppt.setDate(apptDate);
+		  	    	editedAppt.setDate(apptDate);
 		  	    	
 		  	    	break;
 	  	    	case 2:
@@ -224,7 +241,7 @@ public class Patient {
 	  	      		System.out.println("What time would you like to change it to? (in the form hh:mm)");
 	  	      		apptTime = input.next();
 	  	      		apptTime += ":00";
-	  	      		currentAppt.setTime(apptTime);
+	  	      		editedAppt.setTime(apptTime);
 	  	      		
 	  	      		break;
 	  	    	case 3:
@@ -232,7 +249,7 @@ public class Patient {
 	  	      		System.out.println("What would you like to change the notes to?");
 	  	      		input.nextLine();
 	  	      		apptNotes = input.nextLine();
-	  	      		currentAppt.setNotes(apptNotes);
+	  	      		editedAppt.setNotes(apptNotes);
 	  	      		
 	  	      		break;
 	  	    	default:
@@ -243,17 +260,22 @@ public class Patient {
 			System.out.println(e);
 		}
 
-		//returns the edited current appointment
-		return currentAppt;
+		return editedAppt;
 	}
 	
+	/**
+	   * Allows the user to cancel a selected appt
+	   * @param input Scanner object  
+	   * @param currentAppt Appointment object of the Appointment the user is canceling
+	   * @return cancelledAppt Appointment object that is to be canceled, after user verification
+	   */ 
 	public Appointment cancelAppt(Appointment currentAppt, Scanner input) {
 		int apptID = currentAppt.getApptID();
 		String apptDate = currentAppt.getDate();
 		String apptTime = currentAppt.getTime();
 		String apptNotes = currentAppt.getNotes();
 		String apptStatus = currentAppt.getStatus();
-		Appointment cancelledAppt = null;
+		Appointment cancelledAppt = new Appointment();
 		
 		try {
             System.out.println("Appt ID: " + apptID + "\n\t1. Appt Date: " + apptDate + "\n\t2. Appt Time: " + apptTime + "\n\t3. Appt Notes: " + apptNotes+ "\n\t4. Appt Status: " + apptStatus);
@@ -281,13 +303,18 @@ public class Patient {
 		return cancelledAppt;
 	}
 	
+	/**
+	   * Allows the user to edit the details of their user profile
+	   * @param input Scanner object  
+	   * @return updatedPatient Patient object that contains the new details that were supplied by the user
+	   */ 
 	public Patient editProfile(Scanner input) {
 		String patientName = this.name;
 		String patientBirthDate = this.birthDate;
 		String patientAllergies = this.allergies;
 		String patientDoc = this.preferredDoctor;
 		String patientBloodType = this.bloodType;
-		Patient updatedPatient = null;
+		Patient updatedPatient = new Patient();
 		
 		System.out.println("\t1. Name: " + patientName + "\n\t2. Birthday: " + patientBirthDate + "\n\t3. Allergies: " + patientAllergies + "\n\t4. Preferred Doctor: " + patientDoc + "\n\t5. Blood type: " + patientBloodType);
 

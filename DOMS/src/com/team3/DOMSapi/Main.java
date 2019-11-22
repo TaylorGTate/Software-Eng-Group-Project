@@ -34,6 +34,10 @@ public class Main {
 	static String prefDoc;
 	static String bloodType;
 	
+	/*
+	 * Input: the Scanner input
+	 * Output: Prints the log in message for the user.
+	 */
 	public static int logInMessage(Scanner input) {
 	    System.out.println("Are you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile");
 	    int typeOfAccountChoice = input.nextInt();
@@ -56,6 +60,11 @@ public class Main {
 		return pmIndex;
 	}
 	
+	/*
+	 * Input: the Scanner input
+	 * Output: Prints the menu message for the patient
+	 * and returns the choice that the user selected.
+	 */
 	public static int patientMenu(Scanner input) {
   	    System.out.println("Would you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Edit user profile.");
   	    int choice = input.nextInt();
@@ -63,6 +72,11 @@ public class Main {
 		return choice;
 	}
 	
+	/*
+	 * Input: the Scanner input
+	 * Output: Prints the menu message for the doctor
+	 * and returns the choice that the user selected.
+	 */
 	public static int doctorMenu(Scanner input) {
 		System.out.println("Would you like to:\n\t1. Update Patient user profile.\n\t2. Update Appointment details.");
   	    int choice = input.nextInt();
@@ -70,6 +84,11 @@ public class Main {
 		return choice;
 	}
 	
+	/*
+	 * Input: the Scanner input
+	 * Output: Prints the prompt message for the user 
+	 * to enter their SSN and returns the SSN that was input.
+	 */
 	public static String getUserSSN(Scanner input) {
 		System.out.println("Please enter SSN in the following format 123-45-6789:");
 	    String userSSN = input.next();
@@ -77,6 +96,12 @@ public class Main {
 		return userSSN;
 	}
 	
+	
+	/*
+	 * Input: the Scanner input
+	 * Output: Prints the prompt message for the user 
+	 * to enter their ID and returns the ID that was input.
+	 */
 	public static int getUserID(Scanner input) {
 		System.out.println("Please enter ID num:");
 	    int userID = input.nextInt();
@@ -84,6 +109,10 @@ public class Main {
 		return userID;
 	}
 	
+	/*
+	 * Input: the patient's SSN and an ArrayList containing the patients
+	 * Output: Returns the Patient object indicated by the SSN
+	 */
 	public static Patient getCurrentPatient(String userSSN, ArrayList<Patient> patientList) {
   	    Patient patient = null;
     	for (int i=0; i<patientList.size(); i++) {
@@ -95,6 +124,10 @@ public class Main {
     	return patient;
 	}
 	
+	/*
+	 * Input: the Doctor's ID and an ArrayList containing the doctors
+	 * Output: Returns the Doctor object indicated by the ID
+	 */
 	public static Doctor getCurrentDoctor(int doctorID, ArrayList<Doctor> doctorList) {
   	    Doctor doctor = null;
     	for (int i=0; i<doctorList.size(); i++) {
@@ -106,6 +139,10 @@ public class Main {
     	return doctor;
 	}
 	
+	/*
+	 * Input: the appt ID and an ArrayList containing the appts
+	 * Output: Returns the Appointment object indicated by the appt ID
+	 */
 	public static Appointment getCurrentAppointment(int apptID, ArrayList<Appointment> apptList) {
   	    Appointment appt = null;
     	for (int i=0; i<apptList.size(); i++) {
@@ -127,7 +164,7 @@ public class Main {
 		ArrayList<Doctor> doctorList = new ArrayList<Doctor>();
 		ArrayList<Appointment> apptList = new ArrayList<Appointment>();
 		ArrayList<PatientManager> patientManagerList = new ArrayList<PatientManager>();
-    
+
 		Patient currentPatient = null;
 		Doctor currentDoctor = null;
 		Appointment currentAppt = null;
@@ -142,13 +179,14 @@ public class Main {
 	    System.out.println("DB connected..");
 	    Statement mystmt = myconn.createStatement();
 
+	    //Test objects
 	    Patient testPatient = new Patient("Robert Hall", "1967-02-04", "222-33-4444", "N/A", "Dr. Smith", "O+");
 	    patientList.add(testPatient);
+	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
+	    //mystmt.executeUpdate(query1);
 	    
 	    PatientManager testPatientManager = new PatientManager(4, "Taylor Tate", "1997-05-03");
 	    patientManagerList.add(testPatientManager);
-	    
-	    
 	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
 	    //mystmt.executeUpdate(query1);
 	    
@@ -194,7 +232,6 @@ public class Main {
 	  	      		currentPatient = getCurrentPatient(userSSN, patientList);
 
 	  	      		try {		            
-	  	      			//returns the string representing the SQL query for database
 	  	      			Appointment newAppt = currentPatient.requestAppt(input);
 	  	      			apptList.add(newAppt);
 	  	      			
