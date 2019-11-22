@@ -9,14 +9,14 @@ class AppointmentTest {
 	@Test
 	void testAppointment() {
 		int expectedValue = 1;
-        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested");
+        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested", 0);
         assertEquals(expectedValue, testAppt.getApptID());
 	}
 
 	@Test
 	void testGetApptID() {
 		int expectedApptID = 1;
-        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested");
+        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested", 0);
         int actualApptID = testAppt.getApptID();
         assertEquals(expectedApptID, actualApptID);
 	}
@@ -24,7 +24,7 @@ class AppointmentTest {
 	@Test
 	void testSetApptID() {
 		int expectedApptID = 2;
-        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested");
+        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested", 0);
         testAppt.setApptID(2);
         assertEquals(expectedApptID, testAppt.getApptID());
 	}
@@ -32,7 +32,7 @@ class AppointmentTest {
 	@Test
 	void testGetSSN() {
 		String expectedSSN = "111-22-3333";
-        Appointment testAppt = new Appointment(1, "111-22-3333", "2019-05-13", "02:30:00", "Checkup", "Requested");
+        Appointment testAppt = new Appointment(1, "111-22-3333", "2019-05-13", "02:30:00", "Checkup", "Requested", 0);
         String actualSSN = testAppt.getSSN();
         assertEquals(expectedSSN, actualSSN);
 	}
@@ -40,15 +40,15 @@ class AppointmentTest {
 	@Test
 	void testSetSSN() {
 		String expectedSSN = "111-22-3333";
-        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested");
-        Appointment.setSSN("111-22-3333");
+        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested", 0);
+        testAppt.setSSN("111-22-3333");
         assertEquals(expectedSSN, testAppt.getSSN());
 	}
 
 	@Test
 	void testGetTime() {
 		String expectedTime = "12:30:00";
-        Appointment testAppt = new Appointment(1, "111-22-3333", "2019-05-13", "12:30:00", "Checkup", "Requested");
+        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "12:30:00", "Checkup", "Requested", 0);
         String actualTime = testAppt.getTime();
         assertEquals(expectedTime, actualTime);
 	}
@@ -56,7 +56,7 @@ class AppointmentTest {
 	@Test
 	void testSetTime() {
 		String expectedTime = "03:00:00";
-        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested");
+        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested", 0);
         testAppt.setTime("03:00:00");
         assertEquals(expectedTime, testAppt.getTime());
 	}
@@ -64,7 +64,7 @@ class AppointmentTest {
 	@Test
 	void testGetDate() {
 		String expectedDate = "2019-06-23";
-        Appointment testAppt = new Appointment(1, "111-22-3333", "2019-06-23", "02:30:00", "Checkup", "Requested");
+        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-06-23", "02:30:00", "Checkup", "Requested", 0);
         String actualDate = testAppt.getDate();
         assertEquals(expectedDate, actualDate);
 	}
@@ -72,7 +72,7 @@ class AppointmentTest {
 	@Test
 	void testSetDate() {
 		String expectedDate = "2020-01-03";
-        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested");
+        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested", 0);
         testAppt.setDate("2020-01-03");
         assertEquals(expectedDate, testAppt.getDate());
 	}
@@ -80,7 +80,7 @@ class AppointmentTest {
 	@Test
 	void testGetNotes() {
 		String expectedNotes = "Checkup";
-        Appointment testAppt = new Appointment(1, "111-22-3333", "2019-06-23", "02:30:00", "Checkup", "Requested");
+        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested", 0);
         String actualNotes = testAppt.getNotes();
         assertEquals(expectedNotes, actualNotes);
 	}
@@ -88,7 +88,7 @@ class AppointmentTest {
 	@Test
 	void testSetNotes() {
 		String expectedNotes = "Have flu symptoms.";
-        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested");
+        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested", 0);
         testAppt.setNotes("Have flu symptoms.");
         assertEquals(expectedNotes, testAppt.getNotes());
 	}
@@ -96,7 +96,7 @@ class AppointmentTest {
 	@Test
 	void testGetStatus() {
 		String expectedStatus = "Requested";
-        Appointment testAppt = new Appointment(1, "111-22-3333", "2019-06-23", "02:30:00", "Checkup", "Requested");
+        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested", 0);
         String actualStatus = testAppt.getStatus();
         assertEquals(expectedStatus, actualStatus);
 	}
@@ -104,7 +104,7 @@ class AppointmentTest {
 	@Test
 	void testSetStatus() {
 		String expectedStatus = "Approved";
-        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested");
+        Appointment testAppt = new Appointment(1, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested", 0);
         testAppt.setStatus("Approved");
         assertEquals(expectedStatus, testAppt.getStatus());
 	}
