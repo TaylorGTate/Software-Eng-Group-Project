@@ -41,6 +41,21 @@ public class Main {
 		return typeOfAccountChoice;
 	}
 	
+	public static int patientManagerIndex(ArrayList<PatientManager> pmList, int pmID) {
+		//Declare needed variables
+		int pmIndex = 0;
+		
+		//for loop to search ArrayList for the patient manager matching the id entered
+		for (PatientManager pm: pmList) {
+			if(pm.getID() == pmID) {
+				pmIndex = pmList.indexOf(pm);
+			}
+		}
+		
+		//return the Patient Manager's ArayList index
+		return pmIndex;
+	}
+	
 	public static int patientMenu(Scanner input) {
   	    System.out.println("Would you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Edit user profile.");
   	    int choice = input.nextInt();
@@ -56,7 +71,7 @@ public class Main {
 	}
 	
 	public static String getUserSSN(Scanner input) {
-		System.out.println("Please enter SSN:");
+		System.out.println("Please enter SSN in the following format 123-45-6789:");
 	    String userSSN = input.next();
 	    
 		return userSSN;
@@ -111,6 +126,8 @@ public class Main {
 		ArrayList<Patient> patientList = new ArrayList<Patient>();
 		ArrayList<Doctor> doctorList = new ArrayList<Doctor>();
 		ArrayList<Appointment> apptList = new ArrayList<Appointment>();
+		ArrayList<PatientManager> patientManagerList = new ArrayList<PatientManager>();
+    
 		Patient currentPatient = null;
 		Doctor currentDoctor = null;
 		Appointment currentAppt = null;
@@ -127,6 +144,11 @@ public class Main {
 
 	    Patient testPatient = new Patient("Robert Hall", "1967-02-04", "222-33-4444", "N/A", "Dr. Smith", "O+");
 	    patientList.add(testPatient);
+	    
+	    PatientManager testPatientManager = new PatientManager(4, "Taylor Tate", "1997-05-03");
+	    patientManagerList.add(testPatientManager);
+	    
+	    
 	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
 	    //mystmt.executeUpdate(query1);
 	    
@@ -747,20 +769,30 @@ public class Main {
 	    	  	}
 	    	  break;
 	      case 6: //Patient Manager
+	    	  
+	    	  //Getting the Patient Manager's id
+	    	  System.out.println("Please enter your Patient Manager ID.");
+	    	  int PMid = input.nextInt();
+	    	  
+	    	  //Find the ArrayList index of the patient manager
+	    	  int PMIndex = patientManagerIndex(patientManagerList, PMid);
+	    	  
+	    	  //Patient Manager menu options
 	    	  System.out.println("Would you like to:\n\t1. Check-in patient.\n\t2. Edit patient user profile.\n\t3. Remove dead patient from database.");
 	    	  int PMchoice = input.nextInt();
 	    	  
+	    	  
 	    	  switch(PMchoice) {
 		    	  case 1://check-in patient
-		    		  PatientManager.checkPatientIn();
+		    		  patientManagerList.get(PMIndex).checkPatientIn(usrname, pswd);
 		    		  break;
 		    		  
 		    	  case 2://edit a patient's user profile
-		    		  PatientManager.editPatientsInfo();
+		    		  patientManagerList.get(PMIndex).editPatientsInfo(usrname, pswd);
 		    		  break;
 		    		  
-		    	  case 3: //Remove dead patient from database
-			  	      PatientManager.removePatientFromDB();
+		    	  case 3: //Remove patient from database
+			  	      patientManagerList.get(PMIndex).removePatientFromDB(usrname, pswd);
 			  	      break;
 			  	      default:
 			  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
