@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class PatientTest {
+	static String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
+
 	@Test
 	void test_Patient() {
 		String expectedSSN = "123-01-1234";
@@ -25,7 +27,7 @@ class PatientTest {
 		Patient p = new Patient("Mandy Seasholtz", "1998-01-01", "123-01-1234", "pollen", "Dr. Williams", "A+");
 		p.setName(expectedName);
 		String actualName = p.getName();
-		assertEquals(expectedName, p.getName());
+		assertEquals(expectedName, actualName);
 	}
 	@Test
 	void test_getBirthDate() {
@@ -62,10 +64,10 @@ class PatientTest {
 		String actualAllergies = p.getAllergies();
 		assertEquals(expectedAllergies, actualAllergies);
 	}
-	void test_updateAllergies() { //special case update
+	void test_setAllergies() { //special case update
 		String expectedAllergies = "pizza";
 		Patient p = new Patient("Mandy Seasholtz", "1998-01-01", "123-01-1234", "pollen", "Dr. Williams", "A+");
-		p.updateAllergies(expectedAllergies);
+		p.setAllergies(expectedAllergies);
 		assertEquals(expectedAllergies, p.getAllergies());
 	}
 	@Test
@@ -93,9 +95,12 @@ class PatientTest {
 	void test_setBloodType() {
 		String expectedBT = "B-";
 		Patient p = new Patient("Mandy Seasholtz", "1998-01-01", "123-01-1234", "pollen", "Dr. Williams", "A+");
-		p.setbloodType(expectedBT);
+		p.setBloodType(expectedBT);
 		assertEquals(expectedBT, p.getBloodType());
 	}
-	
+	@Test
+	void test_requestAppt() {
+	    Appointment expectedValue = new Appointment(13, "222-33-4444","2000-05-03","12:30:00","N/A",statuses[0], 0);
+	}
 
 }
