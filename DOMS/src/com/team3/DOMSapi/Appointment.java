@@ -4,22 +4,33 @@ package com.team3.DOMSapi;
  * A patient can have many appointments.
  */
 public class Appointment {
-	static int apptID;
-	static String patientSSN;
-	static String apptDate;
-	static String apptTime;
-	static String notes;
-	static String statuses[] = {"Requested", "Approved", "Denied", "Edited", "Checked-in"};
-	static String status;
+	int apptID;
+	String patientSSN;
+	String apptDate;
+	String apptTime;
+	String notes;
+	String statuses[] = {"Requested", "Approved", "Denied", "Edited", "Checked-in"};
+	String status;
+	int roomNumber;
 
-	public Appointment(int ID, String pSSN, String date, String time, String note, String stat) {
+	public Appointment(int ID, int roomNum, String pSSN, String date, String time, String note, String stat) {
 		apptID = ID;
+		roomNumber = roomNum;
 		patientSSN = pSSN;
 		apptDate = date;
 		apptTime = time;
 		notes = note;
 		status = stat;
 	}
+	
+	public int getRoomNum() {
+		return roomNumber;
+	}
+	
+	public void setRoomNum(int num) {
+		roomNumber = num;
+	}
+	
 	/**
 	   * Gets the appointment ID of this appointment.
 	   * @return this appointment's ID.
@@ -31,7 +42,7 @@ public class Appointment {
 	   * Changes the appointment ID of this appointment.
 	   * @param id This appointment's new ID.  
 	   */
-	public static void setApptID(int id) {
+	public void setApptID(int id) {
 		apptID = id;
 	}
 	/**
@@ -45,7 +56,7 @@ public class Appointment {
 	   * Changes the patient's SSN of this appointment.
 	   * @param social This appointment's new patient SSN.  
 	   */
-	public static void setSSN(String social) {
+	public void setSSN(String social) {
 		patientSSN = social;
 	}
 	/**
@@ -59,7 +70,7 @@ public class Appointment {
 	   * Changes the time of this appointment.
 	   * @param time This appointment's new time.  
 	   */
-	public static void setTime(String time) {
+	public void setTime(String time) {
 		apptTime = time;
 	}
 	/**
@@ -73,7 +84,7 @@ public class Appointment {
 	   * Changes the date of this appointment.
 	   * @param date This appointment's new date.  
 	   */
-	public static void setDate(String date) {
+	public void setDate(String date) {
 		apptDate = date;
 	}
 	/**
@@ -87,7 +98,7 @@ public class Appointment {
 	   * Changes the notes of this appointment.
 	   * @param note This appointment's notes.  
 	   */
-	public static void setNotes(String note) {
+	public void setNotes(String note) {
 		notes = note;
 	}
 	/**
@@ -101,7 +112,7 @@ public class Appointment {
 	   * Changes the status of this appointment.
 	   * @param stat This appointment's status.  
 	   */
-	public static void setStatus(String stat) {
+	public void setStatus(String stat) {
 		for (int i = 0; i < statuses.length; i++) {
 			if (stat.equals(statuses[i])) {
 				status = statuses[i];

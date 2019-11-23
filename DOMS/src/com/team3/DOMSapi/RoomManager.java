@@ -2,6 +2,7 @@ package com.team3.DOMSapi;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -136,16 +137,52 @@ public class RoomManager {
 		//Execute update query on database
 		DataBase.executeUpdate(cleanQuery, username, password);	}
 	
-	public static void assignPatientRoom() throws SQLException {
-		String username = "root";
-		String password = "toor";
+	public ArrayList assignPatientRoom(ArrayList<Appointment> aList, ArrayList<Room> rList) {
+		
+		//Declare need variables
 		Scanner input = new Scanner(System.in);
+		
 		//Headers for all checked-in appointments
   		System.out.println();
-			System.out.println("All checked-in appointments:");
-			System.out.println("Appointment ID" + "\t" + " Patient SSN" + "\t" + " Appointment Date" + "\t" + " Appointment Time" + "\t" + " Appointment Status");	    	  		
-  		
-  		//Query for all the appointments that are currently checked-in
+		System.out.println("All checked-in appointments:");
+		System.out.println("Appointment ID" + "\t" + " Room Number" + "\t"+ " Patient SSN" + "\t" + " Appointment Date" + "\t" + " Appointment Time" + "\t" + " Appointment Status");	    	  		
+		
+		//iterating through appointment ArrayList to get all checked-in appointments
+		for (Appointment a: aList) {
+			if(a.getStatus() == "Checked-in") {
+				System.out.format("%s\t\t %s\t\t %s\t %s\t\t %s\t\t %s\t\n", a.getApptID(), a.getRoomNum(), a.getSSN(), a.getDate(), a.getTime(), a.getStatus());
+			}
+		}
+		
+		//Headers for clean and ready Room list
+  		System.out.println();
+		System.out.println("All avaliable rooms:");
+		System.out.println("Room Number" + "\t" + " Room Status");
+		
+		//iterating through room ArrayList to get all clean and ready rooms
+		for (Room r: rList) {
+			if(r.isAvaliable().equals("Clean and Ready")) {
+	  			System.out.format("%s\t\t %s\t \n", r.getRoomNumber(), r.isAvaliable());
+			}
+		}
+		
+		//Get the appointment ID of the appointment to assign it to a room
+  		System.out.println();
+  		System.out.println("Enter appointment ID to assign to a room.");
+  		int appointmentID = input.nextInt();
+  		System.out.println("Enter the room number you would like to assign to appointment ID " + appointmentID + ".");
+  		int roomNumber = input.nextInt();
+		
+		//iterating through the appointment ArrayList to find the ID entered and assign it to the room number entered
+  		for (Appointment a: aList) {
+  			if(a.getApptID() == appointmentID) {
+  				a.setRoomNum(roomNumber);
+  			}
+  		}
+		
+  		return aList;	
+		
+  		/*Query for all the appointments that are currently checked-in
   		String checkedInPatients = "SELECT * From Appointment WHERE status = 'Checked-in'";
   		//ResultSet of all the checked in the appointments
   		ResultSet rs = DataBase.executeQuery(checkedInPatients, username, password);
@@ -194,6 +231,6 @@ public class RoomManager {
   		input.close();
   		
   		//Print statement confirming appointment has been assigned to a room
-  		System.out.println("Appointment " + appointmentID + " has been assigned to room " + roomNumber);
+  		System.out.println("Appointment " + appointmentID + " has been assigned to room " + roomNumber);*/
 	}
 }
