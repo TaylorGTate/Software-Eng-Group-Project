@@ -21,12 +21,13 @@ public class Appointment {
 		apptTime = time;
 		notes = note;
 		status = stat;
-		roomNum = room;
 	}
 	
 
 	//empty constructor
 	public Appointment() {
+	}
+	
 
 	public int getRoomNum() {
 		return roomNumber;
@@ -126,11 +127,4 @@ public class Appointment {
 		}
 	}
 
-	public int getRoomNum() {
-		return roomNum;
-	}
-	
-	public void setRoomNum(int room) {
-		roomNum = room;
-	}
 }
