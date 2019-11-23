@@ -211,8 +211,8 @@ public class Main {
 	    //String query1 = "insert into Doctor values('" + testDoctor.getDocID() + "','" + testDoctor.getName() + "', '" + testDoctor.getBirthDate() + "', '" + testDoctor.getSSN() + "');";
 	    //mystmt.executeUpdate(query1);
 	    
-	    Appointment testAppt = new Appointment(13, "222-33-4444","2000-05-03","12:30:00","N/A",statuses[0], 0);
-	    apptList.add(testAppt);
+	    Appointment testAppt1 = new Appointment(13, 0, "222-33-4444","2000-05-03","12:30:00","N/A",statuses[0]);
+	    apptList.add(testAppt1);
 	    //String query1 = "insert into Appointment values('" + testAppt.getApptID() + "','" + testAppt.getSSN() + "', '" + testAppt.getDate() + "', '" + testAppt.getTime() + "', '" + testAppt.getNotes() + "', '" + testAppt.getStatus() + "', '" + testAppt.getRoomNum() + "');";
 	    //mystmt.executeUpdate(query1);
 	    	    
