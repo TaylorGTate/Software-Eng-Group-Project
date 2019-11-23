@@ -9,6 +9,7 @@ class AppointmentTest {
 	@Test
 	void testAppointment() {
 		int expectedValue = 1;
+
         Appointment testAppt = new Appointment(1, 0, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested");
         assertEquals(expectedValue, testAppt.getApptID());
 	}
@@ -16,6 +17,7 @@ class AppointmentTest {
 	@Test
 	void testGetApptID() {
 		int expectedApptID = 1;
+
         Appointment testAppt = new Appointment(1, 0, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested");
         int actualApptID = testAppt.getApptID();
         assertEquals(expectedApptID, actualApptID);
@@ -24,6 +26,7 @@ class AppointmentTest {
 	@Test
 	void testSetApptID() {
 		int expectedApptID = 2;
+
         Appointment testAppt = new Appointment(1, 0, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested");
         testAppt.setApptID(2);
         assertEquals(expectedApptID, testAppt.getApptID());
@@ -32,6 +35,7 @@ class AppointmentTest {
 	@Test
 	void testGetSSN() {
 		String expectedSSN = "111-22-3333";
+
         Appointment testAppt = new Appointment(1, 0, "111-22-3333", "2019-05-13", "02:30:00", "Checkup", "Requested");
         String actualSSN = testAppt.getSSN();
         assertEquals(expectedSSN, actualSSN);
@@ -40,6 +44,7 @@ class AppointmentTest {
 	@Test
 	void testSetSSN() {
 		String expectedSSN = "111-22-3333";
+
         Appointment testAppt = new Appointment(1, 0, "123-45-6789", "2019-05-13", "02:30:00", "Checkup", "Requested");
         testAppt.setSSN("111-22-3333");
         assertEquals(expectedSSN, testAppt.getSSN());
@@ -48,6 +53,7 @@ class AppointmentTest {
 	@Test
 	void testGetTime() {
 		String expectedTime = "12:30:00";
+
         Appointment testAppt = new Appointment(1, 0, "111-22-3333", "2019-05-13", "12:30:00", "Checkup", "Requested");
         String actualTime = testAppt.getTime();
         assertEquals(expectedTime, actualTime);

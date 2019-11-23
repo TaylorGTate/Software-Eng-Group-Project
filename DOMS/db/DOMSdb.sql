@@ -51,12 +51,13 @@ create table Patient(
     ssn varchar(11),
     primary key(doctor_id)
  );*/
- 
-  #select * from Patient;
-  #select * from Appointment;
+
+  select * from Patient;
+  select * from Appointment;
   #select * from RoomManager;
-  #select * from Room;
+  select * from Room;
   #select * from AppointmentManager;
+  select * from Doctor;
   
   /*insert into appointment (Pssn, apptDate, apptTime, notes, status, roomNum)
   values ('123-45-6789','2000-05-03','12:30:00','N/A','Checked-in', null);
@@ -76,8 +77,11 @@ create table Patient(
   insert into patient
   values ('Tori', '1997-05-03', '123-45-6787', 'N/A', 'N/A', 'A+');
   
+     #insert into room
+			#values ('0', 'Default');
+            
   insert into room
-  values ('1', 'Clean and Ready');
+			values ('1', 'Clean and Ready');
   
   insert into room
   values ('2', 'Clean and Ready');
@@ -95,3 +99,5 @@ create table Patient(
   drop table Appointment;
   drop table AppointmentManager;
   */
+  insert into room
+			values ('0', 'Default');
