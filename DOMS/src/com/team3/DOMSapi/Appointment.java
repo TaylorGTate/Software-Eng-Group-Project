@@ -11,10 +11,11 @@ public class Appointment {
 	String notes;
 	String statuses[] = {"Requested", "Approved", "Denied", "Edited", "Checked-in"};
 	String status;
-	int roomNum;
+	int roomNumber;
 
-	public Appointment(int ID, String pSSN, String date, String time, String note, String stat, int room) {
+	public Appointment(int ID, int roomNum, String pSSN, String date, String time, String note, String stat) {
 		apptID = ID;
+		roomNumber = roomNum;
 		patientSSN = pSSN;
 		apptDate = date;
 		apptTime = time;
@@ -23,8 +24,16 @@ public class Appointment {
 		roomNum = room;
 	}
 	
+
 	//empty constructor
 	public Appointment() {
+
+	public int getRoomNum() {
+		return roomNumber;
+	}
+	
+	public void setRoomNum(int num) {
+		roomNumber = num;
 	}
 	
 	/**

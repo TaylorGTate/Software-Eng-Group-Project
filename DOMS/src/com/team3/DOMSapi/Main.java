@@ -160,10 +160,15 @@ public class Main {
 	   */
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException{
 
+		//Declaring ArrayList from all of the different objects
 		ArrayList<Patient> patientList = new ArrayList<Patient>();
 		ArrayList<Doctor> doctorList = new ArrayList<Doctor>();
 		ArrayList<Appointment> apptList = new ArrayList<Appointment>();
 		ArrayList<PatientManager> patientManagerList = new ArrayList<PatientManager>();
+		ArrayList<RoomManager> roomManagerList = new ArrayList<RoomManager>();
+		ArrayList<Room> roomList = new ArrayList<Room>();
+		ArrayList<Appointment> appList = new ArrayList<Appointment>();
+		
 
 		Patient currentPatient = null;
 		Doctor currentDoctor = null;
@@ -179,7 +184,8 @@ public class Main {
 	    System.out.println("DB connected..");
 	    Statement mystmt = myconn.createStatement();
 
-	    //Test objects
+
+	    //Creating tests subjects to insert into ArrayLists
 	    Patient testPatient = new Patient("Robert Hall", "1967-02-04", "222-33-4444", "N/A", "Dr. Smith", "O+");
 	    patientList.add(testPatient);
 	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
@@ -187,6 +193,16 @@ public class Main {
 	    
 	    PatientManager testPatientManager = new PatientManager(4, "Taylor Tate", "1997-05-03");
 	    patientManagerList.add(testPatientManager);
+	    
+	    RoomManager testRoomManager = new RoomManager(4, "Taylor Tate", "1997-05-03");
+	    roomManagerList.add(testRoomManager);
+	    
+	    Appointment testAppt = new Appointment(4, 0 , "123-45-6789", "2019-22-11", "40:00:00", null, "Checked-in");
+	    appList.add(testAppt);
+	    
+	    Room testRoom = new Room(4,"Clean and Ready");
+	    roomList.add(testRoom);
+	    
 	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
 	    //mystmt.executeUpdate(query1);
 	    
@@ -424,7 +440,18 @@ public class Main {
 	    	  
 	    	  switch (RMchoice) {
 	    	  	case 1:// Assign checked in patients to a room
-	    	  		RoomManager.assignPatientRoom();
+	    	  		appList = roomManagerList.get(0).assignPatientRoom(appList, roomList);
+	    	  		//Headers for all checked-in appointments
+	    	  		System.out.println();
+	    			System.out.println("All checked-in appointments:");
+	    			System.out.println("Appointment ID" + "\t" + " Room Number" + "\t"+ " Patient SSN" + "\t" + " Appointment Date" + "\t" + " Appointment Time" + "\t" + " Appointment Status");	    	  		
+	    			
+	    			//iterating through appointment ArrayList to get all checked-in appointments
+	    			for (Appointment a: appList) {
+	    				if(a.getStatus() == "Checked-in") {
+	    					System.out.format("%s\t\t %s\t\t %s\t %s\t\t %s\t\t %s\t\n", a.getApptID(), a.getRoomNum(), a.getSSN(), a.getDate(), a.getTime(), a.getStatus());
+	    				}
+	    			}
 	    	  		break;
 	    	  	case 2:// Set room availability
 	    	  		
@@ -797,6 +824,9 @@ public class Main {
 			        String notes = input.nextLine();
 			        //Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0]);
 			        //String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
+
+			        Appointment newAppt = new Appointment(0, 0 , patientSSN, apptDate, apptTime, notes, statuses[0]);
+			        String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
 
 			        //DataBase.executeUpdate(query3, usrname, pswd);
 			        System.out.println("Appointment created.");
