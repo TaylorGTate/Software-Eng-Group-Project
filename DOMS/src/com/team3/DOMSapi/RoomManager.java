@@ -137,7 +137,7 @@ public class RoomManager {
 		//Execute update query on database
 		DataBase.executeUpdate(cleanQuery, username, password);	}
 	
-	public ArrayList assignPatientRoom(ArrayList<Appointment> aList, ArrayList<Room> rList) {
+	public ArrayList<Appointment> assignPatientRoom(ArrayList<Appointment> aList, ArrayList<Room> rList, String username, String password) throws SQLException {
 		
 		//Declare need variables
 		Scanner input = new Scanner(System.in);
@@ -179,7 +179,17 @@ public class RoomManager {
   				a.setRoomNum(roomNumber);
   			}
   		}
+  		
+  		//Query to assign room number to appointment
+  		String assignRoomNumToAppointment = ("UPDATE Appointment SET roomNum = " + "'" + roomNumber + "'" + "WHERE appt_id = " + "'" + appointmentID +"'");
+  		
+  		//Execute update on appointment table to assign room number to appointment
+  		DataBase.executeUpdate(assignRoomNumToAppointment, username, password);
 		
+  		//close the scanner
+  		input.close();
+  		
+  		//Return the appointment ArrayList
   		return aList;	
 		
   		/*Query for all the appointments that are currently checked-in
