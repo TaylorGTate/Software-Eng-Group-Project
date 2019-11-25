@@ -33,6 +33,7 @@ public class Main {
 	static String allergies;
 	static String prefDoc;
 	static String bloodType;
+
 	
 	/*
 	 * Input: the Scanner input
@@ -60,6 +61,21 @@ public class Main {
 		return pmIndex;
 	}
 	
+	
+	public static int roomManagerIndex(ArrayList<RoomManager> rmList, int rmID) {
+		//Declare needed variables
+		int rmIndex = 0;
+		
+		//for loop to search ArrayList for the patient manager matching the id entered
+		for (RoomManager rm: rmList) {
+			if(rm.getID() == rmID) {
+				rmIndex = rmList.indexOf(rm);
+			}
+		}
+		
+		//return the Patient Manager's ArayList index
+		return rmIndex;
+	}
 	/*
 	 * Input: the Scanner input
 	 * Output: Prints the menu message for the patient
@@ -167,7 +183,6 @@ public class Main {
 		ArrayList<PatientManager> patientManagerList = new ArrayList<PatientManager>();
 		ArrayList<RoomManager> roomManagerList = new ArrayList<RoomManager>();
 		ArrayList<Room> roomList = new ArrayList<Room>();
-		ArrayList<Appointment> appList = new ArrayList<Appointment>();
 		
 
 		Patient currentPatient = null;
@@ -188,6 +203,7 @@ public class Main {
 	    //Creating tests subjects to insert into ArrayLists
 	    Patient testPatient = new Patient("Robert Hall", "1967-02-04", "222-33-4444", "N/A", "Dr. Smith", "O+");
 	    patientList.add(testPatient);
+	    
 	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
 	    //mystmt.executeUpdate(query1);
 	    
@@ -198,7 +214,7 @@ public class Main {
 	    roomManagerList.add(testRoomManager);
 	    
 	    Appointment testAppt = new Appointment(4, 0 , "123-45-6789", "2019-22-11", "40:00:00", null, "Checked-in");
-	    appList.add(testAppt);
+	    apptList.add(testAppt);
 	    
 	    Room testRoom = new Room(4,"Clean and Ready");
 	    roomList.add(testRoom);
@@ -438,16 +454,23 @@ public class Main {
 	    	  System.out.println("Would you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity. \n\t3. Check room availablilty");
 	    	  int RMchoice = input.nextInt();
 	    	  
+	    	  //Getting the Patient Manager's id
+	    	  System.out.println("Please enter your Room Manager ID.");
+	    	  int RMid = input.nextInt();
+	    	  
+	    	  //Find the ArrayList index of the patient manager
+	    	  int RMindex = roomManagerIndex(roomManagerList, RMid);
+	    	  
 	    	  switch (RMchoice) {
 	    	  	case 1:// Assign checked in patients to a room
-	    	  		appList = roomManagerList.get(0).assignPatientRoom(appList, roomList);
+	    	  		apptList = roomManagerList.get(RMindex).assignPatientRoom(apptList, roomList, usrname, pswd);
 	    	  		//Headers for all checked-in appointments
 	    	  		System.out.println();
 	    			System.out.println("All checked-in appointments:");
 	    			System.out.println("Appointment ID" + "\t" + " Room Number" + "\t"+ " Patient SSN" + "\t" + " Appointment Date" + "\t" + " Appointment Time" + "\t" + " Appointment Status");	    	  		
 	    			
 	    			//iterating through appointment ArrayList to get all checked-in appointments
-	    			for (Appointment a: appList) {
+	    			for (Appointment a: apptList) {	    				
 	    				if(a.getStatus() == "Checked-in") {
 	    					System.out.format("%s\t\t %s\t\t %s\t %s\t\t %s\t\t %s\t\n", a.getApptID(), a.getRoomNum(), a.getSSN(), a.getDate(), a.getTime(), a.getStatus());
 	    				}
@@ -851,19 +874,39 @@ public class Main {
 	    	  
 	    	  switch(PMchoice) {
 		    	  case 1://check-in patient
-		    		  patientManagerList.get(PMIndex).checkPatientIn(usrname, pswd);
+		    		  apptList = patientManagerList.get(PMIndex).checkPatientIn(usrname, pswd, apptList);
 		    		  break;
 		    		  
 		    	  case 2://edit a patient's user profile
-		    		  patientManagerList.get(PMIndex).editPatientsInfo(usrname, pswd);
+		    		  patientList = patientManagerList.get(PMIndex).editPatientsInfo(usrname, pswd, patientList);
 		    		  break;
 		    		  
 		    	  case 3: //Remove patient from database
-			  	      patientManagerList.get(PMIndex).removePatientFromDB(usrname, pswd);
-			  	      break;
-			  	      default:
-			  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
+		    		  String pSSN = patientManagerList.get(PMIndex).removePatientFromDB(usrname, pswd, patientList, apptList);
+			    	  String pName = null;
+			  	      
+			    	  //iterate through Patient ArrayList
+			    	  for (Patient p: patientList) {
+			    		//filter against the SSN entered
+			    		if(p.getSSN() == pSSN) {
+			    			//Remove all the patient's appointments from the Appointment ArrayList
+			    			patientList.remove(p);
+			    			pName = p.getName();
+			    		}
+			    	  }
+			    		
+			    	  //iterate through Appointment ArrayList
+			    	  for (Appointment a: apptList) {
+			    		  //filter against the SSN entered
+			    		  if(a.getSSN() == pSSN) {
+			    			  //Remove all the patient's appointments from the Appointment ArrayList
+			    			  apptList.remove(a);
+			    		  }
+			    	  }
 			  	   
+			    	 //Confirming the Patient has been removed
+			    	 System.out.println(pName + " has been sucessfully deleted");
+
 		    	  }
 	    	  
 	    	  break;
