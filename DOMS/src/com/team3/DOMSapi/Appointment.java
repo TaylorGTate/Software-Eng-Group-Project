@@ -16,6 +16,7 @@ public class Appointment {
 
 	public Appointment(int ID, String pSSN, String date, String time, String note, String stat, String preferred_doc, int room) {
 		apptID = ID;
+		roomNumber = roomNum;
 		patientSSN = pSSN;
 		apptDate = date;
 		apptTime = time;
@@ -25,8 +26,18 @@ public class Appointment {
 		roomNum = room;
 	}
 	
+
 	//empty constructor
 	public Appointment() {
+	}
+	
+
+	public int getRoomNum() {
+		return roomNumber;
+	}
+	
+	public void setRoomNum(int num) {
+		roomNumber = num;
 	}
 	
 	/**
@@ -133,11 +144,4 @@ public class Appointment {
 		}
 	}
 
-	public int getRoomNum() {
-		return roomNum;
-	}
-	
-	public void setRoomNum(int room) {
-		roomNum = room;
-	}
 }

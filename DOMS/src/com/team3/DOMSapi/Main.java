@@ -32,6 +32,7 @@ public class Main {
 	static String allergies;
 	static String prefDoc;
 	static String bloodType;
+
 	
 	/*
 	 * Input: the Scanner input
@@ -59,6 +60,21 @@ public class Main {
 		return pmIndex;
 	}
 	
+	
+	public static int roomManagerIndex(ArrayList<RoomManager> rmList, int rmID) {
+		//Declare needed variables
+		int rmIndex = 0;
+		
+		//for loop to search ArrayList for the patient manager matching the id entered
+		for (RoomManager rm: rmList) {
+			if(rm.getID() == rmID) {
+				rmIndex = rmList.indexOf(rm);
+			}
+		}
+		
+		//return the Patient Manager's ArayList index
+		return rmIndex;
+	}
 	/*
 	 * Input: the Scanner input
 	 * Output: Prints the menu message for the patient
@@ -188,6 +204,7 @@ public class Main {
 	   */
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException{
 
+		//Declaring ArrayList from all of the different objects
 		ArrayList<Patient> patientList = new ArrayList<Patient>();
 		ArrayList<Doctor> doctorList = new ArrayList<Doctor>();
 		ArrayList<Appointment> apptList = new ArrayList<Appointment>();
@@ -195,7 +212,7 @@ public class Main {
 		ArrayList<DoctorManager> dmList = new ArrayList<DoctorManager>();
 		ArrayList<AppointmentManager> amList = new ArrayList<AppointmentManager>();
 		ArrayList<Room> roomList = new ArrayList<Room>();
-
+		ArrayList<RoomManager> roomManagerList = new ArrayList<RoomManager>();
 
 		Patient currentPatient = new Patient();
 		Doctor currentDoctor = new Doctor();
@@ -218,20 +235,17 @@ public class Main {
 	    patientList.add(testPatient);
 	    //String patientQuery = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
 	    //DataBase.executeUpdate(patientQuery, usrname, pswd);
-
-	    
+    
 	    PatientManager testPM = new PatientManager(4, "Test Patient Manager", "1997-05-03");
 	    patientManagerList.add(testPM);
 	    //String pmQuery = "insert into PatientManager values('" + testPM.getID() + "', '" + testPM.getName() + "', '" + testPM.getBirthDate() + "');";
 	    //DataBase.executeUpdate(pmQuery, usrname, pswd);
-
 	    
 	    Doctor testDoctor = new Doctor(1, "Test Doctor", "1967-02-04", "333-44-5555");
 	    doctorList.add(testDoctor);
 	    //String doctorQuery = "insert into Doctor values('" + testDoctor.getDocID() + "','" + testDoctor.getName() + "', '" + testDoctor.getBirthDate() + "', '" + testDoctor.getSSN() + "');";
 	    //DataBase.executeUpdate(doctorQuery, usrname, pswd);
-
-	    
+    
 	    DoctorManager testDM = new DoctorManager(1, "Test Doctor Manager", "1967-02-04");
 	    dmList.add(testDM);
 	    //String dmQuery = "insert into DoctorManager values('" + testDM.getID() + "','" + testDM.getName() + "', '" + testDM.getBirthDate() + "');";
@@ -239,13 +253,13 @@ public class Main {
 
 	    Room unassignedRoom = new Room(0, "Room Unassigned");
 	    roomList.add(unassignedRoom);
-		//String roomQuery = "insert into Room values('" + unassignedRoom.roomNumber + "', '"  + unassignedRoom.avaliable + "');";
-		//DataBase.executeUpdate(roomQuery, usrname, pswd);
+		  //String roomQuery = "insert into Room values('" + unassignedRoom.roomNumber + "', '"  + unassignedRoom.avaliable + "');";
+		  //DataBase.executeUpdate(roomQuery, usrname, pswd);
 	    
 	    Room testRoom = new Room(1, "Clean and Ready");
 	    roomList.add(testRoom);
-		//String roomQuery = "insert into Room values('" + testRoom.roomNumber + "', '"  + testRoom.avaliable + "');";
-		//DataBase.executeUpdate(roomQuery, usrname, pswd);
+		  //String roomQuery = "insert into Room values('" + testRoom.roomNumber + "', '"  + testRoom.avaliable + "');";
+		  //DataBase.executeUpdate(roomQuery, usrname, pswd);
 	    
 	    Appointment testAppt = new Appointment(1, "222-33-4444", "2000-05-03", "12:30:00", "N/A", statuses[0], "N/A", 0);
 	    apptList.add(testAppt);
@@ -501,9 +515,27 @@ public class Main {
 	    	  System.out.println("Would you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity. \n\t3. Check room availablilty");
 	    	  int RMchoice = input.nextInt();
 	    	  
+	    	  //Getting the Patient Manager's id
+	    	  System.out.println("Please enter your Room Manager ID.");
+	    	  int RMid = input.nextInt();
+	    	  
+	    	  //Find the ArrayList index of the patient manager
+	    	  int RMindex = roomManagerIndex(roomManagerList, RMid);
+	    	  
 	    	  switch (RMchoice) {
 	    	  	case 1:// Assign checked in patients to a room
-	    	  		RoomManager.assignPatientRoom();
+	    	  		apptList = roomManagerList.get(RMindex).assignPatientRoom(apptList, roomList, usrname, pswd);
+	    	  		//Headers for all checked-in appointments
+	    	  		System.out.println();
+	    			System.out.println("All checked-in appointments:");
+	    			System.out.println("Appointment ID" + "\t" + " Room Number" + "\t"+ " Patient SSN" + "\t" + " Appointment Date" + "\t" + " Appointment Time" + "\t" + " Appointment Status");	    	  		
+	    			
+	    			//iterating through appointment ArrayList to get all checked-in appointments
+	    			for (Appointment a: apptList) {	    				
+	    				if(a.getStatus() == "Checked-in") {
+	    					System.out.format("%s\t\t %s\t\t %s\t %s\t\t %s\t\t %s\t\n", a.getApptID(), a.getRoomNum(), a.getSSN(), a.getDate(), a.getTime(), a.getStatus());
+	    				}
+	    			}
 	    	  		break;
 	    	  	case 2:// Set room availability
 	    	  		
@@ -883,6 +915,9 @@ public class Main {
 			        //Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0]);
 			        //String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
 
+			        Appointment newAppt = new Appointment(0, 0 , patientSSN, apptDate, apptTime, notes, statuses[0]);
+			        String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
+
 			        //DataBase.executeUpdate(query3, usrname, pswd);
 			        System.out.println("Appointment created.");
 	    	  		break;
@@ -906,19 +941,39 @@ public class Main {
 	    	  
 	    	  switch(PMchoice) {
 		    	  case 1://check-in patient
-		    		  patientManagerList.get(PMIndex).checkPatientIn(usrname, pswd);
+		    		  apptList = patientManagerList.get(PMIndex).checkPatientIn(usrname, pswd, apptList);
 		    		  break;
 		    		  
 		    	  case 2://edit a patient's user profile
-		    		  patientManagerList.get(PMIndex).editPatientsInfo(usrname, pswd);
+		    		  patientList = patientManagerList.get(PMIndex).editPatientsInfo(usrname, pswd, patientList);
 		    		  break;
 		    		  
 		    	  case 3: //Remove patient from database
-			  	      patientManagerList.get(PMIndex).removePatientFromDB(usrname, pswd);
-			  	      break;
-			  	      default:
-			  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
+		    		  String pSSN = patientManagerList.get(PMIndex).removePatientFromDB(usrname, pswd, patientList, apptList);
+			    	  String pName = null;
+			  	      
+			    	  //iterate through Patient ArrayList
+			    	  for (Patient p: patientList) {
+			    		//filter against the SSN entered
+			    		if(p.getSSN() == pSSN) {
+			    			//Remove all the patient's appointments from the Appointment ArrayList
+			    			patientList.remove(p);
+			    			pName = p.getName();
+			    		}
+			    	  }
+			    		
+			    	  //iterate through Appointment ArrayList
+			    	  for (Appointment a: apptList) {
+			    		  //filter against the SSN entered
+			    		  if(a.getSSN() == pSSN) {
+			    			  //Remove all the patient's appointments from the Appointment ArrayList
+			    			  apptList.remove(a);
+			    		  }
+			    	  }
 			  	   
+			    	 //Confirming the Patient has been removed
+			    	 System.out.println(pName + " has been sucessfully deleted");
+
 		    	  }
 	    	  
 	    	  break;
