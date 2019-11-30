@@ -912,10 +912,13 @@ public class Main {
 			        input.nextLine();
 			        System.out.println("Please enter any notes you would like to include: ");
 			        String notes = input.nextLine();
+			        System.out.println("Please enter the Preferred Doctor (or 'N/A if no preference): ");
+			        String preferredDoc = input.nextLine();
 			        //Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0]);
 			        //String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
 
-			        Appointment newAppt = new Appointment(0, 0 , patientSSN, apptDate, apptTime, notes, statuses[0]);
+			        //Need to make sure that the ID is updated after inserting in database.
+			        Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0], preferredDoc, 0);
 			        String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
 
 			        //DataBase.executeUpdate(query3, usrname, pswd);
