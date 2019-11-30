@@ -16,6 +16,10 @@ public class AppointmentManager {
 		name = apptMgrName;
 		birthDate = apptMgrBirthDate;
 	}
+	
+	//empty constructor
+	public AppointmentManager() {
+	}
 	/**
 	   * Gets the first and last name of this appointment manager.
 	   * @return this appointment manager's name.

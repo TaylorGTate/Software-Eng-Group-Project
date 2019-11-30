@@ -100,7 +100,7 @@ class PatientTest {
 	}
 	@Test
 	void test_requestAppt() {
-	    Appointment expectedValue = new Appointment(13, 0, "222-33-4444","2000-05-03","12:30:00","N/A",statuses[0]);
+	    Appointment expectedValue = new Appointment(13, "222-33-4444","2000-05-03","12:30:00","N/A",statuses[0], "N/A", 0);
 	}
 
 }
