@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -86,6 +85,18 @@ public class Main {
 	
 	/*
 	 * Input: the Scanner input
+	 * Output: Prints the menu message for the doctor
+	 * and returns the choice that the user selected.
+	 */
+	public static int doctorManagerMenu(Scanner input) {
+		System.out.println("Would you like to:\n\t1. Create doctor user profile. \n\t2. Edit doctor user profile.\n\t3. Assign doctor to appointment.");
+  	    int choice = input.nextInt();
+  	    
+		return choice;
+	}
+	
+	/*
+	 * Input: the Scanner input
 	 * Output: Prints the prompt message for the user 
 	 * to enter their SSN and returns the SSN that was input.
 	 */
@@ -96,14 +107,13 @@ public class Main {
 		return userSSN;
 	}
 	
-	
 	/*
 	 * Input: the Scanner input
 	 * Output: Prints the prompt message for the user 
 	 * to enter their ID and returns the ID that was input.
 	 */
-	public static int getUserID(Scanner input) {
-		System.out.println("Please enter ID num:");
+	public static int getUserID(Scanner input, String type) {
+		System.out.println("Please enter " + type + " ID num:");
 	    int userID = input.nextInt();
 	    
 		return userID;
@@ -121,6 +131,7 @@ public class Main {
     			patient = patientList.get(i);
     		}
     	}
+    	System.out.println("Welcome, " + patient.getName() + "!");
     	return patient;
 	}
 	
@@ -136,7 +147,24 @@ public class Main {
     			doctor = doctorList.get(i);
     		}
     	}
+    	System.out.println("Welcome, " + doctor.getName() + "!");
     	return doctor;
+	}
+	
+	/*
+	 * Input: the Doctor's ID and an ArrayList containing the doctors
+	 * Output: Returns the Doctor object indicated by the ID
+	 */
+	public static DoctorManager getCurrentDM(int dmID, ArrayList<DoctorManager> dmList) {
+  	    DoctorManager doctorMan = new DoctorManager();
+    	for (int i=0; i<dmList.size(); i++) {
+    		int id = dmList.get(i).getID();
+    		if (id == dmID) {
+    			doctorMan = dmList.get(i);
+    		}
+    	}
+    	System.out.println("Welcome, " + doctorMan.getName() + "!");
+    	return doctorMan;
 	}
 	
 	/*
@@ -164,10 +192,16 @@ public class Main {
 		ArrayList<Doctor> doctorList = new ArrayList<Doctor>();
 		ArrayList<Appointment> apptList = new ArrayList<Appointment>();
 		ArrayList<PatientManager> patientManagerList = new ArrayList<PatientManager>();
+		ArrayList<DoctorManager> dmList = new ArrayList<DoctorManager>();
+		ArrayList<AppointmentManager> amList = new ArrayList<AppointmentManager>();
+		ArrayList<Room> roomList = new ArrayList<Room>();
 
-		Patient currentPatient = null;
-		Doctor currentDoctor = null;
-		Appointment currentAppt = null;
+
+		Patient currentPatient = new Patient();
+		Doctor currentDoctor = new Doctor();
+		Appointment currentAppt = new Appointment();
+		DoctorManager currentDM = new DoctorManager();
+		AppointmentManager currentAM = new AppointmentManager();
 		
 		Scanner input = new Scanner(System.in);
 	    System.out.println("Enter DB user name: ");
@@ -177,37 +211,52 @@ public class Main {
 
 	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 	    System.out.println("DB connected..");
-	    Statement mystmt = myconn.createStatement();
+	    //Statement mystmt = myconn.createStatement();
 
 	    //Test objects
-	    Patient testPatient = new Patient("Robert Hall", "1967-02-04", "222-33-4444", "N/A", "Dr. Smith", "O+");
+	    Patient testPatient = new Patient("Test Patient", "1967-02-04", "222-33-4444", "N/A", "Dr. Smith", "O+");
 	    patientList.add(testPatient);
-	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
-	    //mystmt.executeUpdate(query1);
+	    //String patientQuery = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
+	    //DataBase.executeUpdate(patientQuery, usrname, pswd);
+
 	    
-	    PatientManager testPatientManager = new PatientManager(4, "Taylor Tate", "1997-05-03");
-	    patientManagerList.add(testPatientManager);
-	    //String query1 = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
-	    //mystmt.executeUpdate(query1);
+	    PatientManager testPM = new PatientManager(4, "Test Patient Manager", "1997-05-03");
+	    patientManagerList.add(testPM);
+	    //String pmQuery = "insert into PatientManager values('" + testPM.getID() + "', '" + testPM.getName() + "', '" + testPM.getBirthDate() + "');";
+	    //DataBase.executeUpdate(pmQuery, usrname, pswd);
+
 	    
-	    Doctor testDoctor = new Doctor(1, "Robert Hall", "1967-02-04", "333-44-5555");
+	    Doctor testDoctor = new Doctor(1, "Test Doctor", "1967-02-04", "333-44-5555");
 	    doctorList.add(testDoctor);
-	    //String query1 = "insert into Doctor values('" + testDoctor.getDocID() + "','" + testDoctor.getName() + "', '" + testDoctor.getBirthDate() + "', '" + testDoctor.getSSN() + "');";
-	    //mystmt.executeUpdate(query1);
+	    //String doctorQuery = "insert into Doctor values('" + testDoctor.getDocID() + "','" + testDoctor.getName() + "', '" + testDoctor.getBirthDate() + "', '" + testDoctor.getSSN() + "');";
+	    //DataBase.executeUpdate(doctorQuery, usrname, pswd);
+
 	    
-	    Appointment testAppt = new Appointment(13, "222-33-4444","2000-05-03","12:30:00","N/A",statuses[0], 0);
+	    DoctorManager testDM = new DoctorManager(1, "Test Doctor Manager", "1967-02-04");
+	    dmList.add(testDM);
+	    //String dmQuery = "insert into DoctorManager values('" + testDM.getID() + "','" + testDM.getName() + "', '" + testDM.getBirthDate() + "');";
+	    //DataBase.executeUpdate(dmQuery, usrname, pswd);
+
+	    Room unassignedRoom = new Room(0, "Room Unassigned");
+	    roomList.add(unassignedRoom);
+		//String roomQuery = "insert into Room values('" + unassignedRoom.roomNumber + "', '"  + unassignedRoom.avaliable + "');";
+		//DataBase.executeUpdate(roomQuery, usrname, pswd);
+	    
+	    Room testRoom = new Room(1, "Clean and Ready");
+	    roomList.add(testRoom);
+		//String roomQuery = "insert into Room values('" + testRoom.roomNumber + "', '"  + testRoom.avaliable + "');";
+		//DataBase.executeUpdate(roomQuery, usrname, pswd);
+	    
+	    Appointment testAppt = new Appointment(1, "222-33-4444", "2000-05-03", "12:30:00", "N/A", statuses[0], "N/A", 0);
 	    apptList.add(testAppt);
-	    //String query1 = "insert into Appointment values('" + testAppt.getApptID() + "','" + testAppt.getSSN() + "', '" + testAppt.getDate() + "', '" + testAppt.getTime() + "', '" + testAppt.getNotes() + "', '" + testAppt.getStatus() + "', '" + testAppt.getRoomNum() + "');";
-	    //mystmt.executeUpdate(query1);
+	    //String apptQuery = "insert into Appointment values('" + testAppt.getApptID() + "','" + testAppt.getSSN() + "', '" + testAppt.getDate() + "', '" + testAppt.getTime() + "', '" + testAppt.getNotes() + "', '" + testAppt.getStatus() + "', '" + testAppt.getPreferredDoc() + "', '" + testAppt.getRoomNum() + "');";
+	    //DataBase.executeUpdate(apptQuery, usrname, pswd);
 	    	    
-	    //AppointmentManager testApptMan = new AppointmentManager(0, "Becky Smith", "1984-03-24");
-	    //String queryMan = "insert into AppointmentManager values('" + testApptMan.getManID() + "','" + testApptMan.getName() + "', '" + testApptMan.getBirthDate() + "');";
-	    //DataBase.executeUpdate(queryMan, usrname, pswd);
-
-	    /*Room testRoom = new Room(1, 20, "Clean and Ready", null);
-	    Room testRoom1 = new Room(1, 10, "Occupied", "123-45-6789");
-
-	    RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");*/
+	    AppointmentManager testApptMan = new AppointmentManager(1, "Becky Smith", "1984-03-24");
+	    amList.add(testApptMan);
+	    //String amQuery = "insert into AppointmentManager values('" + testApptMan.getManID() + "','" + testApptMan.getName() + "', '" + testApptMan.getBirthDate() + "');";
+	    //DataBase.executeUpdate(amQuery, usrname, pswd);
+	    //RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");
 		
 		//String query4 = "insert into Room values('" + testRoom1.roomNumber + "', '" + testRoom1.buildingNumber + "', '" + testRoom1.avaliable + "', '" + testRoom1.patientSSN + "');";
 		//String query2 = "insert into Room values('" + testRoom.roomNumber + "', '" + testRoom.buildingNumber + "', '" + testRoom.avaliable + "', '" + testRoom.patientSSN + "');";
@@ -235,8 +284,8 @@ public class Main {
 	  	      			Appointment newAppt = currentPatient.requestAppt(input);
 	  	      			apptList.add(newAppt);
 	  	      			
-	  	      			String query3 = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
-	  	      			DataBase.executeUpdate(query3, usrname, pswd);
+	  	      			String newApptQuery = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
+	  	      			DataBase.executeUpdate(newApptQuery, usrname, pswd);
 		  	    		System.out.println("Appointment requested.");
 
 	  	      		}
@@ -263,10 +312,10 @@ public class Main {
 	  	    	  try {
 	  	    		  currentAppt = currentPatient.selectAppt(apptList, input);
 	  	    		  
-	  	    		  currentAppt = currentPatient.editAppt(currentAppt, input);
+	  	    		  Appointment updatedAppt = currentPatient.editAppt(currentAppt, input);
 	  	    		  
-			  	      updateQuery = "update Appointment set apptTime=('" + currentAppt.getTime() + "'), apptDate=('" + currentAppt.getDate() + "'), notes=('" + currentAppt.getNotes() + "'), status=('Requested') where appt_id=('" + currentAppt.getApptID() + "');";
-	  	    		  DataBase.executeUpdate(updateQuery, usrname, pswd);
+			  	      String updatedApptQuery = "update Appointment set apptTime=('" + updatedAppt.getTime() + "'), apptDate=('" + updatedAppt.getDate() + "'), notes=('" + updatedAppt.getNotes() + "'), status=('Requested') where appt_id=('" + updatedAppt.getApptID() + "');";
+	  	    		  DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
 	  	    		  System.out.println("Appointment details updated.");
 		          }
 		          catch (Exception e) {
@@ -281,12 +330,12 @@ public class Main {
 			  	    try {
 			  	    	currentAppt = currentPatient.selectAppt(apptList, input);
 
-			            currentAppt = currentPatient.cancelAppt(currentAppt, input);
+			            Appointment cancelledAppt = currentPatient.cancelAppt(currentAppt, input);
 			            
-			            if (currentAppt != null){
-			  	    		updateQuery = "delete from Appointment where appt_id=('" + currentAppt.getApptID() + "');";
-			            	DataBase.executeUpdate(updateQuery, usrname, pswd);
-			            	apptList.remove(currentAppt);
+			            if (cancelledAppt != null){
+			  	    		String cancelApptQuery = "delete from Appointment where appt_id=('" + cancelledAppt.getApptID() + "');";
+			            	DataBase.executeUpdate(cancelApptQuery, usrname, pswd);
+			            	apptList.remove(cancelledAppt);
 			            }
 			        }
 			        catch (Exception e) {
@@ -299,15 +348,15 @@ public class Main {
 	  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
 	  	        
 	  	    	  try {
-	  	    		  currentPatient = currentPatient.editProfile(input);
+	  	    		  Patient updatedPatient = currentPatient.editProfile(input);
 	  	    		  
-			          if (currentPatient != null){
-			  	      	  updateQuery = "update Patient set patientName=('" + currentPatient.name + "'), birthDate=('" + currentPatient.birthDate + "'), allergies=('" + currentPatient.allergies + "'), preferredDoctor=('" + currentPatient.preferredDoctor + "'), bloodtype=('" + currentPatient.bloodType + "') where ssn=('" + currentPatient.ssn + "');";
-			        	  DataBase.executeUpdate(updateQuery, usrname, pswd);
+			          if (updatedPatient != null){
+			  	      	  String updatedPatientQuery = "update Patient set patientName=('" + updatedPatient.name + "'), birthDate=('" + updatedPatient.birthDate + "'), allergies=('" + updatedPatient.allergies + "'), preferredDoctor=('" + updatedPatient.preferredDoctor + "'), bloodtype=('" + updatedPatient.bloodType + "') where ssn=('" + updatedPatient.ssn + "');";
+			        	  DataBase.executeUpdate(updatedPatientQuery, usrname, pswd);
 			        	  
 				  	      for (int i=0; i<patientList.size(); i++) {
-				  	    	  if (patientList.get(i).getSSN().equals(currentPatient.ssn)){
-				  	    		  patientList.set(i, currentPatient);
+				  	    	  if (patientList.get(i).getSSN().equals(updatedPatient.ssn)){
+				  	    		  patientList.set(i, updatedPatient);
 				  	    	  }
 				  	      }
 			        	  System.out.println("Profile details updated.");
@@ -323,7 +372,7 @@ public class Main {
 	      }
 	      break;
 	      case 2: //Doctor
-	    	  	userID = getUserID(input);
+	    	  	userID = getUserID(input, "Doctor");
 	    	  	currentDoctor = getCurrentDoctor(userID, doctorList);
 		  	    int selected = doctorMenu(input);
 		  	    
@@ -333,15 +382,15 @@ public class Main {
 		  	        currentPatient = getCurrentPatient(userSSN, patientList);
 		  	        
 			  	    try {
-			  	    	currentPatient = currentDoctor.editUserProfile(currentPatient, input);
+			  	    	Patient updatedPatient = currentDoctor.editUserProfile(currentPatient, input);
 			            
-			  	    	if (currentPatient != null){
-			  	      	    updateQuery = "update Patient set patientName=('" + currentPatient.name + "'), birthDate=('" + currentPatient.birthDate + "'), allergies=('" + currentPatient.allergies + "'), preferredDoctor=('" + currentPatient.preferredDoctor + "'), bloodtype=('" + currentPatient.bloodType + "') where ssn=('" + currentPatient.ssn + "');";
-			        	    DataBase.executeUpdate(updateQuery, usrname, pswd);
+			  	    	if (updatedPatient != null){
+			  	      	    String updatedPatientQuery = "update Patient set patientName=('" + updatedPatient.name + "'), birthDate=('" + currentPatient.birthDate + "'), allergies=('" + currentPatient.allergies + "'), preferredDoctor=('" + currentPatient.preferredDoctor + "'), bloodtype=('" + currentPatient.bloodType + "') where ssn=('" + currentPatient.ssn + "');";
+			        	    DataBase.executeUpdate(updatedPatientQuery, usrname, pswd);
 			        	  
 				  	        for (int i=0; i<patientList.size(); i++) {
-				  	    	    if (patientList.get(i).getSSN().equals(currentPatient.ssn)){
-				  	    		    patientList.set(i, currentPatient);
+				  	    	    if (patientList.get(i).getSSN().equals(updatedPatient.ssn)){
+				  	    		    patientList.set(i, updatedPatient);
 				  	    	    }
 				  	        }
 			        	    System.out.println("Profile details updated.");
@@ -358,10 +407,10 @@ public class Main {
 		  	        
 			  	    try {
 		  	    		currentAppt = currentPatient.selectAppt(apptList, input);
-			  	    	currentAppt = currentDoctor.editApptNotes(currentAppt, input);
+			  	    	Appointment updatedAppt = currentDoctor.editApptNotes(currentAppt, input);
 			            if (currentAppt != null){
-					  	    updateQuery = "update Appointment set notes=('" + currentAppt.getNotes() + "') where appt_id=('" + currentAppt.getApptID() + "');";
-			        	    DataBase.executeUpdate(updateQuery, usrname, pswd);
+					  	    String updatedApptQuery = "update Appointment set notes=('" + updatedAppt.getNotes() + "') where appt_id=('" + updatedAppt.getApptID() + "');";
+			        	    DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
 			        	  
 				  	        for (int i=0; i<apptList.size(); i++) {
 				  	    	    if (apptList.get(i).getApptID() == currentAppt.getApptID()){
@@ -387,32 +436,62 @@ public class Main {
 		        
 	    	  break;
 	      case 3: //Doctor Manager
-	    	  System.out.println("Would you like to:\n\t1. Create doctor user profile. \n\t2. Edit doctor user profile.\n\t3. Assign doctor to appointment.");
-		  	    int DMchoice = input.nextInt();
+		  	    int DMchoice = doctorManagerMenu(input);
+		  	    int dmID = getUserID(input, "Doctor Manager");
+		  	    currentDM = getCurrentDM(dmID, dmList);
+		  	    int numOfDoctors = doctorList.size();
 		  	    
 		  	    switch (DMchoice) {
 		  	      case 1: //Create doctor user profile
-		  	    	System.out.println("Please enter the doctor's name (no spaces):");
-	  		        String name = input.next();
-	  		        //Doctor.setName(name);
-	  		        System.out.println("Please enter birthday in the form of YYYY-MM-DD:");
-	  		        String birthDate = input.next();
-	  		        //Doctor.setBirthDate(birthDate);
-	  		        System.out.println("Please enter SSN:");
-	  		        String ssn = input.next();
-	  		        //Doctor.setSSN(ssn);
-	  		        
-	  		        String newDoctorQuery= "insert into Doctor values('" + 0 + "', '" + name + "', '" + birthDate + "', '" + ssn + "');";
-	  			    System.out.print(newDoctorQuery);
-	  			    
-	  			    DataBase.executeUpdate(newDoctorQuery,  usrname, pswd);
-	  			    
-		  	        break;
+		  	    	  try {
+		  	    		  Doctor newDoctor = currentDM.createDoctor(numOfDoctors, input);
+			  	    	  doctorList.add(newDoctor);
+			  	    	  String newDoctorQuery= "insert into Doctor values('" + newDoctor.getDocID() + "', '" + newDoctor.getName() + "', '" + newDoctor.getBirthDate() + "', '" + newDoctor.getSSN() + "');";
+			  	    	  DataBase.executeUpdate(newDoctorQuery,  usrname, pswd);
+		  	    	  }
+		  	    	  catch(Exception e) {
+		  	    		  System.out.println(e);
+		  	    	  }
+		  	    	  
+		  	    	  break;
 		  	      case 2:// Edit doctor user profile
-		  	        System.out.println("");
-		  	        break;
+		  	    	  try {
+		  	    		  int docID = getUserID(input, "Doctor");
+		  	    		  currentDoctor = getCurrentDoctor(docID, doctorList);
+		  	    		  Doctor editedDoctor = currentDM.editProfile(currentDoctor, input);
+			  	    	  String updatedDoctorQuery= "update Doctor set doctorName=('" + editedDoctor.getName() + "'), birthDate=('" + editedDoctor.getBirthDate() + "'), ssn=('" + editedDoctor.getSSN() + "') where doctor_id=('" + currentDoctor.getDocID() + "');";
+			  	    	  DataBase.executeUpdate(updatedDoctorQuery,  usrname, pswd);		
+			  	    	  
+				  	        for (int i=0; i<doctorList.size(); i++) {
+				  	    	    if (doctorList.get(i).getDocID() == currentDoctor.getDocID()){
+				  	    	    	doctorList.set(i, currentDoctor);
+				  	    	    	System.out.println(doctorList.get(i).getName());
+				  	    	    }
+				  	        }
+			        	    System.out.println("Profile details updated.");
+		  	    	  }
+		  	    	  catch(Exception e) {
+		  	    		  System.out.println(e);
+		  	    	  }
+		  	    	  break;
 		  	      case 3:// Assign doctor to appointment
-		  	        System.out.println("");
+	  	    		  int docID = getUserID(input, "Doctor");
+	  	    		  currentDoctor = getCurrentDoctor(docID, doctorList);
+		  	    	  userSSN = getUserSSN(input);
+		  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
+		  	    	  
+		  	    	  try {
+		  	    		  currentAppt = currentPatient.selectAppt(apptList, input);
+		  	    		  
+		  	    		  Appointment updatedAppt = currentDM.assignDoctorToAppt(currentAppt, currentDoctor, input);
+		  	    		  
+				  	      String updatedApptQuery = "update Appointment set apptTime=('" + updatedAppt.getTime() + "'), apptDate=('" + updatedAppt.getDate() + "'), notes=('" + updatedAppt.getNotes() + "'), preferredDoc=('" + updatedAppt.getPreferredDoc() + "'), status=('Requested') where appt_id=('" + updatedAppt.getApptID() + "');";
+		  	    		  DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
+		  	    		  System.out.println("Appointment details updated.");
+		  	    	  }
+		  	    	  catch(Exception e) {
+		  	    		  System.out.println(e);
+		  	    	  }
 		  	        break;
 		  	      default:
 		  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
@@ -658,7 +737,8 @@ public class Main {
 			  	    	  apptDate = input.next();
 			  	    	  //changes status back to requested so new date/time can be approved by appointment manager
 			  	    	  updateQuery = "update Appointment set apptDate=('" + apptDate + "'), status=('Requested') where appt_id=('" + selectedAppt + "');";
-			  	    	  mystmt.executeUpdate(updateQuery);
+			  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
+
 				  	      System.out.println("Appointment details updated.");
 			  	    	  break;
 			  	      	case 2:
@@ -668,7 +748,8 @@ public class Main {
 			  	    	  apptTime += ":00";
 			  	    	  //changes status back to requested so new date/time can be approved by appointment manager
 			  	    	  updateQuery = "update Appointment set apptTime=('" + apptTime + "'), status=('Requested') where appt_id=('" + selectedAppt + "');";
-			  	    	  mystmt.executeUpdate(updateQuery);
+			  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
+
 				  	      System.out.println("Appointment details updated.");
 			  	    	  break;
 			  	      	case 3:
@@ -676,7 +757,8 @@ public class Main {
 			  	    	  System.out.println("What would you like to change the notes to?");
 			  	    	  apptNotes = input.nextLine();
 			  	    	  updateQuery = "update Appointment set notes=('" + apptNotes + "') where appt_id=('" + selectedAppt + "');";
-			  	    	  mystmt.executeUpdate(updateQuery);
+			  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
+
 				  	      System.out.println("Appointment details updated.");
 			  	    	  break;
 			  	      	case 4:
@@ -684,7 +766,8 @@ public class Main {
 			  	    	  System.out.println("What would you like to change the notes to (choices: 'Requested', 'Accepted', or 'Denied')?");
 			  	    	  apptStatus = input.next();
 			  	    	  updateQuery = "update Appointment set status=('" + apptStatus + "') where appt_id=('" + selectedAppt + "');";
-			  	    	  mystmt.executeUpdate(updateQuery);
+			  	    	  DataBase.executeUpdate(updateQuery, usrname, pswd);
+
 				  	      System.out.println("Appointment details updated.");
 			  	    	  break;
 			  	      	default:
@@ -749,12 +832,14 @@ public class Main {
 		  	        switch(selectedInput) {
 		  	      		case 1: //approve
 		  	      			updateQuery = "update Appointment set status=('Approved') where appt_id=('" + selectedAppt + "');";
-		  	      			mystmt.executeUpdate(updateQuery);
+		  	      			DataBase.executeUpdate(updateQuery, usrname, pswd);
+
 		  	      			System.out.println("Appointment approved.");
 		  	      			break;
 		  	      		case 2: //deny
 		  	      			updateQuery = "update Appointment set status=('Denied') where appt_id=('" + selectedAppt + "');";
-		  	      			mystmt.executeUpdate(updateQuery);
+		  	      			DataBase.executeUpdate(updateQuery, usrname, pswd);
+
 		  	      			System.out.println("Appointment denied.");
 		  	      			break;
 		  	      		default:

@@ -134,8 +134,10 @@ public class Patient {
         input.nextLine();
         System.out.println("Please enter any notes you would like to include: ");
         String notes = input.nextLine();
+        System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
+        String preferredDoc = input.nextLine();
 
-        Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0], 0);
+        Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0], preferredDoc, 0);
         return newAppt;
 	}
 	
@@ -218,11 +220,13 @@ public class Patient {
 		String apptDate = currentAppt.getDate();
 		String apptTime = currentAppt.getTime();
 		String apptNotes = currentAppt.getNotes();
+		String preferredDoc = currentAppt.getPreferredDoc();
+
 		int selectedInput = 0;
 		Appointment editedAppt = currentAppt;
 		
 		try {
-            System.out.println("Appt ID: " + apptID + "\n\t1. Appt Date: " + apptDate + "\n\t2. Appt Time: " + apptTime + "\n\t3. Appt Notes: " + apptNotes);
+            System.out.println("Appt ID: " + apptID + "\n\t1. Appt Date: " + apptDate + "\n\t2. Appt Time: " + apptTime + "\n\t3. Appt Notes: " + apptNotes+ "\n\t4. Preferred Doctor: " + preferredDoc);
             
 			System.out.println("What would you like to edit? (input an integer to select)");
 	  	    selectedInput = input.nextInt();
@@ -250,6 +254,14 @@ public class Patient {
 	  	      		input.nextLine();
 	  	      		apptNotes = input.nextLine();
 	  	      		editedAppt.setNotes(apptNotes);
+	  	      		
+	  	      		break;
+	  	    	case 4:
+	  	      		System.out.println("Current Preferred Doctor: " + preferredDoctor);
+	  	      		System.out.println("Who would you like to change the Preferred Doctor to? (or 'N/A' if no preferred doctor)");
+	  	      		input.nextLine();
+	  	      		preferredDoctor = input.nextLine();
+	  	      		editedAppt.setPreferredDoc(preferredDoc);
 	  	      		
 	  	      		break;
 	  	    	default:
@@ -346,7 +358,7 @@ public class Patient {
 	  	      		break;
 	  	      	case 4://preferred doctor
 	  	      		System.out.println("Current preferred doctor: " + patientDoc);
-	  	      		System.out.println("Who would you like to change it to? (no spaces)");
+	  	      		System.out.println("Who would you like to change the Preferred Doctor to? (or 'N/A' if no preferred doctor)");
 	  	      		input.nextLine();	
 	  	      		patientDoc = input.nextLine();
 	  	      		this.setDoctor(patientDoc);
