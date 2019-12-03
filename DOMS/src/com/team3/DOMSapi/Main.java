@@ -60,7 +60,6 @@ public class Main {
 		return pmIndex;
 	}
 	
-	
 	public static int roomManagerIndex(ArrayList<RoomManager> rmList, int rmID) {
 		//Declare needed variables
 		int rmIndex = 0;

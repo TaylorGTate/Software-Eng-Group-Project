@@ -161,7 +161,7 @@ public class PatientManager {
 		System.out.println("Patient sucessfully Checked-in");
 		input.close();*/
 	
-	public ArrayList<Patient> editPatientsInfo(String username, String password, ArrayList<Patient> pList) throws SQLException {
+		public ArrayList<Patient> editPatientsInfo(String username, String password, ArrayList<Patient> pList) throws SQLException {
 		
 		//Declaring needed variables and objects
 		Scanner input = new Scanner(System.in);
