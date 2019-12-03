@@ -5,10 +5,10 @@ package com.team3.DOMSapi;
  * A appointment manager can approve, deny, or edit appointment requests.
  */
 public class AppointmentManager {
-	static int man_id;
-	static String name;
-	static String birthDate;
-	static String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
+	int man_id;
+	String name;
+	String birthDate;
+	String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
 
 	
 	public AppointmentManager(int manID, String apptMgrName, String apptMgrBirthDate) {
@@ -31,7 +31,7 @@ public class AppointmentManager {
 	   * Changes the manager ID of this appointment manager.
 	   * @param manID This appointment manager's new manager ID.  
 	   */
-	public static void setManID(int manID) {
+	public void setManID(int manID) {
 		man_id = manID;
 	}
 	/**
@@ -45,7 +45,7 @@ public class AppointmentManager {
 	   * Changes the appointment manager's name.
 	   * @param apptMgrName This appointment manager's new name.  
 	   */
-	public static void setName(String apptMgrName) {
+	public void setName(String apptMgrName) {
 		name = apptMgrName;
 	}
 	/**
@@ -59,7 +59,7 @@ public class AppointmentManager {
 	   * Changes the appointment manager's birthday.
 	   * @param birthday This appointment manager's birthday.  
 	   */
-	public static void setBirthDate(String birthday) {
+	public void setBirthDate(String birthday) {
 		birthDate = birthday;
 	}
 	
