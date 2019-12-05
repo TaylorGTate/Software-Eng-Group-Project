@@ -8,17 +8,20 @@ import java.util.Scanner;
  * A Doctor can be assigned to many appointments.
  */
 public class Doctor {
-	static int docID;
-	static String name;
-	static String birthDate;
-	static String ssn;
-
+	int docID;
+	String name;
+	String birthDate;
+	String ssn;
 	
 	public Doctor(int doc_id, String doctorName, String birthDay, String social) {
 		docID = doc_id;
 		name = doctorName;
 		birthDate = birthDay;
 		ssn = social;
+	}
+	
+	//empty constructor
+	public Doctor() {
 	}
 	/**
 	   * Gets the first and last name of this Doctor.

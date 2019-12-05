@@ -20,6 +20,10 @@ public class Room {
 		this.roomNumber = roomNumber;
 		this.avaliable = avaliable;
 	}
+	
+	//empty constructor
+	public Room () {
+	}
 	/**
 	   * Gets the room number of this room.
 	   * @return this room's number.
