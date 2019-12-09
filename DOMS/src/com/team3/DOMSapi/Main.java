@@ -217,7 +217,25 @@ public class Main {
 	   * Depending on switch cases, will run the appropriate methods from the appropriate classes. 
 	   */
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException{
+		Scanner input = new Scanner(System.in);
+	    System.out.println("Enter DB user name: ");
+	    String usrname = input.next();
+	    System.out.println("Enter password: ");
+	    String pswd = input.next();
+	    /*
+		String myQueryTest = "SELECT count(*)\r\n" + 
+   				"FROM information_schema.TABLES\r\n" + 
+   				"WHERE (TABLE_SCHEMA = 'domsdb') AND (TABLE_NAME = 'Patient')";
 
+  	  	int validCount = DataBase.executeQueryCount(myQueryTest, usrname, pswd);
+		if (validCount > 0){
+			System.out.println("The table exists!");
+		}
+		else{
+			System.out.println("Table does not exist!");
+		}
+		*/
+		
 		//Declaring ArrayList from all of the different objects
 		ArrayList<Patient> patientList = new ArrayList<Patient>();
 		ArrayList<Doctor> doctorList = new ArrayList<Doctor>();
@@ -234,12 +252,6 @@ public class Main {
 		DoctorManager currentDM = new DoctorManager();
 		AppointmentManager currentAM = new AppointmentManager();
 		RoomManager currentRM = new RoomManager();
-		
-		Scanner input = new Scanner(System.in);
-	    System.out.println("Enter DB user name: ");
-	    String usrname = input.next();
-	    System.out.println("Enter password: ");
-	    String pswd = input.next();
 
 	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 	    System.out.println("DB connected..");

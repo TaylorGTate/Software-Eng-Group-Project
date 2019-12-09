@@ -38,5 +38,13 @@ public class DataBase{
 		Statement mystmt = myconn.createStatement();
 		return mystmt.executeQuery(Query);
 	}
+	
+	/*public static int executeQueryCount(String Query, String usrname, String pswd) throws SQLException {
+		Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
+		Statement mystmt = myconn.createStatement();
+		ResultSet re = mystmt.executeQuery(Query);
+		System.out.print(re);
+		return Integer.parseInt(re.toString());*/
+	}
 }
 
