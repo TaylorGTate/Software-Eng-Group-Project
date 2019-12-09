@@ -230,7 +230,7 @@ public class Main {
 	    //Statement mystmt = myconn.createStatement();
 
 	    //Test objects
-	    Patient testPatient = new Patient("Test Patient", "1967-02-04", "222-33-4444", "N/A", "Dr. Smith", "O+");
+	    Patient testPatient = new Patient("Taylor", "1997-05-03", "123-45-6789", "N/A", "Dr. Smith", "O+");
 	    patientList.add(testPatient);
 	    //String patientQuery = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
 	    //DataBase.executeUpdate(patientQuery, usrname, pswd);
@@ -260,7 +260,7 @@ public class Main {
 		  //String roomQuery = "insert into Room values('" + testRoom.roomNumber + "', '"  + testRoom.avaliable + "');";
 		  //DataBase.executeUpdate(roomQuery, usrname, pswd);
 	    
-	    Appointment testAppt = new Appointment(1, "222-33-4444", "2000-05-03", "12:30:00", "N/A", statuses[0], "N/A", 0);
+	    Appointment testAppt = new Appointment(1, "123-45-6789", "2000-05-03", "12:30:00", "N/A", "Approved", "N/A", 0);
 	    apptList.add(testAppt);
 	    //String apptQuery = "insert into Appointment values('" + testAppt.getApptID() + "','" + testAppt.getSSN() + "', '" + testAppt.getDate() + "', '" + testAppt.getTime() + "', '" + testAppt.getNotes() + "', '" + testAppt.getStatus() + "', '" + testAppt.getPreferredDoc() + "', '" + testAppt.getRoomNum() + "');";
 	    //DataBase.executeUpdate(apptQuery, usrname, pswd);
