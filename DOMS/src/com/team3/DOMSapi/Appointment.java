@@ -9,7 +9,7 @@ public class Appointment {
 	String apptDate;
 	String apptTime;
 	String notes;
-	String statuses[] = {"Requested", "Approved", "Denied", "Edited", "Checked-in"};
+	//String statuses[] = {"Requested", "Approved", "Denied", "Edited", "Checked-in"};
 	String status;
 	int roomNumber;
 
@@ -119,12 +119,14 @@ public class Appointment {
 	   * @param stat This appointment's status.  
 	   */
 	public void setStatus(String stat) {
-		for (int i = 0; i < statuses.length; i++) {
+		status = stat;
+		
+		/*for (int i = 0; i < statuses.length; i++) {
 			if (stat.equals(statuses[i])) {
 				status = statuses[i];
 				break;
 			}
-		}
+		}*/
 	}
 
 }
