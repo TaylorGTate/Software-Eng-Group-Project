@@ -1,6 +1,11 @@
 package com.team3.DOMSapi;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -226,6 +231,21 @@ public class Main {
     	}
     	return appt;
 	}
+	
+	public static void seedDB(String usrname, String pswd) {
+	    try {
+	    	File file = new File("seeds.txt");
+	    	Scanner scanner = new Scanner(file);
+	    	while (scanner.hasNext()) {
+	    		String line = scanner.nextLine();
+	    		DataBase.executeUpdate(line, usrname, pswd);
+	    		System.out.println(line);
+	    	}
+	    	scanner.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+	  	} 
+	}
   
 	 /**
 	   * Connects to Database. Displays menu on login of choices to select from. 
@@ -258,6 +278,15 @@ public class Main {
 	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 	    System.out.println("DB connected..");
 	    Statement mystmt = myconn.createStatement();
+    
+    	//seeds the DB using the seeds.txt file
+	    //check with user first before seeding DB
+	    System.out.println("Seed DB? (y or n): ");
+	    input.nextLine();
+	    String userInput = input.next();
+	    if (userInput.equals("y")) {
+	      seedDB(usrname, pswd);
+	    }
 	    
 	    //populating ArrayLists with DB info
 	    patientList = DataBase.populatePatientAL(patientList, pswd, usrname);
@@ -268,66 +297,11 @@ public class Main {
 	    amList = DataBase.populateAMAL(amList, pswd, usrname);
 	    roomList = DataBase.populateRAL(roomList, pswd, usrname);
 	    roomManagerList = DataBase.populateRMAL(roomManagerList, pswd, usrname);
-	    
-	    
 
-
-	    /*//Test objects
-	    Patient testPatient = new Patient(2, "Taylor", "1997-05-03", "123-45-6789", "N/A", "Dr. Smith", "O+");
-	    patientList.add(testPatient);
-	    //String patientQuery = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
-	    //DataBase.executeUpdate(patientQuery, usrname, pswd);
-    
-	    PatientManager testPM = new PatientManager(4, "Test Patient Manager", "1997-05-03");
-	    patientManagerList.add(testPM);
-	    //String pmQuery = "insert into PatientManager values('" + testPM.getID() + "', '" + testPM.getName() + "', '" + testPM.getBirthDate() + "');";
-	    //DataBase.executeUpdate(pmQuery, usrname, pswd);
-	    
-	    Doctor testDoctor = new Doctor(1, "Test Doctor", "1967-02-04", "333-44-5555");
-	    doctorList.add(testDoctor);
-	    //String doctorQuery = "insert into Doctor values('" + testDoctor.getDocID() + "','" + testDoctor.getName() + "', '" + testDoctor.getBirthDate() + "', '" + testDoctor.getSSN() + "');";
-	    //DataBase.executeUpdate(doctorQuery, usrname, pswd);
-    
-	    DoctorManager testDM = new DoctorManager(1, "Test Doctor Manager", "1967-02-04");
-	    dmList.add(testDM);
-	    //String dmQuery = "insert into DoctorManager values('" + testDM.getID() + "','" + testDM.getName() + "', '" + testDM.getBirthDate() + "');";
-	    //DataBase.executeUpdate(dmQuery, usrname, pswd);
-
-	    Room unassignedRoom = new Room(0, "Room Unassigned");
-	    roomList.add(unassignedRoom);
-		  //String roomQuery = "insert into Room values('" + unassignedRoom.roomNumber + "', '"  + unassignedRoom.avaliable + "');";
-		  //DataBase.executeUpdate(roomQuery, usrname, pswd);
-	    
-	    Room testRoom = new Room(1, "Clean and Ready");
-	    roomList.add(testRoom);
-		  //String roomQuery = "insert into Room values('" + testRoom.roomNumber + "', '"  + testRoom.avaliable + "');";
-		  //DataBase.executeUpdate(roomQuery, usrname, pswd);
-	    
-	    Appointment testAppt = new Appointment(1, "123-45-6789", "2000-05-03", "12:30:00", "N/A", "Approved", "N/A", 0);
-	    apptList.add(testAppt);
-	    //String apptQuery = "insert into Appointment values('" + testAppt.getApptID() + "','" + testAppt.getSSN() + "', '" + testAppt.getDate() + "', '" + testAppt.getTime() + "', '" + testAppt.getNotes() + "', '" + testAppt.getStatus() + "', '" + testAppt.getPreferredDoc() + "', '" + testAppt.getRoomNum() + "');";
-	    //DataBase.executeUpdate(apptQuery, usrname, pswd);
-	    	    
-	    AppointmentManager testApptMan = new AppointmentManager(1, "Becky Smith", "1984-03-24");
-	    amList.add(testApptMan);
-	    //String amQuery = "insert into AppointmentManager values('" + testApptMan.getManID() + "','" + testApptMan.getName() + "', '" + testApptMan.getBirthDate() + "');";
-	    //DataBase.executeUpdate(amQuery, usrname, pswd);
-	    //RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");
-		
-		//String query4 = "insert into Room values('" + testRoom1.roomNumber + "', '" + testRoom1.buildingNumber + "', '" + testRoom1.avaliable + "', '" + testRoom1.patientSSN + "');";
-		//String query2 = "insert into Room values('" + testRoom.roomNumber + "', '" + testRoom.buildingNumber + "', '" + testRoom.avaliable + "', '" + testRoom.patientSSN + "');";
-		//String query3 = "insert into RoomManager values('" + testRoomManager.id + "', '"  + testRoomManager.name + "', '" + testRoomManager.birthDate + "');";
-		
-		//mystmt.executeUpdate(query2);
-		//mystmt.executeUpdate(query4);
-		//mystmt.executeUpdate(query3);
-		 */
-    
 	    int flag = 0;
     
 	    int typeOfAccountChoice = logInMessage(input);
 	    
-
 	    switch (typeOfAccountChoice) {
 	    
 	    	case 1: //Patient
