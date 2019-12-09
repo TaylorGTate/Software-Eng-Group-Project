@@ -21,6 +21,11 @@ public class RoomManager {
 		this.name = name;
 		this.birthDate = birthDate;
 	}
+	
+	public RoomManager() {
+		
+	}
+	
 	/**
 	   * Gets the manager ID of this room manager.
 	   * @return this room manager's ID.

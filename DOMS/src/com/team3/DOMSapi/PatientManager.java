@@ -20,6 +20,10 @@ public class PatientManager {
 		this.name = name;
 		this.birthDate = birthDate;
 	}
+	
+	public PatientManager () {
+		
+	}
 	/**
 	   * Gets the manager ID of this patient manager.
 	   * @return this patient manager's ID.

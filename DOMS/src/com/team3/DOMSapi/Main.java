@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -59,6 +60,7 @@ public class Main {
 		//return the Patient Manager's ArayList index
 		return pmIndex;
 	}
+	
 	
 	public static int roomManagerIndex(ArrayList<RoomManager> rmList, int rmID) {
 		//Declare needed variables
@@ -227,10 +229,14 @@ public class Main {
 
 	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 	    System.out.println("DB connected..");
-	    //Statement mystmt = myconn.createStatement();
+	    Statement mystmt = myconn.createStatement();
+	    
 
-	    //Test objects
-	    Patient testPatient = new Patient("Taylor", "1997-05-03", "123-45-6789", "N/A", "Dr. Smith", "O+");
+	    
+
+
+	    /*//Test objects
+	    Patient testPatient = new Patient(2, "Taylor", "1997-05-03", "123-45-6789", "N/A", "Dr. Smith", "O+");
 	    patientList.add(testPatient);
 	    //String patientQuery = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
 	    //DataBase.executeUpdate(patientQuery, usrname, pswd);
@@ -278,12 +284,24 @@ public class Main {
 		//mystmt.executeUpdate(query2);
 		//mystmt.executeUpdate(query4);
 		//mystmt.executeUpdate(query3);
+		 */
     
 	    int flag = 0;
     
 	    int typeOfAccountChoice = logInMessage(input);
 	    
+	    //populating ArrayLists with DB info
+	    patientList = DataBase.populatePatientAL(patientList, pswd, usrname);
+	    doctorList = DataBase.populateDoctorAL(doctorList, pswd, usrname);
+	    apptList = DataBase.populateApptAL(apptList, pswd, usrname);
+	    patientManagerList= DataBase.populatePMAL(patientManagerList, pswd, usrname);
+	    dmList = DataBase.populateDMAL(dmList, pswd, usrname);
+	    amList = DataBase.populateAMAL(amList, pswd, usrname);
+	    roomList = DataBase.populateRAL(roomList, pswd, usrname);
+	    roomManagerList = DataBase.populateRMAL(roomManagerList, pswd, usrname);
+	    
 	    switch (typeOfAccountChoice) {
+	    
 	    	case 1: //Patient
 	    		int choice = patientMenu(input);
 	  	    
@@ -1011,6 +1029,11 @@ public class Main {
   	       default:
   	    	 System.out.println("Sorry, you did not enter a valid option. Bye.");
 	    }
+		//iterating through appointment ArrayList to get all checked-in appointments
+		for (Appointment a: apptList) {
+			System.out.format("%s\t\t %s\t\t %s\t %s\t\t %s\t\t %s\t\n", a.getApptID(), a.getRoomNum(), a.getSSN(), a.getDate(), a.getTime(), a.getStatus());
+		}
+	    
 	     //Close objects
 	     input.close();
 	}

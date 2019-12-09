@@ -15,8 +15,10 @@ public class Patient {
 	 String preferredDoctor;
 	 String bloodType;
 	 String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
+	 int patientid;
 
-	public Patient(String patientName, String birthDay, String social, String allergy, String preferredDoc, String blood) {
+	public Patient(int id, String patientName, String birthDay, String social, String allergy, String preferredDoc, String blood) {
+		patientid = id;
 		name = patientName;
 		birthDate = birthDay;
 		ssn = social;
@@ -27,6 +29,14 @@ public class Patient {
 	
 	//empty constructor
 	public Patient() {
+	}
+	
+	public int getPatientID() {
+		return patientid;
+	}
+	
+	public void setPatientID(int id) {
+		patientid = id;
 	}
 
 	/**
