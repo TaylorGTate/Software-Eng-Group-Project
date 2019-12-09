@@ -175,7 +175,6 @@ public class Patient {
 		catch(Exception e) {
 			System.out.println(e);
 		}
-
 	}
 	
 	/**
@@ -267,10 +266,10 @@ public class Patient {
 	  	      		
 	  	      		break;
 	  	    	case 4:
-	  	      		System.out.println("Current Preferred Doctor: " + preferredDoctor);
+	  	      		System.out.println("Current Preferred Doctor: " + preferredDoc);
 	  	      		System.out.println("Who would you like to change the Preferred Doctor to? (or 'N/A' if no preferred doctor)");
 	  	      		input.nextLine();
-	  	      		preferredDoctor = input.nextLine();
+	  	      		preferredDoc = input.nextLine();
 	  	      		editedAppt.setPreferredDoc(preferredDoc);
 	  	      		
 	  	      		break;
