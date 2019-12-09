@@ -12,8 +12,7 @@ public class AppointmentManager {
 	String name;
 	String birthDate;
 	String statuses[] = {"Requested", "Approved", "Denied"};
-
-	
+  
 	public AppointmentManager(int manID, String apptMgrName, String apptMgrBirthDate) {
 		man_id = manID;
 		name = apptMgrName;

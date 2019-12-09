@@ -7,9 +7,9 @@ import java.util.Scanner;
  * A doctor manager can create and edit doctors.
  */
 public class DoctorManager {
-	static int manager_id;
-	static String name;
-	static String birthDate;
+	int manager_id;
+	String name;
+	String birthDate;
 
 	
 	public DoctorManager(int managerID, String docName, String birth_date) {
@@ -34,7 +34,7 @@ public class DoctorManager {
 	   *                Should include both first
 	   *                and last name.
 	   */
-	public static void setName(String doctorName) {
+	public void setName(String doctorName) {
 		name = doctorName;
 	}
 	/**
@@ -48,7 +48,7 @@ public class DoctorManager {
 	   * Changes the doctor manager's birthday.
 	   * @param birthday This doctor manager's birthday.  
 	   */
-	public static void setBirthDate(String birthday) {
+	public void setBirthDate(String birthday) {
 		birthDate = birthday;
 	}
 	/**
@@ -62,7 +62,7 @@ public class DoctorManager {
 	   * Changes the manager ID of this doctor manager.
 	   * @param managerID This doctor manager's new manager ID.  
 	   */
-	public static void setID(int managerID) {
+	public void setID(int managerID) {
 
 		manager_id = managerID;
 	}
