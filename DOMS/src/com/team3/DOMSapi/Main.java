@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -59,6 +60,7 @@ public class Main {
 		//return the Patient Manager's ArayList index
 		return pmIndex;
 	}
+	
 	
 	public static int roomManagerIndex(ArrayList<RoomManager> rmList, int rmID) {
 		//Declare needed variables
@@ -255,10 +257,23 @@ public class Main {
 
 	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 	    System.out.println("DB connected..");
-	    //Statement mystmt = myconn.createStatement();
+	    Statement mystmt = myconn.createStatement();
+	    
+	    //populating ArrayLists with DB info
+	    patientList = DataBase.populatePatientAL(patientList, pswd, usrname);
+	    doctorList = DataBase.populateDoctorAL(doctorList, pswd, usrname);
+	    apptList = DataBase.populateApptAL(apptList, pswd, usrname);
+	    patientManagerList= DataBase.populatePMAL(patientManagerList, pswd, usrname);
+	    dmList = DataBase.populateDMAL(dmList, pswd, usrname);
+	    amList = DataBase.populateAMAL(amList, pswd, usrname);
+	    roomList = DataBase.populateRAL(roomList, pswd, usrname);
+	    roomManagerList = DataBase.populateRMAL(roomManagerList, pswd, usrname);
+	    
+	    
 
-	    //Test objects
-	    Patient testPatient = new Patient("Taylor", "1997-05-03", "123-45-6789", "N/A", "Dr. Smith", "O+");
+
+	    /*//Test objects
+	    Patient testPatient = new Patient(2, "Taylor", "1997-05-03", "123-45-6789", "N/A", "Dr. Smith", "O+");
 	    patientList.add(testPatient);
 	    //String patientQuery = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
 	    //DataBase.executeUpdate(patientQuery, usrname, pswd);
@@ -306,12 +321,15 @@ public class Main {
 		//mystmt.executeUpdate(query2);
 		//mystmt.executeUpdate(query4);
 		//mystmt.executeUpdate(query3);
+		 */
     
 	    int flag = 0;
     
 	    int typeOfAccountChoice = logInMessage(input);
 	    
+
 	    switch (typeOfAccountChoice) {
+	    
 	    	case 1: //Patient
 	    		int choice = patientMenu(input);
 	  	    
@@ -780,7 +798,7 @@ public class Main {
 			    	  //iterate through Patient ArrayList
 			    	  for (Patient p: patientList) {
 			    		//filter against the SSN entered
-			    		if(p.getSSN() == pSSN) {
+			    		if(p.getSSN().equals(pSSN)) {
 			    			//Remove all the patient's appointments from the Appointment ArrayList
 			    			patientList.remove(p);
 			    			pName = p.getName();
@@ -790,7 +808,7 @@ public class Main {
 			    	  //iterate through Appointment ArrayList
 			    	  for (Appointment a: apptList) {
 			    		  //filter against the SSN entered
-			    		  if(a.getSSN() == pSSN) {
+			    		  if(a.getSSN().equals(pSSN)) {
 			    			  //Remove all the patient's appointments from the Appointment ArrayList
 			    			  apptList.remove(a);
 			    		  }
@@ -834,6 +852,7 @@ public class Main {
   	       default:
   	    	 System.out.println("Sorry, you did not enter a valid option. Bye.");
 	    }
+	    
 	     //Close objects
 	     input.close();
 	}

@@ -20,6 +20,10 @@ public class PatientManager {
 		this.name = name;
 		this.birthDate = birthDate;
 	}
+	
+	public PatientManager () {
+		
+	}
 	/**
 	   * Gets the manager ID of this patient manager.
 	   * @return this patient manager's ID.
@@ -87,7 +91,7 @@ public class PatientManager {
 	  	//Iterate through the ResultSet
   		for (Appointment a: aList) {
   			//Filter all the appointments against the entered Patient SSN
-  			if(a.getSSN().equals(pSSN)) {
+  			if(a.getSSN().equals(pSSN) && a.getStatus().equals("Approved")) {
   				//Print the results
   				System.out.format("%s\t\t %s\t %s\t\t %s\t\t %s\t \n", a.getApptID(), a.getSSN(), a.getDate(), a.getTime(), a.getStatus());
   			}
@@ -98,7 +102,7 @@ public class PatientManager {
 		System.out.println("Enter appointment ID that needs to be checked-in.");
 		int appointmentID = input.nextInt();
 		
-		//Iterate through the Appointment Araylist
+		//Iterate through the Appointment Arraylist
   		for (Appointment a: aList) {
   			//Filter all the appointments against the entered Appointment ID
   			if(a.getApptID() == appointmentID) {
