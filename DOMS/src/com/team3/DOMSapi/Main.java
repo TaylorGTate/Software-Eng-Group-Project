@@ -231,7 +231,16 @@ public class Main {
 	    System.out.println("DB connected..");
 	    Statement mystmt = myconn.createStatement();
 	    
-
+	    //populating ArrayLists with DB info
+	    patientList = DataBase.populatePatientAL(patientList, pswd, usrname);
+	    doctorList = DataBase.populateDoctorAL(doctorList, pswd, usrname);
+	    apptList = DataBase.populateApptAL(apptList, pswd, usrname);
+	    patientManagerList= DataBase.populatePMAL(patientManagerList, pswd, usrname);
+	    dmList = DataBase.populateDMAL(dmList, pswd, usrname);
+	    amList = DataBase.populateAMAL(amList, pswd, usrname);
+	    roomList = DataBase.populateRAL(roomList, pswd, usrname);
+	    roomManagerList = DataBase.populateRMAL(roomManagerList, pswd, usrname);
+	    
 	    
 
 
@@ -290,16 +299,7 @@ public class Main {
     
 	    int typeOfAccountChoice = logInMessage(input);
 	    
-	    //populating ArrayLists with DB info
-	    patientList = DataBase.populatePatientAL(patientList, pswd, usrname);
-	    doctorList = DataBase.populateDoctorAL(doctorList, pswd, usrname);
-	    apptList = DataBase.populateApptAL(apptList, pswd, usrname);
-	    patientManagerList= DataBase.populatePMAL(patientManagerList, pswd, usrname);
-	    dmList = DataBase.populateDMAL(dmList, pswd, usrname);
-	    amList = DataBase.populateAMAL(amList, pswd, usrname);
-	    roomList = DataBase.populateRAL(roomList, pswd, usrname);
-	    roomManagerList = DataBase.populateRMAL(roomManagerList, pswd, usrname);
-	    
+
 	    switch (typeOfAccountChoice) {
 	    
 	    	case 1: //Patient
@@ -975,7 +975,7 @@ public class Main {
 			    	  //iterate through Patient ArrayList
 			    	  for (Patient p: patientList) {
 			    		//filter against the SSN entered
-			    		if(p.getSSN() == pSSN) {
+			    		if(p.getSSN().equals(pSSN)) {
 			    			//Remove all the patient's appointments from the Appointment ArrayList
 			    			patientList.remove(p);
 			    			pName = p.getName();
@@ -985,7 +985,7 @@ public class Main {
 			    	  //iterate through Appointment ArrayList
 			    	  for (Appointment a: apptList) {
 			    		  //filter against the SSN entered
-			    		  if(a.getSSN() == pSSN) {
+			    		  if(a.getSSN().equals(pSSN)) {
 			    			  //Remove all the patient's appointments from the Appointment ArrayList
 			    			  apptList.remove(a);
 			    		  }
@@ -1029,10 +1029,6 @@ public class Main {
   	       default:
   	    	 System.out.println("Sorry, you did not enter a valid option. Bye.");
 	    }
-		//iterating through appointment ArrayList to get all checked-in appointments
-		for (Appointment a: apptList) {
-			System.out.format("%s\t\t %s\t\t %s\t %s\t\t %s\t\t %s\t\n", a.getApptID(), a.getRoomNum(), a.getSSN(), a.getDate(), a.getTime(), a.getStatus());
-		}
 	    
 	     //Close objects
 	     input.close();
