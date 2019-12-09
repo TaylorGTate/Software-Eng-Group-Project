@@ -264,7 +264,7 @@ public class Main {
 	    //Statement mystmt = myconn.createStatement();
 
 	    try {
-	    	File file = new File("/seeds.txt");
+	    	File file = new File("seeds.txt");
 	    	Scanner scanner = new Scanner(file);
 	    	while (scanner.hasNext()) {
 	    		System.out.println(scanner.next());
