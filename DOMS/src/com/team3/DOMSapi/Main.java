@@ -1,6 +1,11 @@
 package com.team3.DOMSapi;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -258,55 +263,16 @@ public class Main {
 	    System.out.println("DB connected..");
 	    //Statement mystmt = myconn.createStatement();
 
-	    //Test objects
-	    Patient testPatient = new Patient("Test Patient", "1967-02-04", "222-33-4444", "N/A", "Dr. Smith", "O+");
-	    patientList.add(testPatient);
-	    //String patientQuery = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
-	    //DataBase.executeUpdate(patientQuery, usrname, pswd);
-    
-	    PatientManager testPM = new PatientManager(4, "Test Patient Manager", "1997-05-03");
-	    patientManagerList.add(testPM);
-	    //String pmQuery = "insert into PatientManager values('" + testPM.getID() + "', '" + testPM.getName() + "', '" + testPM.getBirthDate() + "');";
-	    //DataBase.executeUpdate(pmQuery, usrname, pswd);
-	    
-	    Doctor testDoctor = new Doctor(1, "Test Doctor", "1967-02-04", "333-44-5555");
-	    doctorList.add(testDoctor);
-	    //String doctorQuery = "insert into Doctor values('" + testDoctor.getDocID() + "','" + testDoctor.getName() + "', '" + testDoctor.getBirthDate() + "', '" + testDoctor.getSSN() + "');";
-	    //DataBase.executeUpdate(doctorQuery, usrname, pswd);
-    
-	    DoctorManager testDM = new DoctorManager(1, "Test Doctor Manager", "1967-02-04");
-	    dmList.add(testDM);
-	    //String dmQuery = "insert into DoctorManager values('" + testDM.getID() + "','" + testDM.getName() + "', '" + testDM.getBirthDate() + "');";
-	    //DataBase.executeUpdate(dmQuery, usrname, pswd);
-
-	    Room unassignedRoom = new Room(0, "Room Unassigned");
-	    roomList.add(unassignedRoom);
-		  //String roomQuery = "insert into Room values('" + unassignedRoom.roomNumber + "', '"  + unassignedRoom.avaliable + "');";
-		  //DataBase.executeUpdate(roomQuery, usrname, pswd);
-	    
-	    Room testRoom = new Room(1, "Clean and Ready");
-	    roomList.add(testRoom);
-		  //String roomQuery = "insert into Room values('" + testRoom.roomNumber + "', '"  + testRoom.avaliable + "');";
-		  //DataBase.executeUpdate(roomQuery, usrname, pswd);
-	    
-	    Appointment testAppt = new Appointment(1, "222-33-4444", "2000-05-03", "12:30:00", "N/A", statuses[0], "N/A", 0);
-	    apptList.add(testAppt);
-	    //String apptQuery = "insert into Appointment values('" + testAppt.getApptID() + "','" + testAppt.getSSN() + "', '" + testAppt.getDate() + "', '" + testAppt.getTime() + "', '" + testAppt.getNotes() + "', '" + testAppt.getStatus() + "', '" + testAppt.getPreferredDoc() + "', '" + testAppt.getRoomNum() + "');";
-	    //DataBase.executeUpdate(apptQuery, usrname, pswd);
-	    	    
-	    AppointmentManager testApptMan = new AppointmentManager(1, "Becky Smith", "1984-03-24");
-	    amList.add(testApptMan);
-	    //String amQuery = "insert into AppointmentManager values('" + testApptMan.getManID() + "','" + testApptMan.getName() + "', '" + testApptMan.getBirthDate() + "');";
-	    //DataBase.executeUpdate(amQuery, usrname, pswd);
-	    //RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");
-		
-		//String query4 = "insert into Room values('" + testRoom1.roomNumber + "', '" + testRoom1.buildingNumber + "', '" + testRoom1.avaliable + "', '" + testRoom1.patientSSN + "');";
-		//String query2 = "insert into Room values('" + testRoom.roomNumber + "', '" + testRoom.buildingNumber + "', '" + testRoom.avaliable + "', '" + testRoom.patientSSN + "');";
-		//String query3 = "insert into RoomManager values('" + testRoomManager.id + "', '"  + testRoomManager.name + "', '" + testRoomManager.birthDate + "');";
-		
-		//mystmt.executeUpdate(query2);
-		//mystmt.executeUpdate(query4);
-		//mystmt.executeUpdate(query3);
+	    try {
+	    	File file = new File("/seeds.txt");
+	    	Scanner scanner = new Scanner(file);
+	    	while (scanner.hasNext()) {
+	    		System.out.println(scanner.next());
+	    	}
+	    	scanner.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+	  	} 
     
 	    int flag = 0;
     
