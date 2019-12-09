@@ -230,6 +230,21 @@ public class Main {
     	}
     	return appt;
 	}
+	
+	public static void seedDB(String usrname, String pswd) {
+	    try {
+	    	File file = new File("seeds.txt");
+	    	Scanner scanner = new Scanner(file);
+	    	while (scanner.hasNext()) {
+	    		String line = scanner.nextLine();
+	    		DataBase.executeUpdate(line, usrname, pswd);
+	    		System.out.println(line);
+	    	}
+	    	scanner.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+	  	} 
+	}
   
 	 /**
 	   * Connects to Database. Displays menu on login of choices to select from. 
@@ -263,17 +278,15 @@ public class Main {
 	    System.out.println("DB connected..");
 	    //Statement mystmt = myconn.createStatement();
 
-	    try {
-	    	File file = new File("seeds.txt");
-	    	Scanner scanner = new Scanner(file);
-	    	while (scanner.hasNext()) {
-	    		System.out.println(scanner.next());
-	    	}
-	    	scanner.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-	  	} 
-    
+	    //seeds the DB using the seeds.txt file
+	    //check with user first before seeding DB
+	    System.out.println("Seed DB? (y or n): ");
+	    input.nextLine();
+	    String userInput = input.next();
+	    if (userInput.equals("y")) {
+	    	seedDB(usrname, pswd);
+	    }
+	    
 	    int flag = 0;
     
 	    int typeOfAccountChoice = logInMessage(input);
