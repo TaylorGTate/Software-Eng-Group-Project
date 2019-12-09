@@ -271,9 +271,9 @@ public class Main {
 		
 		Scanner input = new Scanner(System.in);
 	    System.out.println("Enter DB user name: ");
-	    String usrname = input.next();
+	    String usrname = input.nextLine();
 	    System.out.println("Enter password: ");
-	    String pswd = input.next();
+	    String pswd = input.nextLine();
 
 	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 	    System.out.println("DB connected..");
@@ -281,9 +281,8 @@ public class Main {
     
     	//seeds the DB using the seeds.txt file
 	    //check with user first before seeding DB
-	    System.out.println("Seed DB? (y or n): ");
-	    input.nextLine();
-	    String userInput = input.next();
+	    System.out.print("Seed DB? (y or n): ");
+	    String userInput = input.nextLine();
 	    if (userInput.equals("y")) {
 	      seedDB(usrname, pswd);
 	    }
@@ -314,10 +313,10 @@ public class Main {
 	  	      		currentPatient = getCurrentPatient(userSSN, patientList);
 
 	  	      		try {		            
-	  	      			Appointment newAppt = currentPatient.requestAppt(input);
+	  	      			Appointment newAppt = currentPatient.requestAppt(apptList, input);
 	  	      			apptList.add(newAppt);
 	  	      			
-	  	      			String newApptQuery = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
+	  	      			String newApptQuery = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', '" + newAppt.getPreferredDoc()+ "', '" + newAppt.getRoomNum() + "');";
 	  	      			DataBase.executeUpdate(newApptQuery, usrname, pswd);
 		  	    		System.out.println("Appointment requested.");
 
@@ -726,7 +725,7 @@ public class Main {
 	  	      		currentPatient = getCurrentPatient(userSSN, patientList);
 
 	  	      		try {		            
-	  	      			Appointment newAppt = currentPatient.requestAppt(input);
+	  	      			Appointment newAppt = currentPatient.requestAppt(apptList, input);
 	  	      			apptList.add(newAppt);
 	  	      			
 	  	      			String newApptQuery = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', '" + newAppt.getPreferredDoc() + "', '" + newAppt.getRoomNum() + "');";
@@ -797,27 +796,29 @@ public class Main {
 	      case 7: //create a new patient profile
   	    	    System.out.println("Please enter first name:");
   		        String name = input.next();
-  		        Patient Patient = new Patient();
-  		        Patient.setName(name);
+  		        Patient patient = new Patient();
+  		        patient.setName(name);
   		        System.out.println("Please enter birthday in the form of YYYY-MM-DD:");
   		        String birthDate = input.next();
-  		        Patient.setBirthDate(birthDate);
+  		        patient.setBirthDate(birthDate);
   		        System.out.println("Please enter SSN:");
   		        String ssn = input.next();
-  		        Patient.setSSN(ssn);
+  		        patient.setSSN(ssn);
   		        System.out.println("Please enter any allergies:");
   		        String allergies = input.next();
-  		        Patient.setAllergies(allergies);
+  		        patient.setAllergies(allergies);
   		        System.out.println("Please enter your preferred doctor (no spaces):");
   		        String preferredDoctor = input.next();
-  		        Patient.setDoctor(preferredDoctor);
+  		        patient.setDoctor(preferredDoctor);
   		        System.out.println("Please enter your blood type:");
   		        String bloodType = input.next();
-  		        Patient.setBloodType(bloodType);
-  		        String newPatientQuery= "insert into Patient values('" + name + "', '" + birthDate + "', '" + ssn + "', '" + allergies + "', '" + preferredDoctor + "', '" + bloodType + "');";
+  		        patient.setBloodType(bloodType);
+  		        String newPatientQuery= "insert into Patient values('" + patient.getName() + "', '" + patient.getBirthDate() + "', '" + patient.getSSN() + "', '" + patient.getAllergies() + "', '" + patient.getDoctor() + "', '" + patient.getBloodType() + "');";
   			    System.out.print(newPatientQuery);
+  			    
   			    DataBase.executeUpdate(newPatientQuery, usrname, pswd);
   			    // Add to patient array list
+  			    patientList.add(patient);
   			    break;
 	      case 8:// Quit
 	    	  flag = 1;
