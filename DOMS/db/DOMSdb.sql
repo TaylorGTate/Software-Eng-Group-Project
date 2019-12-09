@@ -61,15 +61,17 @@ create table PatientManager(
  );
  */
 
+/*
+  select * from Patient;
+  select * from Appointment;
+  select * from RoomManager;
+  select * from Room;
+  select * from AppointmentManager;
+  select * from Doctor;
+  select * from DoctorManager;
+  select * from PatientManager;
+*/
 
-
-  #select * from Patient;
-  #select * from Appointment;
-  #select * from RoomManager;
-  #select * from Room;
-  #select * from AppointmentManager;
-  #select * from Doctor;
-  
   /*insert into appointment (Pssn, apptDate, apptTime, notes, status, roomNum)
   values ('123-45-6789','2000-05-03','12:30:00','N/A','Checked-in', null);
   
@@ -88,11 +90,11 @@ create table PatientManager(
   insert into patient
   values ('Tori', '1997-05-03', '123-45-6787', 'N/A', 'N/A', 'A+');
   
-     #insert into room
-			#values ('0', 'Default');
+  insert into room
+  values ('0', 'Default');
             
   insert into room
-			values ('1', 'Clean and Ready');
+  values ('1', 'Clean and Ready');
   
   insert into room
   values ('2', 'Clean and Ready');
@@ -103,8 +105,8 @@ create table PatientManager(
   insert into room
   values ('4', 'Clean and Ready');
 	 
-	insert into room
-	values ('0', 'Default');
+  insert into room
+  values ('0', 'Default');
   */
 	    
 /*
@@ -116,10 +118,6 @@ create table PatientManager(
   drop table Room;
   drop table Doctor;   
 */
-
-  
-  
-  
  
   
   
