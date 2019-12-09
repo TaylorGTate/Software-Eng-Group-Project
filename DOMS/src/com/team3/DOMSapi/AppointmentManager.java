@@ -1,5 +1,8 @@
 package com.team3.DOMSapi;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  * Represents an appointment manager at a doctor's office.
  * A appointment manager can approve, deny, or edit appointment requests.
@@ -8,9 +11,8 @@ public class AppointmentManager {
 	int man_id;
 	String name;
 	String birthDate;
-	String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
-
-	
+	String statuses[] = {"Requested", "Approved", "Denied"};
+  
 	public AppointmentManager(int manID, String apptMgrName, String apptMgrBirthDate) {
 		man_id = manID;
 		name = apptMgrName;
@@ -81,32 +83,206 @@ public class AppointmentManager {
 	   * Changes the appointment's status to denied.
 	   * @param appt Appointment to be denied.  
 	   */
-	public void denyApptRequest(Appointment appt) {
-		//deny appt request method
-		//sends notification to patient letting them know the appt has been denied
-		//tells patient why it was denied (bad date/time, office closed, etc.)
-		appt.status = statuses[2];
+	public Appointment denyApptRequest(Appointment appt) {
+		Appointment currentAppt = appt;
+		
+		currentAppt.status = statuses[2];
+		
+		return currentAppt;
+
+		
 	}
 	/**
 	   * Changes the appointment's status to approved.
 	   * @param appt Appointment to be approved.  
 	   */
-	public void approveApptRequest(Appointment appt) {
-		//approve appt request method
-		//sends notification to patient letting them know the appt has been approved
-		//adds appt to actual appointment calendar
-		appt.status = statuses[1];
+	public Appointment approveApptRequest(Appointment appt) {
+		Appointment currentAppt = appt;
+		
+		currentAppt.status = statuses[1];
+		
+		return currentAppt;
 
 	}
+	
 	/**
-	   * Changes the appointment's status to edited.
-	   * @param appt Appointment to be edited.  
+	   * Allows the appt manager to view all of the current appts.
+	   * @param apptList ArrayList containing all current appts.
 	   */
-	public void editApptRequest(Appointment appt) {
-		//edit appt request method
-		//sends notification to patient letting them know the appt is still pending and has been edited
-		//tells patient what has been changed about their appointment request
-		appt.status = statuses[3];
+	public void viewAppts(ArrayList<Appointment> apptList) {
+		
+		try {
+			for (int i=0; i<apptList.size(); i++) {
+				int apptID = apptList.get(i).getApptID();
+				String apptDate = apptList.get(i).getDate();
+				String apptTime = apptList.get(i).getTime();
+				String apptNotes = apptList.get(i).getNotes();
+				String apptStatus = apptList.get(i).getStatus();
+				
+				// Display results
+	            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+    		}
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	/**
+	   * Allows the appt manager to view all of the current approved appts.
+	   * @param apptList ArrayList containing all current appts.
+	   */
+	public void viewApprovedAppts(ArrayList<Appointment> apptList) {
+		
+		try {
+			for (int i=0; i<apptList.size(); i++) {
+				Appointment appt = apptList.get(i);
+				String status = appt.getStatus();
+				if (status.equals("Approved")) {
+					int apptID = apptList.get(i).getApptID();
+					String apptDate = apptList.get(i).getDate();
+					String apptTime = apptList.get(i).getTime();
+					String apptNotes = apptList.get(i).getNotes();
+					String apptStatus = apptList.get(i).getStatus();
+					
+					// Display results
+		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+	    		}
+			}
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	/**
+	   * Allows the appt manager to view all of the current requested appts.
+	   * @param apptList ArrayList containing all current appts.
+	   */
+	public void viewRequestedAppts(ArrayList<Appointment> apptList) {
+		
+		try {
+			for (int i=0; i<apptList.size(); i++) {
+				Appointment appt = apptList.get(i);
+				String status = appt.getStatus();
+				if (status.equals("Requested")) {
+					int apptID = apptList.get(i).getApptID();
+					String apptDate = apptList.get(i).getDate();
+					String apptTime = apptList.get(i).getTime();
+					String apptNotes = apptList.get(i).getNotes();
+					String apptStatus = apptList.get(i).getStatus();
+					
+					// Display results
+		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+	    		}
+			}
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	/**
+	   * Displays all the appts and prompts the user to select an appt
+	   * @param input Scanner object  
+	   * @param apptList ArrayList containing all the appts
+	   * @return selectedAppt Appointment object that the user selected
+	   */
+	public Appointment selectAppt(ArrayList<Appointment> apptList, Scanner input) {
+		Appointment selectedAppt = new Appointment();
+		
+		try {
+			for (int i=0; i<apptList.size(); i++) {
+				int apptID = apptList.get(i).getApptID();
+				String apptDate = apptList.get(i).getDate();
+				String apptTime = apptList.get(i).getTime();
+				String apptNotes = apptList.get(i).getNotes();
+				String apptStatus = apptList.get(i).getStatus();
+				
+				// Display results
+	            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+    		}
+		
+			System.out.println("Which appt would you like to edit? (enter an appt ID to select an appt)");
+	    	int selected = input.nextInt();
+	    	for (int i=0; i<apptList.size(); i++) {
+	    		int selectedID = apptList.get(i).getApptID();
+	    		if (selected == selectedID) {
+	    			selectedAppt = apptList.get(i);
+	    		}
+	    	}
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
 
+  	//returns the appt selected by the user
+      return selectedAppt;
+	}
+	
+	/**
+	   * Allows the user to edit the details of a selected appt
+	   * @param input Scanner object  
+	   * @param currentAppt Appointment object of the Appointment the user is editing
+	   * @return editedAppt Appointment object that contains the new details that were supplied by the user
+	   */ 
+	public Appointment editAppt(Appointment currentAppt, Scanner input) {
+		int apptID = currentAppt.getApptID();
+		String apptDate = currentAppt.getDate();
+		String apptTime = currentAppt.getTime();
+		String apptNotes = currentAppt.getNotes();
+		String preferredDoc = currentAppt.getPreferredDoc();
+
+		int selectedInput = 0;
+		Appointment editedAppt = currentAppt;
+		
+		try {
+          System.out.println("Appt ID: " + apptID + "\n\t1. Appt Date: " + apptDate + "\n\t2. Appt Time: " + apptTime + "\n\t3. Appt Notes: " + apptNotes+ "\n\t4. Preferred Doctor: " + preferredDoc);
+          
+			System.out.println("What would you like to edit? (input an integer to select)");
+	  	    selectedInput = input.nextInt();
+	  	    System.out.println(selectedInput);
+	  	      
+	  	    switch(selectedInput) {
+	  	    	case 1:
+	  	    		System.out.println("Current Appt Date: " + apptDate);
+		  	    	System.out.println("What date would you like to change it to? (in the form YYYY-MM-DD)");
+		  	    	apptDate = input.next();
+		  	    	editedAppt.setDate(apptDate);
+		  	    	
+		  	    	break;
+	  	    	case 2:
+	  	      		System.out.println("Current Appt Time: " + apptTime);
+	  	      		System.out.println("What time would you like to change it to? (in the form hh:mm)");
+	  	      		apptTime = input.next();
+	  	      		apptTime += ":00";
+	  	      		editedAppt.setTime(apptTime);
+	  	      		
+	  	      		break;
+	  	    	case 3:
+	  	      		System.out.println("Current Appt Notes: " + apptNotes);
+	  	      		System.out.println("What would you like to change the notes to?");
+	  	      		input.nextLine();
+	  	      		apptNotes = input.nextLine();
+	  	      		editedAppt.setNotes(apptNotes);
+	  	      		
+	  	      		break;
+	  	    	case 4:
+	  	      		System.out.println("Current Preferred Doctor: " + preferredDoc);
+	  	      		System.out.println("Who would you like to change the Preferred Doctor to? (or 'N/A' if no preferred doctor)");
+	  	      		input.nextLine();
+	  	      		preferredDoc = input.nextLine();
+	  	      		editedAppt.setPreferredDoc(preferredDoc);
+	  	      		
+	  	      		break;
+	  	    	default:
+	  	      		System.out.println("Sorry, you did not enter a valid option. Bye.");
+	  	    }
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return editedAppt;
 	}
 }

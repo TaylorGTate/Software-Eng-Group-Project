@@ -45,4 +45,8 @@ public class Room {
 	public String isAvaliable() {
 		return avaliable;
 	}
+	
+	public void setAvaliablity(String avaliblity) {
+		avaliable = avaliblity;
+	}
 }

@@ -20,6 +20,10 @@ public class PatientManager {
 		this.name = name;
 		this.birthDate = birthDate;
 	}
+	
+	public PatientManager () {
+		
+	}
 	/**
 	   * Gets the manager ID of this patient manager.
 	   * @return this patient manager's ID.
@@ -87,7 +91,7 @@ public class PatientManager {
 	  	//Iterate through the ResultSet
   		for (Appointment a: aList) {
   			//Filter all the appointments against the entered Patient SSN
-  			if(a.getSSN() == pSSN) {
+  			if(a.getSSN().equals(pSSN) && a.getStatus().equals("Approved")) {
   				//Print the results
   				System.out.format("%s\t\t %s\t %s\t\t %s\t\t %s\t \n", a.getApptID(), a.getSSN(), a.getDate(), a.getTime(), a.getStatus());
   			}
@@ -98,13 +102,14 @@ public class PatientManager {
 		System.out.println("Enter appointment ID that needs to be checked-in.");
 		int appointmentID = input.nextInt();
 		
-		//Iterate through the Appointment Araylist
+		//Iterate through the Appointment Arraylist
   		for (Appointment a: aList) {
   			//Filter all the appointments against the entered Appointment ID
   			if(a.getApptID() == appointmentID) {
   				a.setStatus("Checked-in");
   			}
 	  	}
+  		
 		
 		//Query to assign appointment status to checked-in
 		String apptCheckIn = ("UPDATE Appointment set status = 'Checked-in' WHERE appt_id = " + "'" + appointmentID + "'");
@@ -114,6 +119,20 @@ public class PatientManager {
 		System.out.println();
 		System.out.println("Patient sucessfully Checked-in");
 		input.close();
+		
+		//Headers for the patient's appointments
+	  	System.out.println();
+	  	System.out.println("All of the Patient's appointments:");
+	  	System.out.println("Appointment ID" + "\t" + " Patient SSN"+ "\t" + " Appointment Date"+ "\t" + " Appointment Time"+ "\t" + " Appointment Status");
+	  	
+	  	//Iterate through the ResultSet
+  		for (Appointment a: aList) {
+  			//Filter all the appointments against the entered Patient SSN
+  			if(a.getSSN().equals(pSSN)) {
+  				//Print the results
+  				System.out.format("%s\t\t %s\t %s\t\t %s\t\t %s\t \n", a.getApptID(), a.getSSN(), a.getDate(), a.getTime(), a.getStatus());
+  			}
+	  	}
 		
 		//Return the Appointment ArrayList
 		return aList;
@@ -180,9 +199,9 @@ public class PatientManager {
 	  	//Iterate through patient ArrayList
   		for (Patient p: pList) {
   			//filter ArrayList for the Patient SSN entered  
-  			if(p.getSSN() == SSN) {
+  			if(p.getSSN().equals(SSN)) {
   				//Print the results
-  				System.out.format("   %s\t   %s\t   %s\t   %s\t\t   %s\t\t\t   %s\t \n", p.getSSN(), p.getName(), p.getBirthDate(), p.getAllergies(), p.getDoctor(), p.getBloodType());
+  				System.out.format("   %s\t   %s\t   %s\t   %s\t\t   %s\t\t   %s\t \n", p.getSSN(), p.getName(), p.getBirthDate(), p.getAllergies(), p.getDoctor(), p.getBloodType());
   			}
 	  	}
 		  
@@ -197,18 +216,19 @@ public class PatientManager {
 				System.out.println();
 				System.out.println("Enter the new SSN of the patient in the following format 123-45-6789");
 				String newSSN = input.next();
-				
+				String oldSSN = null;
 				//Iterate through patient ArrayList
 		  		for (Patient p: pList) {
-		  			//filter ArayList for the Patient SSN entered
-		  			if(p.getSSN() == SSN) {
+		  			//filter ArrayList for the Patient SSN entered
+		  			if(p.getSSN().equals(SSN)) {
 		  				p.setSSN(newSSN);
+		  				oldSSN = SSN;
 		  				SSN = newSSN;
 		  			}
 			  	}
 
 				//Query to assign patient a new SSN
-				String changeSSN = ("UPDATE patient set ssn =" + "'" + newSSN + "'" + "WHERE ssn = " + "'" + SSN + "'");
+				String changeSSN = ("UPDATE patient set ssn =" + "'" + newSSN + "'" + "WHERE ssn = " + "'" + oldSSN + "'");
 				
 				//execute update on appointment table to assign room number to appointment  
 			  	DataBase.executeUpdate(changeSSN, username, password);
@@ -299,12 +319,12 @@ public class PatientManager {
 		//Headers for the patient's information
 	  	System.out.println();
 	  	System.out.println("All of the Patient's Information:");
-	  	System.out.println(" 1.Patient SSN"+ "\t" + " 2.Patient Name"+ "\t" + " 3.Birthday"+ "\t" + " 4.Allergies" + "\t" + " 5.Perferred Doctor" + "\t" + " 6.Bloodtype");
+	  	System.out.println(" Patient SSN"+ "\t" + " Patient Name"+ "\t" + " Birthday"+ "\t" + " Allergies" + "\t" + " Perferred Doctor" + "\t" + " Bloodtype");
 	  	
 	  	//Iterate through patient ArrayList
   		for (Patient p: pList) {
   			//filter ArrayList for the Patient SSN entered  
-  			if(p.getSSN() == SSN) {
+  			if(p.getSSN().equals(SSN)) {
   				//Print the results
   				System.out.format("   %s\t   %s\t   %s\t   %s\t\t   %s\t\t\t   %s\t \n", p.getSSN(), p.getName(), p.getBirthDate(), p.getAllergies(), p.getDoctor(), p.getBloodType());
   			}

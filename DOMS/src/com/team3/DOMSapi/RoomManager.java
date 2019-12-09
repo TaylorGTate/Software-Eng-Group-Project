@@ -23,8 +23,14 @@ public class RoomManager {
 	}
 	
 	public RoomManager() {
+<<<<<<< HEAD
 	}
 
+=======
+		
+	}
+	
+>>>>>>> a3b849640ebe5331ad193dd0449a0dc2d68d0f2f
 	/**
 	   * Gets the manager ID of this room manager.
 	   * @return this room manager's ID.

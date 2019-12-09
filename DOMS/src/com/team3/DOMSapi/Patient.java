@@ -15,8 +15,10 @@ public class Patient {
 	 String preferredDoctor;
 	 String bloodType;
 	 String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
+	 int patientid;
 
-	public Patient(String patientName, String birthDay, String social, String allergy, String preferredDoc, String blood) {
+	public Patient(int id, String patientName, String birthDay, String social, String allergy, String preferredDoc, String blood) {
+		patientid = id;
 		name = patientName;
 		birthDate = birthDay;
 		ssn = social;
@@ -27,6 +29,14 @@ public class Patient {
 	
 	//empty constructor
 	public Patient() {
+	}
+	
+	public int getPatientID() {
+		return patientid;
+	}
+	
+	public void setPatientID(int id) {
+		patientid = id;
 	}
 
 	/**
@@ -120,9 +130,11 @@ public class Patient {
 	   * @param Scanner input  
 	   * @return newAppt Appointment object that contains the new appointment details
 	   */
-	public Appointment requestAppt(Scanner input) {
+	public Appointment requestAppt(ArrayList<Appointment> apptList, Scanner input) {
 		String patientName = this.name;
 		String patientSSN = this.ssn;
+		int apptID = apptList.size();
+		apptID++;
 		
 		System.out.println("\nPatient name: " + patientName + "\n"); 
 		System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
@@ -137,7 +149,7 @@ public class Patient {
         System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
         String preferredDoc = input.nextLine();
 
-        Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0], preferredDoc, 0);
+        Appointment newAppt = new Appointment(apptID, patientSSN, apptDate, apptTime, notes, statuses[0], preferredDoc, 0);
         return newAppt;
 	}
 	
@@ -165,7 +177,6 @@ public class Patient {
 		catch(Exception e) {
 			System.out.println(e);
 		}
-
 	}
 	
 	/**
@@ -257,10 +268,10 @@ public class Patient {
 	  	      		
 	  	      		break;
 	  	    	case 4:
-	  	      		System.out.println("Current Preferred Doctor: " + preferredDoctor);
+	  	      		System.out.println("Current Preferred Doctor: " + preferredDoc);
 	  	      		System.out.println("Who would you like to change the Preferred Doctor to? (or 'N/A' if no preferred doctor)");
 	  	      		input.nextLine();
-	  	      		preferredDoctor = input.nextLine();
+	  	      		preferredDoc = input.nextLine();
 	  	      		editedAppt.setPreferredDoc(preferredDoc);
 	  	      		
 	  	      		break;
