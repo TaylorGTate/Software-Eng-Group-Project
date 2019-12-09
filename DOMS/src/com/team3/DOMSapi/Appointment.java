@@ -11,30 +11,31 @@ public class Appointment {
 	String notes;
 	//String statuses[] = {"Requested", "Approved", "Denied", "Edited", "Checked-in"};
 	String status;
-	int roomNumber;
+	String preferredDoc;
+	int roomNum;
 
-	public Appointment(int ID, int roomNum, String pSSN, String date, String time, String note, String stat) {
+	public Appointment(int ID, String pSSN, String date, String time, String note, String stat, String preferred_doc, int roomNumber) {
 		apptID = ID;
-		roomNumber = roomNum;
 		patientSSN = pSSN;
 		apptDate = date;
 		apptTime = time;
 		notes = note;
 		status = stat;
+		preferredDoc = preferred_doc;
+		roomNum = roomNumber;
 	}
 	
-
 	//empty constructor
 	public Appointment() {
 	}
 	
 
 	public int getRoomNum() {
-		return roomNumber;
+		return roomNum;
 	}
 	
 	public void setRoomNum(int num) {
-		roomNumber = num;
+		roomNum = num;
 	}
 	
 	/**
@@ -92,6 +93,20 @@ public class Appointment {
 	   */
 	public void setDate(String date) {
 		apptDate = date;
+	}
+	/**
+	   * Gets the date of this appointment.
+	   * @return this appointment's date.
+	   */
+	public String getPreferredDoc() {
+		return preferredDoc;
+	}
+	/**
+	   * Changes the date of this appointment.
+	   * @param date This appointment's new date.  
+	   */
+	public void setPreferredDoc(String preferred_doc) {
+		preferredDoc = preferred_doc;
 	}
 	/**
 	   * Gets the notes of this appointment.
