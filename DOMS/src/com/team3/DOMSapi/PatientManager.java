@@ -177,7 +177,7 @@ public class PatientManager {
 		//execute update on appointment table to assign room number to appointment  
 	  	DataBase.executeUpdate(apptCheckIn, username, password);
 		System.out.println();
-		System.out.println("Patient sucessfully Checked-in");
+		System.out.println("Patient successfully Checked-in");
 		input.close();*/
 	
 		public ArrayList<Patient> editPatientsInfo(String username, String password, ArrayList<Patient> pList) throws SQLException {

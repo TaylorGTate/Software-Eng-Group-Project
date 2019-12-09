@@ -184,6 +184,21 @@ public class Main {
     	System.out.println("Welcome, " + doctor.getName() + "!");
     	return doctor;
 	}
+	/*
+	 * Input: the RoomManager's ID and an ArrayList containing the roommanagers
+	 * Output: Returns the RoomManager object indicated by the ID
+	 */
+	public static RoomManager getCurrentRoomManager(int doctorID, ArrayList<RoomManager> roomManagerList) {
+  	    RoomManager roomManager = null;
+    	for (int i=0; i<roomManagerList.size(); i++) {
+    		int id = roomManagerList.get(i).getID();
+    		if (id == doctorID) {
+    			roomManager = roomManagerList.get(i);
+    		}
+    	}
+    	System.out.println("Welcome, " + roomManager.getName() + "!");
+    	return roomManager;
+	}
 	
 	/*
 	 * Input: the Doctor's ID and an ArrayList containing the doctors
@@ -252,7 +267,25 @@ public class Main {
 	   * Depending on switch cases, will run the appropriate methods from the appropriate classes. 
 	   */
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException{
+		Scanner input = new Scanner(System.in);
+	    System.out.println("Enter DB user name: ");
+	    String usrname = input.next();
+	    System.out.println("Enter password: ");
+	    String pswd = input.next();
+	    /*
+		String myQueryTest = "SELECT count(*)\r\n" + 
+   				"FROM information_schema.TABLES\r\n" + 
+   				"WHERE (TABLE_SCHEMA = 'domsdb') AND (TABLE_NAME = 'Patient')";
 
+  	  	int validCount = DataBase.executeQueryCount(myQueryTest, usrname, pswd);
+		if (validCount > 0){
+			System.out.println("The table exists!");
+		}
+		else{
+			System.out.println("Table does not exist!");
+		}
+		*/
+		
 		//Declaring ArrayList from all of the different objects
 		ArrayList<Patient> patientList = new ArrayList<Patient>();
 		ArrayList<Doctor> doctorList = new ArrayList<Doctor>();
@@ -268,12 +301,9 @@ public class Main {
 		Appointment currentAppt = new Appointment();
 		DoctorManager currentDM = new DoctorManager();
 		AppointmentManager currentAM = new AppointmentManager();
-		
-		Scanner input = new Scanner(System.in);
-	    System.out.println("Enter DB user name: ");
-	    String usrname = input.nextLine();
-	    System.out.println("Enter password: ");
-	    String pswd = input.nextLine();
+
+		RoomManager currentRM = new RoomManager();
+
 
 	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 	    System.out.println("DB connected..");
@@ -597,15 +627,18 @@ public class Main {
 	    	  		//Switch statement to assign room selected availability
 	    	  		switch(statusChoice) {
 		    	  		case 1:// Assign room Clean and Ready status
-		    	  			RoomManager.setRoomStatusToClean(roomNum, usrname, pswd);
+		    	  			RoomManager RoomManagerClean = new RoomManager();
+		    	  			RoomManagerClean.setRoomStatusToClean(roomNum, usrname, pswd);
 		    	  			System.out.println("Room number " + roomNum + " status' has been set to Clean and Ready");
 		    	  			break;
 		    	  		case 2:// Assign room Occupied status
-		    	  			RoomManager.setRoomStatusToOccupied(roomNum, usrname, pswd);
+		    	  			RoomManager RoomManagerOccupied = new RoomManager();
+		    	  			RoomManagerOccupied.setRoomStatusToOccupied(roomNum, usrname, pswd);
 		    	  			System.out.println("Room number " + roomNum + " status' has been set to Occupied");
 		    	  			break;
 		    	  		case 3:// Assign room Empty and Dirty status
-		    	  			RoomManager.setRoomStatusToDirty(roomNum, usrname, pswd);
+		    	  			RoomManager RoomManagerDirty = new RoomManager();
+		    	  			RoomManagerDirty.setRoomStatusToDirty(roomNum, usrname, pswd);
 		    	  			System.out.println("Room number " + roomNum + " status' has been set to Empty and Dirty");
 		    	  			break;  			
 	    	  		}
@@ -621,6 +654,7 @@ public class Main {
 	    	  		roomNumber = input.next();
 	    	  		
 	    	  		//Call getRoomStatusMethod
+	    	  		RoomManager RoomManager = new RoomManager();
 	    	  		String roomStatus = RoomManager.getRoomStatus(roomNumber, usrname, pswd);
 	    	  		
 	    			//Print the status of the room
@@ -761,8 +795,31 @@ public class Main {
 		    		  break;
 		    		  
 		    	  case 2://edit a patient's user profile
-		    		  patientList = patientManagerList.get(PMIndex).editPatientsInfo(usrname, pswd, patientList);
-		    		  break;
+		    		  //System.out.println("Please enter SSN:");
+		  		     // String pat_ssn = input.next();	
+		  		      userSSN = getUserSSN(input);
+		  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
+		  	        
+		  	    	  try {
+		  	    		  Patient updatedPatient = currentPatient.editProfile(input);
+		  	    		  
+				          if (updatedPatient != null){
+				  	      	  String updatedPatientQuery = "update Patient set patientName=('" + updatedPatient.name + "'), birthDate=('" + updatedPatient.birthDate + "'), allergies=('" + updatedPatient.allergies + "'), preferredDoctor=('" + updatedPatient.preferredDoctor + "'), bloodtype=('" + updatedPatient.bloodType + "') where ssn=('" + updatedPatient.ssn + "');";
+				        	  DataBase.executeUpdate(updatedPatientQuery, usrname, pswd);
+				        	  
+					  	      for (int i=0; i<patientList.size(); i++) {
+					  	    	  if (patientList.get(i).getSSN().equals(updatedPatient.ssn)){
+					  	    		  patientList.set(i, updatedPatient);
+					  	    	  }
+					  	      }
+				        	  System.out.println("Profile details updated.");
+				          }
+		  	    	  }
+		  	    	  catch (Exception e) {
+		  	    		  System.out.println(e);
+		  	    	  }
+		  	    	  System.out.println("Thank you. Have a good day.");
+		  	          break;
 		    		  
 		    	  case 3: //Remove patient from database
 		    		  String pSSN = patientManagerList.get(PMIndex).removePatientFromDB(usrname, pswd, patientList, apptList);
