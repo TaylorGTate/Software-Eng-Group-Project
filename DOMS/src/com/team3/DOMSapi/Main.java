@@ -20,6 +20,8 @@ public class Main {
 	    System.out.println("Are you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile");
 	    int typeOfAccountChoice = input.nextInt();
 	    
+	    //if (typeOfAccountChoice)
+	    
 		return typeOfAccountChoice;
 	}
 	
@@ -273,11 +275,9 @@ public class Main {
 		Appointment currentAppt = new Appointment();
 		DoctorManager currentDM = new DoctorManager();
 		AppointmentManager currentAM = new AppointmentManager();
-
 		RoomManager currentRM = new RoomManager();
 
-
-	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
+		Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 	    System.out.println("DB connected..");
 	    Statement mystmt = myconn.createStatement();
     
