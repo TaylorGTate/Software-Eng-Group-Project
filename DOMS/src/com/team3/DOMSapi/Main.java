@@ -1,6 +1,11 @@
 package com.team3.DOMSapi;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -179,6 +184,21 @@ public class Main {
     	System.out.println("Welcome, " + doctor.getName() + "!");
     	return doctor;
 	}
+	/*
+	 * Input: the RoomManager's ID and an ArrayList containing the roommanagers
+	 * Output: Returns the RoomManager object indicated by the ID
+	 */
+	public static RoomManager getCurrentRoomManager(int doctorID, ArrayList<RoomManager> roomManagerList) {
+  	    RoomManager roomManager = null;
+    	for (int i=0; i<roomManagerList.size(); i++) {
+    		int id = roomManagerList.get(i).getID();
+    		if (id == doctorID) {
+    			roomManager = roomManagerList.get(i);
+    		}
+    	}
+    	System.out.println("Welcome, " + roomManager.getName() + "!");
+    	return roomManager;
+	}
 	
 	/*
 	 * Input: the Doctor's ID and an ArrayList containing the doctors
@@ -226,13 +246,46 @@ public class Main {
     	}
     	return appt;
 	}
+	
+	public static void seedDB(String usrname, String pswd) {
+	    try {
+	    	File file = new File("seeds.txt");
+	    	Scanner scanner = new Scanner(file);
+	    	while (scanner.hasNext()) {
+	    		String line = scanner.nextLine();
+	    		DataBase.executeUpdate(line, usrname, pswd);
+	    		System.out.println(line);
+	    	}
+	    	scanner.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+	  	} 
+	}
   
 	 /**
 	   * Connects to Database. Displays menu on login of choices to select from. 
 	   * Depending on switch cases, will run the appropriate methods from the appropriate classes. 
 	   */
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException{
+		Scanner input = new Scanner(System.in);
+	    System.out.println("Enter DB user name: ");
+	    String usrname = input.next();
+	    System.out.println("Enter password: ");
+	    String pswd = input.next();
+	    /*
+		String myQueryTest = "SELECT count(*)\r\n" + 
+   				"FROM information_schema.TABLES\r\n" + 
+   				"WHERE (TABLE_SCHEMA = 'domsdb') AND (TABLE_NAME = 'Patient')";
 
+  	  	int validCount = DataBase.executeQueryCount(myQueryTest, usrname, pswd);
+		if (validCount > 0){
+			System.out.println("The table exists!");
+		}
+		else{
+			System.out.println("Table does not exist!");
+		}
+		*/
+		
 		//Declaring ArrayList from all of the different objects
 		ArrayList<Patient> patientList = new ArrayList<Patient>();
 		ArrayList<Doctor> doctorList = new ArrayList<Doctor>();
@@ -248,16 +301,21 @@ public class Main {
 		Appointment currentAppt = new Appointment();
 		DoctorManager currentDM = new DoctorManager();
 		AppointmentManager currentAM = new AppointmentManager();
-		
-		Scanner input = new Scanner(System.in);
-	    System.out.println("Enter DB user name: ");
-	    String usrname = input.next();
-	    System.out.println("Enter password: ");
-	    String pswd = input.next();
+
+		RoomManager currentRM = new RoomManager();
+
 
 	    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 	    System.out.println("DB connected..");
 	    Statement mystmt = myconn.createStatement();
+    
+    	//seeds the DB using the seeds.txt file
+	    //check with user first before seeding DB
+	    System.out.print("Seed DB? (y or n): ");
+	    String userInput = input.nextLine();
+	    if (userInput.equals("y")) {
+	      seedDB(usrname, pswd);
+	    }
 	    
 	    //populating ArrayLists with DB info
 	    patientList = DataBase.populatePatientAL(patientList, pswd, usrname);
@@ -268,66 +326,11 @@ public class Main {
 	    amList = DataBase.populateAMAL(amList, pswd, usrname);
 	    roomList = DataBase.populateRAL(roomList, pswd, usrname);
 	    roomManagerList = DataBase.populateRMAL(roomManagerList, pswd, usrname);
-	    
-	    
 
-
-	    /*//Test objects
-	    Patient testPatient = new Patient(2, "Taylor", "1997-05-03", "123-45-6789", "N/A", "Dr. Smith", "O+");
-	    patientList.add(testPatient);
-	    //String patientQuery = "insert into Patient values('" + testPatient.getName() + "', '" + testPatient.getBirthDate() + "', '" + testPatient.getSSN() + "', '" + testPatient.getAllergies() + "', '" + testPatient.getDoctor() + "', '" + testPatient.getBloodType() + "');";
-	    //DataBase.executeUpdate(patientQuery, usrname, pswd);
-    
-	    PatientManager testPM = new PatientManager(4, "Test Patient Manager", "1997-05-03");
-	    patientManagerList.add(testPM);
-	    //String pmQuery = "insert into PatientManager values('" + testPM.getID() + "', '" + testPM.getName() + "', '" + testPM.getBirthDate() + "');";
-	    //DataBase.executeUpdate(pmQuery, usrname, pswd);
-	    
-	    Doctor testDoctor = new Doctor(1, "Test Doctor", "1967-02-04", "333-44-5555");
-	    doctorList.add(testDoctor);
-	    //String doctorQuery = "insert into Doctor values('" + testDoctor.getDocID() + "','" + testDoctor.getName() + "', '" + testDoctor.getBirthDate() + "', '" + testDoctor.getSSN() + "');";
-	    //DataBase.executeUpdate(doctorQuery, usrname, pswd);
-    
-	    DoctorManager testDM = new DoctorManager(1, "Test Doctor Manager", "1967-02-04");
-	    dmList.add(testDM);
-	    //String dmQuery = "insert into DoctorManager values('" + testDM.getID() + "','" + testDM.getName() + "', '" + testDM.getBirthDate() + "');";
-	    //DataBase.executeUpdate(dmQuery, usrname, pswd);
-
-	    Room unassignedRoom = new Room(0, "Room Unassigned");
-	    roomList.add(unassignedRoom);
-		  //String roomQuery = "insert into Room values('" + unassignedRoom.roomNumber + "', '"  + unassignedRoom.avaliable + "');";
-		  //DataBase.executeUpdate(roomQuery, usrname, pswd);
-	    
-	    Room testRoom = new Room(1, "Clean and Ready");
-	    roomList.add(testRoom);
-		  //String roomQuery = "insert into Room values('" + testRoom.roomNumber + "', '"  + testRoom.avaliable + "');";
-		  //DataBase.executeUpdate(roomQuery, usrname, pswd);
-	    
-	    Appointment testAppt = new Appointment(1, "123-45-6789", "2000-05-03", "12:30:00", "N/A", "Approved", "N/A", 0);
-	    apptList.add(testAppt);
-	    //String apptQuery = "insert into Appointment values('" + testAppt.getApptID() + "','" + testAppt.getSSN() + "', '" + testAppt.getDate() + "', '" + testAppt.getTime() + "', '" + testAppt.getNotes() + "', '" + testAppt.getStatus() + "', '" + testAppt.getPreferredDoc() + "', '" + testAppt.getRoomNum() + "');";
-	    //DataBase.executeUpdate(apptQuery, usrname, pswd);
-	    	    
-	    AppointmentManager testApptMan = new AppointmentManager(1, "Becky Smith", "1984-03-24");
-	    amList.add(testApptMan);
-	    //String amQuery = "insert into AppointmentManager values('" + testApptMan.getManID() + "','" + testApptMan.getName() + "', '" + testApptMan.getBirthDate() + "');";
-	    //DataBase.executeUpdate(amQuery, usrname, pswd);
-	    //RoomManager testRoomManager = new RoomManager(0, "Tony","1997-03-05");
-		
-		//String query4 = "insert into Room values('" + testRoom1.roomNumber + "', '" + testRoom1.buildingNumber + "', '" + testRoom1.avaliable + "', '" + testRoom1.patientSSN + "');";
-		//String query2 = "insert into Room values('" + testRoom.roomNumber + "', '" + testRoom.buildingNumber + "', '" + testRoom.avaliable + "', '" + testRoom.patientSSN + "');";
-		//String query3 = "insert into RoomManager values('" + testRoomManager.id + "', '"  + testRoomManager.name + "', '" + testRoomManager.birthDate + "');";
-		
-		//mystmt.executeUpdate(query2);
-		//mystmt.executeUpdate(query4);
-		//mystmt.executeUpdate(query3);
-		 */
-    
 	    int flag = 0;
     
 	    int typeOfAccountChoice = logInMessage(input);
 	    
-
 	    switch (typeOfAccountChoice) {
 	    
 	    	case 1: //Patient
@@ -340,10 +343,10 @@ public class Main {
 	  	      		currentPatient = getCurrentPatient(userSSN, patientList);
 
 	  	      		try {		            
-	  	      			Appointment newAppt = currentPatient.requestAppt(input);
+	  	      			Appointment newAppt = currentPatient.requestAppt(apptList, input);
 	  	      			apptList.add(newAppt);
 	  	      			
-	  	      			String newApptQuery = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', null);";
+	  	      			String newApptQuery = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', '" + newAppt.getPreferredDoc()+ "', '" + newAppt.getRoomNum() + "');";
 	  	      			DataBase.executeUpdate(newApptQuery, usrname, pswd);
 		  	    		System.out.println("Appointment requested.");
 
@@ -624,15 +627,18 @@ public class Main {
 	    	  		//Switch statement to assign room selected availability
 	    	  		switch(statusChoice) {
 		    	  		case 1:// Assign room Clean and Ready status
-		    	  			RoomManager.setRoomStatusToClean(roomNum, usrname, pswd);
+		    	  			RoomManager RoomManagerClean = new RoomManager();
+		    	  			RoomManagerClean.setRoomStatusToClean(roomNum, usrname, pswd);
 		    	  			System.out.println("Room number " + roomNum + " status' has been set to Clean and Ready");
 		    	  			break;
 		    	  		case 2:// Assign room Occupied status
-		    	  			RoomManager.setRoomStatusToOccupied(roomNum, usrname, pswd);
+		    	  			RoomManager RoomManagerOccupied = new RoomManager();
+		    	  			RoomManagerOccupied.setRoomStatusToOccupied(roomNum, usrname, pswd);
 		    	  			System.out.println("Room number " + roomNum + " status' has been set to Occupied");
 		    	  			break;
 		    	  		case 3:// Assign room Empty and Dirty status
-		    	  			RoomManager.setRoomStatusToDirty(roomNum, usrname, pswd);
+		    	  			RoomManager RoomManagerDirty = new RoomManager();
+		    	  			RoomManagerDirty.setRoomStatusToDirty(roomNum, usrname, pswd);
 		    	  			System.out.println("Room number " + roomNum + " status' has been set to Empty and Dirty");
 		    	  			break;  			
 	    	  		}
@@ -648,6 +654,7 @@ public class Main {
 	    	  		roomNumber = input.next();
 	    	  		
 	    	  		//Call getRoomStatusMethod
+	    	  		RoomManager RoomManager = new RoomManager();
 	    	  		String roomStatus = RoomManager.getRoomStatus(roomNumber, usrname, pswd);
 	    	  		
 	    			//Print the status of the room
@@ -752,7 +759,7 @@ public class Main {
 	  	      		currentPatient = getCurrentPatient(userSSN, patientList);
 
 	  	      		try {		            
-	  	      			Appointment newAppt = currentPatient.requestAppt(input);
+	  	      			Appointment newAppt = currentPatient.requestAppt(apptList, input);
 	  	      			apptList.add(newAppt);
 	  	      			
 	  	      			String newApptQuery = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', '" + newAppt.getPreferredDoc() + "', '" + newAppt.getRoomNum() + "');";
@@ -788,8 +795,31 @@ public class Main {
 		    		  break;
 		    		  
 		    	  case 2://edit a patient's user profile
-		    		  patientList = patientManagerList.get(PMIndex).editPatientsInfo(usrname, pswd, patientList);
-		    		  break;
+		    		  //System.out.println("Please enter SSN:");
+		  		     // String pat_ssn = input.next();	
+		  		      userSSN = getUserSSN(input);
+		  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
+		  	        
+		  	    	  try {
+		  	    		  Patient updatedPatient = currentPatient.editProfile(input);
+		  	    		  
+				          if (updatedPatient != null){
+				  	      	  String updatedPatientQuery = "update Patient set patientName=('" + updatedPatient.name + "'), birthDate=('" + updatedPatient.birthDate + "'), allergies=('" + updatedPatient.allergies + "'), preferredDoctor=('" + updatedPatient.preferredDoctor + "'), bloodtype=('" + updatedPatient.bloodType + "') where ssn=('" + updatedPatient.ssn + "');";
+				        	  DataBase.executeUpdate(updatedPatientQuery, usrname, pswd);
+				        	  
+					  	      for (int i=0; i<patientList.size(); i++) {
+					  	    	  if (patientList.get(i).getSSN().equals(updatedPatient.ssn)){
+					  	    		  patientList.set(i, updatedPatient);
+					  	    	  }
+					  	      }
+				        	  System.out.println("Profile details updated.");
+				          }
+		  	    	  }
+		  	    	  catch (Exception e) {
+		  	    		  System.out.println(e);
+		  	    	  }
+		  	    	  System.out.println("Thank you. Have a good day.");
+		  	          break;
 		    		  
 		    	  case 3: //Remove patient from database
 		    		  String pSSN = patientManagerList.get(PMIndex).removePatientFromDB(usrname, pswd, patientList, apptList);
@@ -823,27 +853,29 @@ public class Main {
 	      case 7: //create a new patient profile
   	    	    System.out.println("Please enter first name:");
   		        String name = input.next();
-  		        Patient Patient = new Patient();
-  		        Patient.setName(name);
+  		        Patient patient = new Patient();
+  		        patient.setName(name);
   		        System.out.println("Please enter birthday in the form of YYYY-MM-DD:");
   		        String birthDate = input.next();
-  		        Patient.setBirthDate(birthDate);
+  		        patient.setBirthDate(birthDate);
   		        System.out.println("Please enter SSN:");
   		        String ssn = input.next();
-  		        Patient.setSSN(ssn);
+  		        patient.setSSN(ssn);
   		        System.out.println("Please enter any allergies:");
   		        String allergies = input.next();
-  		        Patient.setAllergies(allergies);
+  		        patient.setAllergies(allergies);
   		        System.out.println("Please enter your preferred doctor (no spaces):");
   		        String preferredDoctor = input.next();
-  		        Patient.setDoctor(preferredDoctor);
+  		        patient.setDoctor(preferredDoctor);
   		        System.out.println("Please enter your blood type:");
   		        String bloodType = input.next();
-  		        Patient.setBloodType(bloodType);
-  		        String newPatientQuery= "insert into Patient values('" + name + "', '" + birthDate + "', '" + ssn + "', '" + allergies + "', '" + preferredDoctor + "', '" + bloodType + "');";
+  		        patient.setBloodType(bloodType);
+  		        String newPatientQuery= "insert into Patient values('" + patient.getName() + "', '" + patient.getBirthDate() + "', '" + patient.getSSN() + "', '" + patient.getAllergies() + "', '" + patient.getDoctor() + "', '" + patient.getBloodType() + "');";
   			    System.out.print(newPatientQuery);
+  			    
   			    DataBase.executeUpdate(newPatientQuery, usrname, pswd);
   			    // Add to patient array list
+  			    patientList.add(patient);
   			    break;
 	      case 8:// Quit
 	    	  flag = 1;

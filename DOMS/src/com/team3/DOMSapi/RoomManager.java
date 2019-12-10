@@ -23,9 +23,14 @@ public class RoomManager {
 	}
 	
 	public RoomManager() {
+<<<<<<< HEAD
+	}
+
+=======
 		
 	}
 	
+>>>>>>> a3b849640ebe5331ad193dd0449a0dc2d68d0f2f
 	/**
 	   * Gets the manager ID of this room manager.
 	   * @return this room manager's ID.
@@ -80,7 +85,7 @@ public class RoomManager {
 	   * @return this room's status
 	 * @throws SQLException 
 	   */
-	public static String getRoomStatus(String roomNum, String username, String password) throws SQLException {
+	public String getRoomStatus(String roomNum, String username, String password) throws SQLException {
 		
 		//declare variables 
 		String roomStatus = null;
@@ -109,7 +114,7 @@ public class RoomManager {
 	   * @param room The room to set the status for
 	 * @throws SQLException 
 	   */
-	public static void setRoomStatusToClean(String roomNum, String username, String password) throws SQLException {
+	public void setRoomStatusToClean(String roomNum, String username, String password) throws SQLException {
 		
 		//Query to update the room being passed to clean
 		String cleanQuery = "update room set avaliable = 'Clean and Ready' where roomNumber = ('" + roomNum + "')";
@@ -123,7 +128,7 @@ public class RoomManager {
 	   * @param room The room to set the status for
 	   * @throws SQLException
 	   */
-	public static void setRoomStatusToOccupied(String roomNum, String username, String password) throws SQLException {
+	public void setRoomStatusToOccupied(String roomNum, String username, String password) throws SQLException {
 		//Query to update the room being passed to clean
 		String cleanQuery = "update room set avaliable = 'Occupied' where roomNumber = ('" + roomNum + "')";
 		
@@ -135,7 +140,7 @@ public class RoomManager {
 	   * @param room The room to set the status for
 	   * @throws SQLException
 	   */
-	public static void setRoomStatusToDirty(String roomNum, String username, String password) throws SQLException {
+	public void setRoomStatusToDirty(String roomNum, String username, String password) throws SQLException {
 		//Query to update the room being passed to clean
 		String cleanQuery = "update room set avaliable = 'Empty and Dirty' where roomNumber = ('" + roomNum + "')";
 		

@@ -130,9 +130,11 @@ public class Patient {
 	   * @param Scanner input  
 	   * @return newAppt Appointment object that contains the new appointment details
 	   */
-	public Appointment requestAppt(Scanner input) {
+	public Appointment requestAppt(ArrayList<Appointment> apptList, Scanner input) {
 		String patientName = this.name;
 		String patientSSN = this.ssn;
+		int apptID = apptList.size();
+		apptID++;
 		
 		System.out.println("\nPatient name: " + patientName + "\n"); 
 		System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
@@ -147,7 +149,7 @@ public class Patient {
         System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
         String preferredDoc = input.nextLine();
 
-        Appointment newAppt = new Appointment(0, patientSSN, apptDate, apptTime, notes, statuses[0], preferredDoc, 0);
+        Appointment newAppt = new Appointment(apptID, patientSSN, apptDate, apptTime, notes, statuses[0], preferredDoc, 0);
         return newAppt;
 	}
 	
