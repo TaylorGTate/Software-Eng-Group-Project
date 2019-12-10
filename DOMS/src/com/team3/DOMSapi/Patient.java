@@ -137,18 +137,39 @@ public class Patient {
 		apptID++;
 		
 		System.out.println("\nPatient name: " + patientName + "\n"); 
+		
 		System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
         String apptDate = input.next();
+        //add error checking for making sure dates are current
+        while (!apptDate.matches("(\\d{4}-\\d{2}-\\d{2})")) {
+        	System.out.println("\n** Incorrect input. Please try again. **");
+        	System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
+            apptDate = input.next();
+        }
+        
         System.out.println("Please enter a time for your appointment: (in the form hh:mm) ");
         String apptTime = input.next();
+        //add error checking for making sure dates are current
+        while (!apptTime.matches("(\\d{2}:\\d{2})")) {
+        	System.out.println("\n** Incorrect input. Please try again. **");
+        	System.out.println("Please enter a time for your appointment: (in the form hh:mm) ");
+            apptTime = input.next();
+        }
         //need to add the seconds for the database entry
         apptTime += ":00";
         input.nextLine();
+        
         System.out.println("Please enter any notes you would like to include: ");
         String notes = input.nextLine();
+        
         System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
         String preferredDoc = input.nextLine();
-
+        while (!preferredDoc.matches("([Nn]\\/[Aa])|([a-zA-Z.\\s])")) {
+        	System.out.println("\n** Incorrect input. Please try again. **");
+        	System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
+            preferredDoc = input.nextLine();
+        }
+        
         Appointment newAppt = new Appointment(apptID, patientSSN, apptDate, apptTime, notes, statuses[0], preferredDoc, 0);
         return newAppt;
 	}
@@ -186,12 +207,14 @@ public class Patient {
 	   * @return selectedAppt Appointment object that the user selected
 	   */
 	public Appointment selectAppt(ArrayList<Appointment> apptList, Scanner input) {
-		Appointment selectedAppt = new Appointment();
+		Appointment selectedAppt = null;
+		ArrayList<Appointment> userAppts = new ArrayList<Appointment>();
 		
 		try {
 			for (int i=0; i<apptList.size(); i++) {
 				String userSSN = apptList.get(i).getSSN();
 				if (this.ssn.equals(userSSN)) {
+					userAppts.add(apptList.get(i));
 					int apptID = apptList.get(i).getApptID();
 					String apptDate = apptList.get(i).getDate();
 					String apptTime = apptList.get(i).getTime();
@@ -203,13 +226,23 @@ public class Patient {
 	    		}
 	    	}
 		
-			System.out.println("Which appt would you like to edit? (enter an appt ID to select an appt)");
-	    	int selected = input.nextInt();
-	    	for (int i=0; i<apptList.size(); i++) {
-	    		int selectedID = apptList.get(i).getApptID();
-	    		if (selected == selectedID) {
-	    			selectedAppt = apptList.get(i);
-	    		}
+	    	while (selectedAppt==null) {
+	    		System.out.println("Which appt would you like to edit? (enter an appt ID to select an appt)");
+	    		String selected = input.next();
+		    	while (!selected.matches("([0-9]+)")) {
+		        	System.out.println("\n** Incorrect input. Please try again. **");
+		    		System.out.println("Which appt would you like to edit? (enter an appt ID to select an appt)");
+			    	selected = input.next();
+		    	}
+		    	for (int i=0; i<userAppts.size(); i++) {
+		    		String selectedID = Integer.toString(userAppts.get(i).getApptID());
+		    		if (selected.equals(selectedID)) {
+		    			selectedAppt = userAppts.get(i);
+		    		}
+		    	}
+		    	if (selectedAppt==null) {
+		    		System.out.println("\n** This appt ID does not exist in our records. Please try again. **");
+		    	}
 	    	}
 		}
 		catch(Exception e) {
@@ -233,33 +266,49 @@ public class Patient {
 		String apptNotes = currentAppt.getNotes();
 		String preferredDoc = currentAppt.getPreferredDoc();
 
-		int selectedInput = 0;
+		String selectedInput = "";
 		Appointment editedAppt = currentAppt;
 		
 		try {
             System.out.println("Appt ID: " + apptID + "\n\t1. Appt Date: " + apptDate + "\n\t2. Appt Time: " + apptTime + "\n\t3. Appt Notes: " + apptNotes+ "\n\t4. Preferred Doctor: " + preferredDoc);
             
 			System.out.println("What would you like to edit? (input an integer to select)");
-	  	    selectedInput = input.nextInt();
-	  	    System.out.println(selectedInput);
+	  	    selectedInput = input.next();
+	    	while (!selectedInput.matches("([1-4])")) {
+	        	System.out.println("\n** Incorrect input. Please try again. **");
+	    		System.out.println("What would you like to edit? (input an integer to select)");
+		    	selectedInput = input.next();
+	    	}
 	  	      
 	  	    switch(selectedInput) {
-	  	    	case 1:
+	  	    	case "1":
 	  	    		System.out.println("Current Appt Date: " + apptDate);
 		  	    	System.out.println("What date would you like to change it to? (in the form YYYY-MM-DD)");
 		  	    	apptDate = input.next();
+		  	        //add error checking for making sure dates are current
+		  	        while (!apptDate.matches("(\\d{4}-\\d{2}-\\d{2})")) {
+		  	        	System.out.println("\n** Incorrect input. Please try again. **");
+		  	        	System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
+		  	            apptDate = input.next();
+		  	        }
 		  	    	editedAppt.setDate(apptDate);
 		  	    	
 		  	    	break;
-	  	    	case 2:
+	  	    	case "2":
 	  	      		System.out.println("Current Appt Time: " + apptTime);
 	  	      		System.out.println("What time would you like to change it to? (in the form hh:mm)");
 	  	      		apptTime = input.next();
+	  	      		//add error checking for making sure dates are current
+	  	      		while (!apptTime.matches("(\\d{2}:\\d{2})")) {
+	  	      			System.out.println("\n** Incorrect input. Please try again. **");
+	  	      			System.out.println("Please enter a time for your appointment: (in the form hh:mm) ");
+	  	      			apptTime = input.next();
+	  	      		}
 	  	      		apptTime += ":00";
 	  	      		editedAppt.setTime(apptTime);
 	  	      		
 	  	      		break;
-	  	    	case 3:
+	  	    	case "3":
 	  	      		System.out.println("Current Appt Notes: " + apptNotes);
 	  	      		System.out.println("What would you like to change the notes to?");
 	  	      		input.nextLine();
@@ -267,11 +316,16 @@ public class Patient {
 	  	      		editedAppt.setNotes(apptNotes);
 	  	      		
 	  	      		break;
-	  	    	case 4:
+	  	    	case "4":
 	  	      		System.out.println("Current Preferred Doctor: " + preferredDoc);
 	  	      		System.out.println("Who would you like to change the Preferred Doctor to? (or 'N/A' if no preferred doctor)");
 	  	      		input.nextLine();
 	  	      		preferredDoc = input.nextLine();
+	  	      		while (!preferredDoc.matches("([Nn]\\/[Aa])|([a-zA-Z.\\s])")) {
+	  	      			System.out.println("\n** Incorrect input. Please try again. **");
+	  	      			System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
+	  	      			preferredDoc = input.nextLine();
+	  	      		}
 	  	      		editedAppt.setPreferredDoc(preferredDoc);
 	  	      		
 	  	      		break;
@@ -305,13 +359,18 @@ public class Patient {
 			
 			System.out.println("Are you sure you want to cancel the above appointment? (y/n)");
 	  	    String deleteInput = input.next();
+	    	while (!deleteInput.matches("([yYnN]{1})")) {
+	        	System.out.println("\n** Incorrect input. Please try again. **");
+				System.out.println("Are you sure you want to cancel the above appointment? (y/n)");
+		    	deleteInput = input.next();
+	    	}
 	  	    
 	  	    switch(deleteInput) {
-	  	    	case ("y"):
+	  	    	case "y": case "Y":
 	  	    		cancelledAppt = currentAppt;
 	  	    		System.out.println("Appointment cancelled.");
 	  	    		break;
-	  	    	case ("n"):
+	  	    	case "n": case "N":
 	  	    		System.out.println("Appointment not cancelled.");
 	  	    		break;
 	  	    	default:
@@ -342,43 +401,69 @@ public class Patient {
 		System.out.println("\t1. Name: " + patientName + "\n\t2. Birthday: " + patientBirthDate + "\n\t3. Allergies: " + patientAllergies + "\n\t4. Preferred Doctor: " + patientDoc + "\n\t5. Blood type: " + patientBloodType);
 
 		System.out.println("What would you like to edit? (input an integer to select)");
-  	    int selectedInput = input.nextInt();
+  	    String selectedInput = input.next();
+    	while (!selectedInput.matches("([1-5])")) {
+        	System.out.println("\n** Incorrect input. Please try again. **");
+    		System.out.println("What would you like to edit? (input an integer to select)");
+	    	selectedInput = input.next();
+    	}
   	      
   	    try {
   	    	switch(selectedInput) {
-	  	    	case 1://name
+	  	    	case "1"://name
 	  	    		System.out.println("Current Name: " + patientName);
-	  	    		System.out.println("What would you like to change it to?");
+	  	    		System.out.println("Please enter new patient name: ");
 	  	    		input.nextLine();
 	  	    		patientName = input.nextLine();
+	  	    		while (!patientName.matches("([a-zA-Z.\\s])")) {
+	  	    			System.out.println("\n** Incorrect input. Please try again. **");
+		  	    		System.out.println("Please enter new patient name: ");
+	  	    			patientName = input.nextLine();
+	  	    		}
 	  	    		this.setName(patientName);
 	  	    		break;
-	  	      	case 2://birthday
+	  	      	case "2"://birthday
 	  	      		System.out.println("Current Birthday: " + birthDate);
-	  	      		System.out.println("What date would you like to change it to?");
+	  	      		System.out.println("Please enter new birthday: (in the form YYYY-MM-DD)");
 	  	      		input.nextLine();
 	  	      		patientBirthDate = input.nextLine();
+		  	        //add error checking for making sure dates are current
+		  	        while (!patientBirthDate.matches("(\\d{4}-\\d{2}-\\d{2})")) {
+		  	        	System.out.println("\n** Incorrect input. Please try again. **");
+		  	      		System.out.println("Please enter new birthday: (in the form YYYY-MM-DD)");
+		  	        	patientBirthDate = input.nextLine();
+		  	        }
 	  	      		this.setBirthDate(patientBirthDate);
 	  	      		break;
-	  	      	case 3://allergies
+	  	      	case "3"://allergies
 	  	      		System.out.println("Current Allergies: " + allergies);
 	  	      		System.out.println("What would you like to change it to?");
 	  	      		input.nextLine();
 	  	      		patientAllergies = input.nextLine();
 	  	      		this.setAllergies(patientAllergies);
 	  	      		break;
-	  	      	case 4://preferred doctor
+	  	      	case "4"://preferred doctor
 	  	      		System.out.println("Current preferred doctor: " + patientDoc);
-	  	      		System.out.println("Who would you like to change the Preferred Doctor to? (or 'N/A' if no preferred doctor)");
+  	      			System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
 	  	      		input.nextLine();	
 	  	      		patientDoc = input.nextLine();
+	  	      		while (!patientDoc.matches("([Nn]\\/[Aa])|([a-zA-Z.\\s])")) {
+	  	      			System.out.println("\n** Incorrect input. Please try again. **");
+	  	      			System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
+	  	      		patientDoc = input.nextLine();
+	  	      		}
 	  	      		this.setDoctor(patientDoc);
 	  	      		break;
-	  	      	case 5://blood type
+	  	      	case "5"://blood type
 	  	      		System.out.println("Current blood type: " + bloodType);
-	  	      		System.out.println("What would you like to change it to?");
+	  	      		System.out.println("Please enter new blood type: (A(-/+),B(-/+),O(-/+),AB(-/+))");
 	  	      		input.nextLine();
 	  	      		patientBloodType = input.nextLine();
+	  	      		while (!patientBloodType.matches("([aAbBoO][-+]+)")) {
+	  	      			System.out.println("\n** Incorrect input. Please try again. **");
+		  	      		System.out.println("Please enter new blood type: (A(-/+),B(-/+),O(-/+),AB(-/+))");
+	  	      			patientBloodType = input.nextLine();
+	  	      		}
 	  	      		this.setBloodType(patientBloodType);
 	  	      		break;
 	  	      	default:
@@ -386,7 +471,7 @@ public class Patient {
 	  	    }
   	    }
   	    catch(Exception e) {
-  	    	System.out.println(e);
+  	    	e.printStackTrace();
   	    }
   	    
   	    updatedPatient = this;
