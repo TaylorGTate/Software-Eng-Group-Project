@@ -1,11 +1,7 @@
 package com.team3.DOMSapi;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,32 +10,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 public class Main {
-	static String patientName;
-	static String patientSSN;
-	static String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
-	static String userSSN;
-	static int userID;
-	static String apptDate = "";
-	static String apptTime = "";
-	static String apptNotes;
-	static String apptStatus;
-	static String apptID;
-	static int selectedAppt;
-	static int selectedInput;
-	static String updateQuery;
-	static int rowCount=0;
-	static int manID;
-	static int manIDDB;
-	static String manName;
-	static String patName;
-	static String birthDate;
-	static String allergies;
-	static String prefDoc;
-	static String bloodType;
 
-	
 	/*
 	 * Input: the Scanner input
 	 * Output: Prints the log in message for the user.
@@ -298,6 +270,8 @@ public class Main {
 	    roomManagerList = DataBase.populateRMAL(roomManagerList, pswd, usrname);
 
 	    int flag = 0;
+	    String userSSN = "";
+	    int docID = 0;
     
 	    int typeOfAccountChoice = logInMessage(input);
 	    
@@ -404,8 +378,8 @@ public class Main {
 	      }
 	      break;
 	      case 2: //Doctor
-	    	  	userID = getUserID(input, "Doctor");
-	    	  	currentDoctor = getCurrentDoctor(userID, doctorList);
+	    	  	docID = getUserID(input, "Doctor");
+	    	  	currentDoctor = getCurrentDoctor(docID, doctorList);
 		  	    int selected = doctorMenu(input);
 		  	    
 		  	    switch (selected) {
@@ -488,7 +462,7 @@ public class Main {
 		  	    	  break;
 		  	      case 2:// Edit doctor user profile
 		  	    	  try {
-		  	    		  int docID = getUserID(input, "Doctor");
+		  	    		  docID = getUserID(input, "Doctor");
 		  	    		  currentDoctor = getCurrentDoctor(docID, doctorList);
 		  	    		  Doctor editedDoctor = currentDM.editProfile(currentDoctor, input);
 			  	    	  String updatedDoctorQuery= "update Doctor set doctorName=('" + editedDoctor.getName() + "'), birthDate=('" + editedDoctor.getBirthDate() + "'), ssn=('" + editedDoctor.getSSN() + "') where doctor_id=('" + currentDoctor.getDocID() + "');";
@@ -506,7 +480,7 @@ public class Main {
 		  	    	  }
 		  	    	  break;
 		  	      case 3:// Assign doctor to appointment
-	  	    		  int docID = getUserID(input, "Doctor");
+	  	    		  docID = getUserID(input, "Doctor");
 	  	    		  currentDoctor = getCurrentDoctor(docID, doctorList);
 		  	    	  userSSN = getUserSSN(input);
 		  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
@@ -629,10 +603,10 @@ public class Main {
 	    	  }
 	    	  break;
 	      case 5: //Appointment Manager
-	    	  manID = getUserID(input, "Appointment Manager");
+	    	  int manID = getUserID(input, "Appointment Manager");
 	    	  currentAM = getCurrentAM(manID, amList);
 	    	  
-	    	  selectedInput = apptManagerMenu(input);
+	    	  int selectedInput = apptManagerMenu(input);
 	    	  
 	    	  switch(selectedInput) {
 	    	  	case 1: //View all appts
@@ -688,8 +662,8 @@ public class Main {
 			  	        switch(selectedInput) {
 			  	      		case 1: //approve
 			  	      			Appointment updatedAppt = currentAM.approveApptRequest(currentAppt);
-			  	      			updateQuery = "update Appointment set status=('Approved') where appt_id=('" + currentAppt.getApptID() + "');";
-			  	      			DataBase.executeUpdate(updateQuery, usrname, pswd);
+			  	      			String approveApptQuery = "update Appointment set status=('Approved') where appt_id=('" + currentAppt.getApptID() + "');";
+			  	      			DataBase.executeUpdate(approveApptQuery, usrname, pswd);
 				  	    		for (int i=0; i<apptList.size(); i++) {
 				  	    			if (apptList.get(i).getApptID() == updatedAppt.getApptID()){
 				  	    				apptList.set(i, updatedAppt);
@@ -700,8 +674,8 @@ public class Main {
 			  	      			break;
 			  	      		case 2: //deny
 			  	      			Appointment updatedAppt2 = currentAM.denyApptRequest(currentAppt);
-			  	      			updateQuery = "update Appointment set status=('Denied') where appt_id=('" + updatedAppt2.getApptID() + "');";
-			  	      			DataBase.executeUpdate(updateQuery, usrname, pswd);
+			  	      			String denyApptQuery = "update Appointment set status=('Denied') where appt_id=('" + updatedAppt2.getApptID() + "');";
+			  	      			DataBase.executeUpdate(denyApptQuery, usrname, pswd);
 				  	    		for (int i=0; i<apptList.size(); i++) {
 				  	    			if (apptList.get(i).getApptID() == updatedAppt2.getApptID()){
 				  	    				apptList.set(i, updatedAppt2);
