@@ -16,12 +16,15 @@ public class Main {
 	 * Input: the Scanner input
 	 * Output: Prints the log in message for the user.
 	 */
-	public static int logInMessage(Scanner input) {
-	    System.out.println("Are you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile");
-	    int typeOfAccountChoice = input.nextInt();
+	public static String logInMessage(Scanner input) {
+	    System.out.println("\nMAIN MENU\nAre you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile\n\t8. Quit");
+	    String typeOfAccountChoice = input.nextLine();
 	    
-	    //if (typeOfAccountChoice)
-	    
+	    while (!typeOfAccountChoice.matches("[1-8]")) {
+        	System.out.println("\n** Incorrect input. Please try again. **");
+	    	System.out.println("\nMAIN MENU\nAre you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile\n\t8. Quit");
+		    typeOfAccountChoice = input.nextLine();
+	    }
 		return typeOfAccountChoice;
 	}
 	
@@ -60,9 +63,15 @@ public class Main {
 	 * Output: Prints the menu message for the patient
 	 * and returns the choice that the user selected.
 	 */
-	public static int patientMenu(Scanner input) {
-  	    System.out.println("Would you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Edit user profile.");
-  	    int choice = input.nextInt();
+	public static String patientMenu(Scanner input) {
+  	    System.out.println("\nPATIENT MENU\nWould you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Edit user profile.");
+  	    String choice = input.nextLine();
+  	    
+	    if (!choice.matches("[1-5]")) {
+        	System.out.println("\n** Incorrect input. Please try again. **");
+	  	    System.out.println("\nPATIENT MENU\nWould you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Edit user profile.");
+		    choice = input.nextLine();
+	    }
   	    
 		return choice;
 	}
@@ -109,8 +118,14 @@ public class Main {
 	 * to enter their SSN and returns the SSN that was input.
 	 */
 	public static String getUserSSN(Scanner input) {
-		System.out.println("Please enter SSN in the following format 123-45-6789:");
+		System.out.println("\nPlease enter SSN: (in the following format '###-##-####')");
 	    String userSSN = input.next();
+	    
+	    while (!userSSN.matches("(\\d{3}-\\d{2}-\\d{4})")){
+        	System.out.println("\n** Incorrect input. Please try again. **");
+	    	System.out.println("Please enter SSN: (in the following format '###-##-####')");
+		    userSSN = input.next();
+	    }
 	    
 		return userSSN;
 	}
@@ -132,6 +147,7 @@ public class Main {
 	 * Output: Returns the Patient object indicated by the SSN
 	 */
 	public static Patient getCurrentPatient(String userSSN, ArrayList<Patient> patientList) {
+		Scanner input = new Scanner(System.in);
   	    Patient patient = null;
     	for (int i=0; i<patientList.size(); i++) {
     		String ssn = patientList.get(i).getSSN();
@@ -139,7 +155,10 @@ public class Main {
     			patient = patientList.get(i);
     		}
     	}
-    	System.out.println("Welcome, " + patient.getName() + "!");
+    	while (patient==null) {
+    		System.out.println("\n** This SSN does not exist in our records. Please try again. **");
+    		patient = getCurrentPatient(getUserSSN(input), patientList);
+    	}
     	return patient;
 	}
 	
@@ -246,6 +265,7 @@ public class Main {
 	    String usrname = input.next();
 	    System.out.println("Enter password: ");
 	    String pswd = input.next();
+	    input.nextLine();
 	    /*
 		String myQueryTest = "SELECT count(*)\r\n" + 
    				"FROM information_schema.TABLES\r\n" + 
@@ -285,7 +305,12 @@ public class Main {
 	    //check with user first before seeding DB
 	    System.out.print("Seed DB? (y or n): ");
 	    String userInput = input.nextLine();
-	    if (userInput.equals("y")) {
+    	while (!userInput.matches("([yYnN]{1})")) {
+        	System.out.println("\n** Incorrect input. Please try again. **");
+    	    System.out.print("Seed DB? (y or n): ");
+			userInput = input.nextLine();
+    	}
+	    if (userInput.equals("y") || userInput.equals("Y")) {
 	      seedDB(usrname, pswd);
 	    }
 	    
@@ -303,18 +328,18 @@ public class Main {
 	    String userSSN = "";
 	    int docID = 0;
     
-	    int typeOfAccountChoice = logInMessage(input);
+	    String typeOfAccountChoice = logInMessage(input);
 	    
 	    switch (typeOfAccountChoice) {
 	    
-	    	case 1: //Patient
-	    		int choice = patientMenu(input);
+	    	case "1": //Patient
+	    		String choice = patientMenu(input);
 	  	    
 	    		switch (choice) {
-	  	      	case 1: //Schedule an appointment
-	  	      		System.out.println("Fill out the below information to schedule an appointment.");
-	  	      		userSSN = getUserSSN(input);
-	  	      		currentPatient = getCurrentPatient(userSSN, patientList);
+	  	      	case "1": //Schedule an appointment
+	  	      		currentPatient = getCurrentPatient(getUserSSN(input), patientList);
+	  	      		System.out.println("\nWelcome, " + currentPatient.getName() + "!");
+
 
 	  	      		try {		            
 	  	      			Appointment newAppt = currentPatient.requestAppt(apptList, input);
@@ -330,7 +355,7 @@ public class Main {
 	  	      		}	          
 	  	      		break;
 	  	          
-	  	      	case 2:// View my appointments.
+	  	      	case "2":// View my appointments.
 		  	        userSSN = getUserSSN(input);
 		  	        currentPatient = getCurrentPatient(userSSN, patientList);
 		  	        try {
@@ -341,7 +366,7 @@ public class Main {
 			        }
 		  	        break;
 	  	        
-	  	      case 3:// Edit my appointment
+	  	      case "3":// Edit my appointment
 	  	    	  userSSN = getUserSSN(input);
 	  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
 	  	        
@@ -359,7 +384,7 @@ public class Main {
 		          }
 	  	          break;
 	  	        
-	  	      case 4:// Cancel my appointment
+	  	      case "4":// Cancel my appointment
 		  	        userSSN = getUserSSN(input);
 		  	        currentPatient = getCurrentPatient(userSSN, patientList);
 		  	        
@@ -379,7 +404,7 @@ public class Main {
 			        }
 		  	        break;
 		  	        
-	  	      case 5:// Edit user profile
+	  	      case "5":// Edit user profile
 	  	    	  userSSN = getUserSSN(input);
 	  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
 	  	        
@@ -407,7 +432,7 @@ public class Main {
 	  	    	  System.out.println("Sorry, you did not enter a valid option. Bye.");
 	      }
 	      break;
-	      case 2: //Doctor
+	      case "2": //Doctor
 	    	  	docID = getUserID(input, "Doctor");
 	    	  	currentDoctor = getCurrentDoctor(docID, doctorList);
 		  	    int selected = doctorMenu(input);
@@ -471,7 +496,7 @@ public class Main {
 		  	    }
 		        
 	    	  break;
-	      case 3: //Doctor Manager
+	      case "3": //Doctor Manager
 		  	    int DMchoice = doctorManagerMenu(input);
 		  	    int dmID = getUserID(input, "Doctor Manager");
 		  	    currentDM = getCurrentDM(dmID, dmList);
@@ -538,7 +563,7 @@ public class Main {
 		  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
 		  	    }
 	    	  break;
-	      case 4: //Room Manager
+	      case "4": //Room Manager
 	    	  System.out.println("Would you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity. \n\t3. Check room availablilty");
 	    	  int RMchoice = input.nextInt();
 	    	  
@@ -636,7 +661,7 @@ public class Main {
 	    	  		break;
 	    	  }
 	    	  break;
-	      case 5: //Appointment Manager
+	      case "5": //Appointment Manager
 	    	  int manID = getUserID(input, "Appointment Manager");
 	    	  currentAM = getCurrentAM(manID, amList);
 	    	  
@@ -749,7 +774,7 @@ public class Main {
 	     	    	 System.out.println("Sorry, you did not enter a valid option. Bye.");
 	    	  	}
 	    	  break;
-	      case 6: //Patient Manager
+	      case "6": //Patient Manager
 	    	  
 	    	  //Getting the Patient Manager's id
 	    	  System.out.println("Please enter your Patient Manager ID.");
@@ -824,7 +849,7 @@ public class Main {
 		    	  }
 	    	  
 	    	  break;
-	      case 7: //create a new patient profile
+	      case "7": //create a new patient profile
   	    	    System.out.println("Please enter first name:");
   		        String name = input.next();
   		        Patient patient = new Patient();
@@ -851,7 +876,7 @@ public class Main {
   			    // Add to patient array list
   			    patientList.add(patient);
   			    break;
-	      case 8:// Quit
+	      case "8":// Quit
 	    	  flag = 1;
 	    	  break;
 	    
