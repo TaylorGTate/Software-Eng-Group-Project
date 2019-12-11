@@ -207,7 +207,6 @@ class RoomManagerTest {
 		ArrayList<Appointment> apptList = new ArrayList<Appointment>();
 		ArrayList<Room> roomList = new ArrayList<Room>();
 		
-				
 		//Query to create a test patient and test appointment
 		String queryMan = "insert into Patient values('" + "Taylor" + "', '" + "2000-12-12" + "', '" + "123-12-4321" + "', '" + "none" + "', '" + "none" + "', '" + "A+" + "');";
 		String queryManAppt = "insert into appointment values('" + 5 + "', '" + "123-12-4321" + "', '" + "2000-12-12" + "', '" + "12:30:00" + "', '" + "none" + "', '" + "Approved" + "', '" + "Dr.Jones" + "', '" + 9 + "');";
