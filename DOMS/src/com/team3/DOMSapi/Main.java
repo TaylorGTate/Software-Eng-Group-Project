@@ -284,7 +284,7 @@ public class Main {
     	//seeds the DB using the seeds.txt file
 	    //check with user first before seeding DB
 	    System.out.print("Seed DB? (y or n): ");
-	    String userInput = input.nextLine();
+	    String userInput = input.next();
 	    if (userInput.equals("y")) {
 	      seedDB(usrname, pswd);
 	    }
