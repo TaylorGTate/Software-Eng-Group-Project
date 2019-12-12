@@ -132,6 +132,7 @@ public class DataBase{
 	  		String apptTime = rs.getString("apptTime");
 	  		String notes = rs.getString("notes");
 	  		String status = rs.getString("status");
+	  		String preferredDoc = rs.getString("preferredDoc");
 	
 	  		//Add appts' info to the ArrayList
 	  		aList.get(i).setApptID(apptID);
@@ -141,6 +142,7 @@ public class DataBase{
 	  		aList.get(i).setTime(apptTime);
 	  		aList.get(i).setNotes(notes);
 	  		aList.get(i).setStatus(status);
+	  		aList.get(i).setPreferredDoc(preferredDoc);
 	
 	  		//increase i by 1
 	  		i++;

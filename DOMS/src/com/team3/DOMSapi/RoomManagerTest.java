@@ -250,7 +250,6 @@ class RoomManagerTest {
 		apptList.add(appt);
 		
 		//Query to create a test patient and test appointment
-
 		String testPatient = "insert into Patient values('" + "Taylor" + "', '" + "2000-12-12" + "', '" + "123-12-4321" + "', '" + "none" + "', '" + "none" + "', '" + "A+" + "');";
 		String testAppt = "insert into appointment values('" + 200 + "', '" + "123-12-4321" + "', '" + "2000-12-12" + "', '" + "12:30:00" + "', '" + "none" + "', '" + "Checked-in" + "', '" + "Dr.Jones" + "', '" + 200 + "');";
 		String testRoom = "insert into room values('" + 200 + "', '" + "Clean and Ready" + "');";
@@ -268,7 +267,7 @@ class RoomManagerTest {
 	    RoomManager testRoomManager = new RoomManager(4, "Taylor Tate", "1997-05-03");
 
 		//Call check patient in method
-		results = testRoomManager.assignPatientRoom(apptList, roomList, username, password, input);
+		results = testRoomManager.assignPatientRoom(apptList, roomList, username, password);
 		
 		//Test to see if method returns correct appt id and room number 
 		actualAppointmentRoom = results.get(1);
@@ -278,8 +277,8 @@ class RoomManagerTest {
 		assertEquals(expectedAppointmentRoom, actualAppointmentRoom);
 		assertEquals(expectedAppointmentID, actualAppointmentID);
 
+		
 		//delete for patient, appointment, and room for next test
-
 		String DeleteQuery1 = "delete from Patient where ssn=('" + "123-12-4321" + "');";
 		String DeleteQuery2 = "delete from Appointment where Pssn=('" + "123-12-4321" + "');";
 		String DeleteQuery3 = "delete from Room where roomNumber=('" + 200 + "');";

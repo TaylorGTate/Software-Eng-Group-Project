@@ -78,11 +78,29 @@ public class DoctorManager {
 
 	    System.out.println("Please enter the doctor's name:");
 	    input.nextLine();
-	    String doctorName = input.nextLine();	    
-        System.out.println("Please enter birthday in the form of YYYY-MM-DD:");
+  		String doctorName = input.nextLine();
+  		while (!doctorName.matches("([a-zA-Z.\\s])")) {
+  			System.out.println("\n** Incorrect input. Please try again. **");
+	    		System.out.println("Please enter new doctor name: ");
+	    		doctorName = input.nextLine();
+  		}	   
+	    
+    	System.out.println("Please enter birthday: (in the form YYYY-MM-DD)");
 	    String doctorBirthDate = input.nextLine();	
-        System.out.println("Please enter SSN:");
+        //add error checking for making sure dates are current
+        while (!doctorBirthDate.matches("(\\d{4}-\\d{2}-\\d{2})")) {
+        	System.out.println("\n** Incorrect input. Please try again. **");
+      		System.out.println("Please enter birthday: (in the form YYYY-MM-DD)");
+      		doctorBirthDate = input.nextLine();
+        }
+        
+    	System.out.println("Please enter SSN: (in the following format '###-##-####')");
 	    String doctorSSN = input.nextLine();	
+	    while (!doctorSSN.matches("(\\d{3}-\\d{2}-\\d{4})")){
+        	System.out.println("\n** Incorrect input. Please try again. **");
+	    	System.out.println("Please enter SSN: (in the following format '###-##-####')");
+	    	doctorSSN = input.next();
+	    }
 
 		Doctor newDoctor = new Doctor(newID, doctorName, doctorBirthDate, doctorSSN);
 		return newDoctor;
@@ -95,38 +113,58 @@ public class DoctorManager {
 	   */ 
 	public Doctor editProfile(Doctor currentDoctor, Scanner input) {
 		int docID = currentDoctor.getDocID();
-		String docName = currentDoctor.getName();
+		String doctorName = currentDoctor.getName();
 		String docBirthDate = currentDoctor.getBirthDate();
 		String docSSN = currentDoctor.getSSN();
 		
 		Doctor updatedDoctor = currentDoctor;
-		updatedDoctor.setDocID(docID);
+		//updatedDoctor.setDocID(docID);
 		
-		System.out.println("\t1. Name: " + docName + "\n\t2. Birthday: " + docBirthDate + "\n\t3. SSN: " + docSSN);
+		System.out.println("\t1. Name: " + doctorName + "\n\t2. Birthday: " + docBirthDate + "\n\t3. SSN: " + docSSN);
 		System.out.println("What would you like to edit? (input an integer to select)");
-	    int selectedInput = input.nextInt();
+  	    String selectedInput = input.next();
+    	while (!selectedInput.matches("([1-3])")) {
+        	System.out.println("\n** Incorrect input. Please try again. **");
+    		System.out.println("What would you like to edit? (input an integer to select)");
+	    	selectedInput = input.next();
+    	}
 	      
 	    try {
 	    	switch(selectedInput) {
-	  	    	case 1://name
-	  	    		System.out.println("Current Name: " + docName);
-	  	    		System.out.println("What would you like to change it to?");
+	  	    	case "1"://name
+	  	    		System.out.println("Current Name: " + doctorName);
+	  	    		System.out.println("Please enter new doctor name: ");
 	  	    		input.nextLine();
-	  	    		docName = input.nextLine();
-	  	    		updatedDoctor.setName(docName);
+	  	    		doctorName = input.nextLine();
+	  	    		while (!doctorName.matches("([a-zA-Z.\\s])")) {
+	  	    			System.out.println("\n** Incorrect input. Please try again. **");
+		  	    		System.out.println("Please enter new doctor name: ");
+		  	    		doctorName = input.nextLine();
+	  	    		}
+	  	    		updatedDoctor.setName(doctorName);
 	  	    		break;
-	  	      	case 2://birthday
+	  	      	case "2"://birthday
 	  	      		System.out.println("Current Birthday: " + docBirthDate);
-	  	      		System.out.println("What date would you like to change it to?");
-	  	      		input.nextLine();
-	  	      		docBirthDate = input.nextLine();
-	  	      		updatedDoctor.setBirthDate(docBirthDate);
+	  	      		System.out.println("Please enter birthday: (in the form YYYY-MM-DD)");
+	  	      		String doctorBirthDate = input.nextLine();	
+	  	      		//add error checking for making sure dates are current
+	  	      		while (!doctorBirthDate.matches("(\\d{4}-\\d{2}-\\d{2})")) {
+	  	      			System.out.println("\n** Incorrect input. Please try again. **");
+	  	      			System.out.println("Please enter birthday: (in the form YYYY-MM-DD)");
+	  	      			doctorBirthDate = input.nextLine();
+	  	      		}
+	  	      		updatedDoctor.setBirthDate(doctorBirthDate);
 	  	      		break;
-	  	      	case 3://ssn
+	  	      	case "3"://ssn
 	  	      		System.out.println("Current SSN: " + docSSN);
 	  	      		System.out.println("What would you like to change it to?");
 	  	      		input.nextLine();
 	  	      		docSSN = input.nextLine();
+	  	      		while (!docSSN.matches("(\\d{3}-\\d{2}-\\d{4})")){
+	  	      			System.out.println("\n** Incorrect input. Please try again. **");
+	  	      			System.out.println("Please enter SSN: (in the following format '###-##-####')");
+	  	      			docSSN = input.next();
+	  	      		}
 	  	      		updatedDoctor.setSSN(docSSN);
 	  	      		break;
 	  	      	default:
@@ -154,7 +192,6 @@ public class DoctorManager {
       		preferredDoc = currentDoc.getName();
       		System.out.println("The new preferred doctor is: " + preferredDoc);
             updatedAppt.setPreferredDoc(preferredDoc);
-
 		}
 		catch(Exception e) {
 			System.out.println(e);
