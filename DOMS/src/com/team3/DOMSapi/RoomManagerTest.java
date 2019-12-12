@@ -208,10 +208,10 @@ class RoomManagerTest {
 		ArrayList<Room> roomList = new ArrayList<Room>();
 		
 		//Query to create a test patient and test appointment
-		String queryMan = "insert into Patient values('" + "Taylor" + "', '" + "2000-12-12" + "', '" + "123-12-4321" + "', '" + "none" + "', '" + "none" + "', '" + "A+" + "');";
-		String queryManAppt = "insert into appointment values('" + 5 + "', '" + "123-12-4321" + "', '" + "2000-12-12" + "', '" + "12:30:00" + "', '" + "none" + "', '" + "Approved" + "', '" + "Dr.Jones" + "', '" + 9 + "');";
-		String queryManFakeRoom = "insert into room values('" + 9 + "', '" + "Clean and Ready" + "');";
-		String queryManRoom = "insert into room values('" + 8 + "', '" + "Clean and Ready" + "');";
+		String queryMan = "insert into Patient values('" + "Taylor" + "', '" + "2000-12-12" + "', '" + "123-12-4328" + "', '" + "none" + "', '" + "none" + "', '" + "A+" + "');";
+		String queryManAppt = "insert into appointment values('" + 4 + "', '" + "123-12-4328" + "', '" + "2000-12-12" + "', '" + "12:30:00" + "', '" + "none" + "', '" + "Approved" + "', '" + "Dr.Jones" + "', '" + 6 + "');";
+		String queryManFakeRoom = "insert into room values('" + 6 + "', '" + "Clean and Ready" + "');";
+		String queryManRoom = "insert into room values('" + 5 + "', '" + "Clean and Ready" + "');";
 		String queryManApptID = "select * from appointment";
 		
 		//Execute query to make test patient and test appointment 
@@ -248,10 +248,10 @@ class RoomManagerTest {
 		assertEquals(expectedAppointmentRoom, actualAppointmentRoom);
 		
 		//delete for patient, appointment, and room for next test
-		String DeleteQuery = "delete from Patient where ssn=('" + "123-12-4321" + "');";
-		String DeleteQuery2 = "delete from Appointment where Pssn=('" + "123-12-4321" + "');";
-		String DeleteQuery3 = "delete from Room where roomNumber=('" + "8" + "');";
-		String DeleteQuery4 = "delete from Room where roomNumber=('" + "9" + "');";
+		String DeleteQuery = "delete from Patient where ssn=('" + "123-12-4328" + "');";
+		String DeleteQuery2 = "delete from Appointment where Pssn=('" + "123-12-4328" + "');";
+		String DeleteQuery3 = "delete from Room where roomNumber=('" + "6" + "');";
+		String DeleteQuery4 = "delete from Room where roomNumber=('" + "5" + "');";
 
 		DataBase.executeUpdate(DeleteQuery2, username, password);
 		DataBase.executeUpdate(DeleteQuery, username, password);
