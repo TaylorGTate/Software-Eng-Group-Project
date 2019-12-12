@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -19,53 +18,31 @@ public class Main {
 	public static String logInMessage() {
 		Scanner input = new Scanner(System.in);
 	    System.out.println("\nMAIN MENU\nAre you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile\n\t8. Quit");
-	    String typeOfAccountChoice = input.nextLine();
+	    String typeOfAccountChoice = input.next();
 	    
 	    while (!typeOfAccountChoice.matches("[1-8]")) {
         	System.out.println("\n** Incorrect input. Please try again. **");
 	    	System.out.println("\nMAIN MENU\nAre you logging in as a \n\t1. Patient \n\t2. Doctor \n\t3. Doctor Manager \n\t4. Room Manager \n\t5. Appointment Manager \n\t6. Patient Manager \n\t7. Creating a new patient profile\n\t8. Quit");
-		    typeOfAccountChoice = input.nextLine();
+		    typeOfAccountChoice = input.next();
 	    }
+	    
 		return typeOfAccountChoice;
 	}
 	
-	public static int roomManagerMenu(Scanner input) {
-		  System.out.println("Would you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity. \n\t3. Check room availablilty \n\t4. Exit to Main Menu");
-	  	  int RMchoice = input.nextInt();
-	  	    
-			return RMchoice;
+	public static String roomManagerMenu() {
+		Scanner input = new Scanner(System.in);
+		System.out.println("\nROOM MANAGER MENU\nWould you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity. \n\t3. Check room availablilty \n\t4. Exit to Main Menu");
+  	    String choice = input.next();
+  	    
+	    while (!choice.matches("[1-4]")) {
+        	System.out.println("\n** Incorrect input. Please try again. **");
+  		  System.out.println("\nROOM MANAGER MENU\nWould you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity. \n\t3. Check room availablilty \n\t4. Exit to Main Menu");
+		    choice = input.next();
+	    }
+
+		return choice;
 	}
-	
-	public static int patientManagerIndex(ArrayList<PatientManager> pmList, int pmID) {
-		//Declare needed variables
-		int pmIndex = 0;
-		
-		//for loop to search ArrayList for the patient manager matching the id entered
-		for (PatientManager pm: pmList) {
-			if(pm.getID() == pmID) {
-				pmIndex = pmList.indexOf(pm);
-			}
-		}
-		
-		//return the Patient Manager's ArayList index
-		return pmIndex;
-	}
-	
-	
-	public static int roomManagerIndex(ArrayList<RoomManager> rmList, int rmID) {
-		//Declare needed variables
-		int rmIndex = 0;
-		
-		//for loop to search ArrayList for the patient manager matching the id entered
-		for (RoomManager rm: rmList) {
-			if(rm.getID() == rmID) {
-				rmIndex = rmList.indexOf(rm);
-			}
-		}
-		
-		//return the Patient Manager's ArayList index
-		return rmIndex;
-	}
+
 	/*
 	 * Input: the Scanner input
 	 * Output: Prints the menu message for the patient
@@ -74,12 +51,12 @@ public class Main {
 	public static String patientMenu() {
 		Scanner input = new Scanner(System.in);
   	    System.out.println("\nPATIENT MENU\nWould you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Edit user profile.\n\t6. Exit patient menu.");
-  	    String choice = input.nextLine();
+  	    String choice = input.next();
   	    
 	    while (!choice.matches("[1-6]")) {
         	System.out.println("\n** Incorrect input. Please try again. **");
 	  	    System.out.println("\nPATIENT MENU\nWould you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Edit user profile.\n\t6. Exit patient menu.");
-		    choice = input.nextLine();
+		    choice = input.next();
 	    }
 
 		return choice;
@@ -93,12 +70,12 @@ public class Main {
 	public static String doctorMenu() {
 		Scanner input = new Scanner(System.in);
 		System.out.println("\nDOCTOR MENU\nWould you like to:\n\t1. Update Patient user profile.\n\t2. Update Appointment details.\n\t3. Exit to Main Menu");
-  	    String choice = input.nextLine();
+  	    String choice = input.next();
   	    
 	    while (!choice.matches("[1-3]")) {
         	System.out.println("\n** Incorrect input. Please try again. **");
     		System.out.println("\nDOCTOR MENU\nWould you like to:\n\t1. Update Patient user profile.\n\t2. Update Appointment details.\n\t3. Exit to Main Menu");
-		    choice = input.nextLine();
+		    choice = input.next();
 	    }
   	    
 		return choice;
@@ -112,12 +89,12 @@ public class Main {
 	public static String doctorManagerMenu() {
 		Scanner input = new Scanner(System.in);
 		System.out.println("\nDOCTOR MANAGER MENU\nWould you like to:\n\t1. Create doctor user profile. \n\t2. Edit doctor user profile.\n\t3. Assign doctor to appointment.\n\t4. Exit to Main Menu");
-  	    String choice = input.nextLine();
+  	    String choice = input.next();
   	    
 	    while (!choice.matches("[1-4]")) {
         	System.out.println("\n** Incorrect input. Please try again. **");
     		System.out.println("\nDOCTOR MANAGER MENU\nWould you like to:\n\t1. Create doctor user profile. \n\t2. Edit doctor user profile.\n\t3. Assign doctor to appointment.\n\t4. Exit to Main Menu");
-		    choice = input.nextLine();
+		    choice = input.next();
 	    }
   	    
 		return choice;
@@ -131,12 +108,12 @@ public class Main {
 	public static String apptManagerMenu() {
 		Scanner input = new Scanner(System.in);
 		System.out.println("\nAPPOINTMENT MANAGER MENU\nWould you like to:\n\t1. View all appts.\n\t2. View 'Approved' Appts. \n\t3. View 'Requested' Appts.\n\t4. Edit Appts.\n\t5. Approve/Deny 'Requested' Appts.\n\t6. Schedule an Appt.\n\t7. Exit to Main Menu");
-  	    String choice = input.nextLine();
+  	    String choice = input.next();
   	    
 	    while (!choice.matches("[1-7]")) {
         	System.out.println("\n** Incorrect input. Please try again. **");
     		System.out.println("\nAPPOINTMENT MANAGER MENU\nWould you like to:\n\t1. View all appts.\n\t2. View 'Approved' Appts. \n\t3. View 'Requested' Appts.\n\t4. Edit Appts.\n\t5. Approve/Deny 'Requested' Appts.\n\t6. Schedule an Appt.\n\t7. Exit to Main Menu");
-		    choice = input.nextLine();
+		    choice = input.next();
 	    }
   	    
 		return choice;
@@ -150,14 +127,14 @@ public class Main {
 	public static String patientManagerMenu() {
 		Scanner input = new Scanner(System.in);
   	  	System.out.println("\nPATIENT MANAGER MENU\nWould you like to:\n\t1. Check-in patient.\n\t2. Edit patient user profile.\n\t3. Remove dead patient from database.\n\t4. Quit to Main Menu");
-  	    String choice = input.nextLine();
+  	    String choice = input.next();
   	    
 	    while (!choice.matches("[1-4]")) {
         	System.out.println("\n** Incorrect input. Please try again. **");
 	    	System.out.println("\nPATIENT MANAGER MENU\nWould you like to:\n\t1. Check-in patient.\n\t2. Edit patient user profile.\n\t3. Remove dead patient from database.\n\t4. Quit to Main Menu");
-		    choice = input.nextLine();
+		    choice = input.next();
 	    }
-  	    
+	    
 		return choice;
 	}
 	
@@ -188,12 +165,14 @@ public class Main {
 	public static int getUserID(String type) {
 		Scanner input = new Scanner(System.in);
 		System.out.println("Please enter " + type + " ID num:");
+		
 		while(!input.hasNextInt()) {
 			System.out.println("\n** Incorrect input. Please try again. **\n");
 			System.out.println("Please enter " + type + " ID num:");
 		    input.next();
 		}
-	    int userID = input.nextInt();	    
+		
+	    int userID = input.nextInt();	  
 		return userID;
 	}
 	
@@ -673,16 +652,16 @@ public class Main {
 	      case "4": //Room Manager
 	    	  RMFlag = 0;
 	    	  int rmID = getUserID("Room Manager");
-	    	  	currentRM = getCurrentRM(rmID, rmList);
+	    	  currentRM = getCurrentRM(rmID, rmList);
 
-	    	  	System.out.println("\nWelcome, " + currentRM.getName() + "!");
+	    	  System.out.println("\nWelcome, " + currentRM.getName() + "!");
 
 	    	  while (RMFlag == 0) {
 	    		  //Room manager options
-		    	  int RMchoice = roomManagerMenu(input);
+		    	  String RMchoice = roomManagerMenu();
 
 	    	  		switch (RMchoice) {
-	    	  		case 1:// Assign checked in patients to a room
+	    	  		case "1":// Assign checked in patients to a room
 	    	  			ArrayList <Integer> apptIDRoomNum = new ArrayList<Integer>();
 	    	  			apptIDRoomNum = currentRM.assignPatientRoom(apptList, roomList, usrname, pswd);
 		    	  		
@@ -718,7 +697,7 @@ public class Main {
 		    			}
 		    			System.out.println();
 		    	  		break;
-		    	  	case 2:// Set room availability
+		    	  	case "2":// Set room availability
 		    	  		//Headers for clean and ready Room list
 		    	  		System.out.println();
 	    				System.out.println("All Rooms:");
@@ -758,7 +737,7 @@ public class Main {
 		    	  		}			    	  					    	
 	
 		    	  		break;
-		    	  	case 3:// Check room availability
+		    	  	case "3":// Check room availability
 		    	  		
 		    	  		//declare needed variables
 		    	  		String roomStatus =null;
@@ -774,7 +753,7 @@ public class Main {
 		    			System.out.println("The status of room number " + roomNumb + " is " + roomStatus);
 		    	  		break;
 		    	  		
-		    	  	case 4://Quit to main menu
+		    	  	case "4"://Quit to main menu
 		    	  		RMFlag = 1;
 		    	  		break;
 		    	  }
