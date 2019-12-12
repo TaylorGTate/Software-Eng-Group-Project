@@ -64,12 +64,12 @@ public class Main {
 	 * and returns the choice that the user selected.
 	 */
 	public static String patientMenu(Scanner input) {
-  	    System.out.println("\nPATIENT MENU\nWould you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Edit user profile.");
+  	    System.out.println("\nPATIENT MENU\nWould you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Edit user profile.\n\t6. Exit patient menu.");
   	    String choice = input.nextLine();
   	    
-	    if (!choice.matches("[1-5]")) {
+	    if (!choice.matches("[1-6]")) {
         	System.out.println("\n** Incorrect input. Please try again. **");
-	  	    System.out.println("\nPATIENT MENU\nWould you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Edit user profile.");
+	  	    System.out.println("\nPATIENT MENU\nWould you like to:\n\t1. Schedule an appointment.\n\t2. View my appointments.\n\t3. Edit my appointment.\n\t4. Cancel my appointment.\n\t5. Edit user profile.\n\t6. Exit patient menu.");
 		    choice = input.nextLine();
 	    }
 
@@ -343,115 +343,14 @@ public class Main {
 	    switch (typeOfAccountChoice) {
 	    
 	    	case "1": //Patient
-	    		String choice = patientMenu(input);
-	  	    
-	    		switch (choice) {
-	  	      	case "1": //Schedule an appointment
-	  	      		currentPatient = getCurrentPatient(getUserSSN(input), patientList);
-	  	      		System.out.println("\nWelcome, " + currentPatient.getName() + "!");
-
-
-	  	      		try {		            
-	  	      			Appointment newAppt = currentPatient.requestAppt(apptList, input);
-	  	      			apptList.add(newAppt);
-	  	      			
-	  	      			String newApptQuery = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', '" + newAppt.getPreferredDoc()+ "', '" + newAppt.getRoomNum() + "');";
-	  	      			DataBase.executeUpdate(newApptQuery, usrname, pswd);
-		  	    		System.out.println("Appointment requested.");
-
-	  	      		}
-	  	      		catch (Exception e) {
-	  	      			System.out.println(e);
-	  	      		}	          
-	  	      		break;
-	  	          
-	  	      	case "2":// View my appointments.
-		  	        userSSN = getUserSSN(input);
-		  	        currentPatient = getCurrentPatient(userSSN, patientList);
-		  	        try {
-			            currentPatient.viewAppts(apptList);
-			        }
-			        catch (Exception e) {
-			            System.out.println(e);
-			        }
-		  	        break;
-	  	        
-	  	      case "3":// Edit my appointment
-	  	    	  userSSN = getUserSSN(input);
-	  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
-	  	        
-	  	    	  try {
-	  	    		  currentAppt = currentPatient.selectAppt(apptList, input);
-	  	    		  
-	  	    		  Appointment updatedAppt = currentPatient.editAppt(currentAppt, input);
-	  	    		  
-			  	      String updatedApptQuery = "update Appointment set apptTime=('" + updatedAppt.getTime() + "'), apptDate=('" + updatedAppt.getDate() + "'), notes=('" + updatedAppt.getNotes() + "'), status=('Requested') where appt_id=('" + updatedAppt.getApptID() + "');";
-	  	    		  DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
-	  	    		  System.out.println("Appointment details updated.");
-		          }
-		          catch (Exception e) {
-		        	  System.out.println(e);
-		          }
-	  	          break;
-	  	        
-	  	      case "4":// Cancel my appointment
-		  	        userSSN = getUserSSN(input);
-		  	        currentPatient = getCurrentPatient(userSSN, patientList);
-		  	        
-			  	    try {
-			  	    	currentAppt = currentPatient.selectAppt(apptList, input);
-
-			            Appointment cancelledAppt = currentPatient.cancelAppt(currentAppt, input);
-			            
-			            if (cancelledAppt != null){
-			  	    		String cancelApptQuery = "delete from Appointment where appt_id=('" + cancelledAppt.getApptID() + "');";
-			            	DataBase.executeUpdate(cancelApptQuery, usrname, pswd);
-			            	apptList.remove(cancelledAppt);
-			            }
-			        }
-			        catch (Exception e) {
-			            System.out.println(e);
-			        }
-		  	        break;
-		  	        
-	  	      case "5":// Edit user profile
-	  	    	  userSSN = getUserSSN(input);
-	  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
-	  	        
-	  	    	  try {
-	  	    		  Patient updatedPatient = currentPatient.editProfile(input);
-	  	    		  
-			          if (updatedPatient != null){
-			  	      	  String updatedPatientQuery = "update Patient set patientName=('" + updatedPatient.name + "'), birthDate=('" + updatedPatient.birthDate + "'), allergies=('" + updatedPatient.allergies + "'), preferredDoctor=('" + updatedPatient.preferredDoctor + "'), bloodtype=('" + updatedPatient.bloodType + "') where ssn=('" + updatedPatient.ssn + "');";
-			        	  DataBase.executeUpdate(updatedPatientQuery, usrname, pswd);
-			        	  
-				  	      for (int i=0; i<patientList.size(); i++) {
-				  	    	  if (patientList.get(i).getSSN().equals(updatedPatient.ssn)){
-				  	    		  patientList.set(i, updatedPatient);
-				  	    	  }
-				  	      }
-			        	  System.out.println("Profile details updated.");
-			          }
-	  	    	  }
-	  	    	  catch (Exception e) {
-	  	    		  System.out.println(e);
-	  	    	  }
-	  	    	  System.out.println("Thank you. Have a good day.");
-	  	          break;
-	  	      default:
-	  	    	  System.out.println("Sorry, you did not enter a valid option. Bye.");
-	      }
-	      break;
-	      case "2": //Doctor
-	    	  	docID = getUserID(input, "Doctor");
-	    	  	currentDoctor = getCurrentDoctor(docID, doctorList);
-		  	    int selected = doctorMenu(input);
+	    		while (patFlag == 0) {
+		    		String choice = patientMenu(input);
 		  	    
 		    		switch (choice) {
-		  	      	case 1: //Schedule an appointment
-		  	      		System.out.println("Fill out the below information to schedule an appointment.");
-		  	      		userSSN = getUserSSN(input);
-		  	      		currentPatient = getCurrentPatient(userSSN, patientList);
+		  	      	case "1": //Schedule an appointment
+		  	      		currentPatient = getCurrentPatient(getUserSSN(input), patientList);
+		  	      		System.out.println("\nWelcome, " + currentPatient.getName() + "!");
+	
 	
 		  	      		try {		            
 		  	      			Appointment newAppt = currentPatient.requestAppt(apptList, input);
@@ -467,7 +366,7 @@ public class Main {
 		  	      		}	          
 		  	      		break;
 		  	          
-		  	      	case 2:// View my appointments.
+		  	      	case "2":// View my appointments.
 			  	        userSSN = getUserSSN(input);
 			  	        currentPatient = getCurrentPatient(userSSN, patientList);
 			  	        try {
@@ -477,79 +376,8 @@ public class Main {
 				            System.out.println(e);
 				        }
 			  	        break;
-
-		  	      case 3:// Edit my appointment
-			  	    try {
-		  	    		currentAppt = currentPatient.selectAppt(apptList, input);
-			  	    	Appointment updatedAppt = currentDoctor.editApptNotes(currentAppt, input);
-			            if (currentAppt != null){
-					  	    String updatedApptQuery = "update Appointment set notes=('" + updatedAppt.getNotes() + "') where appt_id=('" + updatedAppt.getApptID() + "');";
-			        	    DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
-			        	  
-				  	        for (int i=0; i<apptList.size(); i++) {
-				  	    	    if (apptList.get(i).getApptID() == currentAppt.getApptID()){
-				  	    	    	apptList.set(i, currentAppt);
-				  	    	    }
-				  	        }
-			        	    System.out.println("Appointment details updated.");
-			            }
-		            }
-			          catch (Exception e) {
-			            System.out.println(e);
-			          }
-		  	        for (int i=0; i<apptList.size(); i++) {
-		  	    	    if (apptList.get(i).getApptID() == currentAppt.getApptID()){
-		  	    	    	System.out.println(apptList.get(i).getNotes());
-		  	    	    }
-		  	        }
-			  	    System.out.println("Thank you. Have a good day.");
-		  	          break;
-		  	      default:
-		  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
-		  	    }
-		        
-	    	  break;
-	      case "3": //Doctor Manager
-		  	    int DMchoice = doctorManagerMenu(input);
-		  	    int dmID = getUserID(input, "Doctor Manager");
-		  	    currentDM = getCurrentDM(dmID, dmList);
-		  	    int numOfDoctors = doctorList.size();
-		  	    
-		  	    switch (DMchoice) {
-		  	      case 1: //Create doctor user profile
-		  	    	  try {
-		  	    		  Doctor newDoctor = currentDM.createDoctor(numOfDoctors, input);
-			  	    	  doctorList.add(newDoctor);
-			  	    	  String newDoctorQuery= "insert into Doctor values('" + newDoctor.getDocID() + "', '" + newDoctor.getName() + "', '" + newDoctor.getBirthDate() + "', '" + newDoctor.getSSN() + "');";
-			  	    	  DataBase.executeUpdate(newDoctorQuery,  usrname, pswd);
-		  	    	  }
-		  	    	  catch(Exception e) {
-		  	    		  System.out.println(e);
-		  	    	  }
-		  	    	  
-		  	    	  break;
-		  	      case 2:// Edit doctor user profile
-		  	    	  try {
-		  	    		  docID = getUserID(input, "Doctor");
-		  	    		  currentDoctor = getCurrentDoctor(docID, doctorList);
-		  	    		  Doctor editedDoctor = currentDM.editProfile(currentDoctor, input);
-			  	    	  String updatedDoctorQuery= "update Doctor set doctorName=('" + editedDoctor.getName() + "'), birthDate=('" + editedDoctor.getBirthDate() + "'), ssn=('" + editedDoctor.getSSN() + "') where doctor_id=('" + currentDoctor.getDocID() + "');";
-			  	    	  DataBase.executeUpdate(updatedDoctorQuery,  usrname, pswd);		
-			  	    	  
-				  	        for (int i=0; i<doctorList.size(); i++) {
-				  	    	    if (doctorList.get(i).getDocID() == currentDoctor.getDocID()){
-				  	    	    	doctorList.set(i, currentDoctor);
-				  	    	    }
-				  	        }
-			        	    System.out.println("Profile details updated.");
-		  	    	  }
-		  	    	  catch(Exception e) {
-		  	    		  System.out.println(e);
-		  	    	  }
-		  	    	  break;
-		  	      case 3:// Assign doctor to appointment
-	  	    		  docID = getUserID(input, "Doctor");
-	  	    		  currentDoctor = getCurrentDoctor(docID, doctorList);
+		  	        
+		  	      case "3":// Edit my appointment
 		  	    	  userSSN = getUserSSN(input);
 		  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
 		  	        
@@ -561,165 +389,13 @@ public class Main {
 				  	      String updatedApptQuery = "update Appointment set apptTime=('" + updatedAppt.getTime() + "'), apptDate=('" + updatedAppt.getDate() + "'), notes=('" + updatedAppt.getNotes() + "'), status=('Requested') where appt_id=('" + updatedAppt.getApptID() + "');";
 		  	    		  DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
 		  	    		  System.out.println("Appointment details updated.");
-		  	    	  }
-		  	    	  catch(Exception e) {
-		  	    		  System.out.println(e);
-		  	    	  }
-		  	        break;
-		  	      default:
-		  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
-		  	    }
-	    	  break;
-	      case "4": //Room Manager
-	    	  System.out.println("Would you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity. \n\t3. Check room availablilty");
-	    	  int RMchoice = input.nextInt();
-	    	  
-	    	  //Getting the Patient Manager's id
-	    	  System.out.println("Please enter your Room Manager ID.");
-	    	  int RMid = input.nextInt();
-	    	  
-	    	  //Find the ArrayList index of the patient manager
-	    	  int RMindex = roomManagerIndex(roomManagerList, RMid);
-	    	  
-	    	  switch (RMchoice) {
-	    	  	case 1:// Assign checked in patients to a room
-	    	  		apptList = roomManagerList.get(RMindex).assignPatientRoom(apptList, roomList, usrname, pswd);
-	    	  		//Headers for all checked-in appointments
-	    	  		System.out.println();
-	    			System.out.println("All checked-in appointments:");
-	    			System.out.println("Appointment ID" + "\t" + " Room Number" + "\t"+ " Patient SSN" + "\t" + " Appointment Date" + "\t" + " Appointment Time" + "\t" + " Appointment Status");	    	  		
-	    			
-	    			//iterating through appointment ArrayList to get all checked-in appointments
-	    			for (Appointment a: apptList) {	    				
-	    				if(a.getStatus() == "Checked-in") {
-	    					System.out.format("%s\t\t %s\t\t %s\t %s\t\t %s\t\t %s\t\n", a.getApptID(), a.getRoomNum(), a.getSSN(), a.getDate(), a.getTime(), a.getStatus());
-	    				}
-	    			}
-	    	  		break;
-	    	  	case 2:// Set room availability
-	    	  		
-	    	  		//Headers for clean and ready Room list
-	    	  		System.out.println();
-    				System.out.println("All Rooms:");
-    				System.out.println("Room Number" + "\t" + " Room Status");
-	    				
-	    	  	    //Query for all the Rooms
-	    	  		String allRooms = "SELECT * From Room";
-	    	  		
-	    	  		//ResultSet of all the checked in the appointments
-	    	  		ResultSet rs1 = DataBase.executeQuery(allRooms, usrname, pswd);
-	    	  		
-	    	  		//iterate through the ResultSet
-	    	  		while (rs1.next()) {
-	    	  			int id = rs1.getInt("roomNumber");
-	    	  			String avaliable = rs1.getString("avaliable");
-	    	  			
-	    	  			//Print the results
-	    	  			System.out.format("%s\t\t %s\t \n", id, avaliable);
-	    	  		}
-	    	  		
-	    	  		//Declare needed variables
-	    	  		String roomNum = null;
-	    	  		int statusChoice = 0;
-	    	  		
-	    	  		//Get number of room that status' needs to be changed
-	    	  		System.out.println("What is the number of the room you would like to set the availability for?");
-	    	  		roomNum = input.next();
-	    	  		
-	    	  		//Ask the user what status they are assigning to the room
-	    	  		System.out.println("What status would you like to assign to room " + roomNum +":\n\t1. Clean and Ready \n\t2. Occupied \n\t3. Empty and Dirty");
-	    	  		statusChoice = input.nextInt();
-	    	  		
-	    	  		//Switch statement to assign room selected availability
-	    	  		switch(statusChoice) {
-		    	  		case 1:// Assign room Clean and Ready status
-		    	  			RoomManager RoomManagerClean = new RoomManager();
-		    	  			RoomManagerClean.setRoomStatusToClean(roomNum, usrname, pswd);
-		    	  			System.out.println("Room number " + roomNum + " status' has been set to Clean and Ready");
-		    	  			break;
-		    	  		case 2:// Assign room Occupied status
-		    	  			RoomManager RoomManagerOccupied = new RoomManager();
-		    	  			RoomManagerOccupied.setRoomStatusToOccupied(roomNum, usrname, pswd);
-		    	  			System.out.println("Room number " + roomNum + " status' has been set to Occupied");
-		    	  			break;
-		    	  		case 3:// Assign room Empty and Dirty status
-		    	  			RoomManager RoomManagerDirty = new RoomManager();
-		    	  			RoomManagerDirty.setRoomStatusToDirty(roomNum, usrname, pswd);
-		    	  			System.out.println("Room number " + roomNum + " status' has been set to Empty and Dirty");
-		    	  			break;  			
-	    	  		}
-
-	    	  		break;
-	    	  	case 3:// Check room availability
-	    	  		
-	    	  		//Declare needed variables
-	    	  		String roomNumber = null;
-	    	  		
-	    	  		//Get the room number from the RM 
-	    	  		System.out.println("Please enter the room number of the room you would like to know the status of.");
-	    	  		roomNumber = input.next();
-	    	  		
-	    	  		//Call getRoomStatusMethod
-	    	  		RoomManager RoomManager = new RoomManager();
-	    	  		String roomStatus = RoomManager.getRoomStatus(roomNumber, usrname, pswd);
-	    	  		
-	    			//Print the status of the room
-	    			System.out.println("The status of room number " + roomNumber + " is " + roomStatus);
-	    	  		break;
-	    	  }
-	    	  break;
-	      case "5": //Appointment Manager
-	    	  int manID = getUserID(input, "Appointment Manager");
-	    	  currentAM = getCurrentAM(manID, amList);
-	    	  
-	    	  int selectedInput = apptManagerMenu(input);
-	    	  
-	    	  switch(selectedInput) {
-	    	  	case 1: //View all appts
-	    	  		try {
-	    	  			currentAM.viewAppts(apptList);
-	    	  		}
-	    	  		catch(Exception e) {
-	    	  			System.out.println(e);
-	    	  		}
-	    	  		break;
-	    	  	case 2: //view approved appts
-	    	  		try {
-	    	  			currentAM.viewApprovedAppts(apptList);
-	    	  		}
-	    	  		catch(Exception e) {
-	    	  			System.out.println(e);
-	    	  		}
-	    	  		break;
-	    	  	case 3: //view requested appts
-	    	  		try {
-	    	  			currentAM.viewRequestedAppts(apptList);
-	    	  		}
-	    	  		catch(Exception e) {
-	    	  			System.out.println(e);
-	    	  		}
-	    	  		break;
-	    	  	case 4: //edit appts
-			  	    try {
-			  	    	currentAppt = currentAM.selectAppt(apptList, input);
-			  	    	
-			  	    	Appointment updatedAppt = currentAM.editAppt(currentAppt, input);
-			  	    	
-				  	    String updatedApptQuery = "update Appointment set apptTime=('" + updatedAppt.getTime() + "'), apptDate=('" + updatedAppt.getDate() + "'), notes=('" + updatedAppt.getNotes() + "'), status=('Requested') where appt_id=('" + updatedAppt.getApptID() + "');";
-		  	    		DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
-		  	    		for (int i=0; i<apptList.size(); i++) {
-		  	    			if (apptList.get(i).getApptID() == updatedAppt.getApptID()){
-		  	    				apptList.set(i, updatedAppt);
-		  	    			}
-		  	    		}	
-		  	    		System.out.println("Appointment details updated.");
 			          }
 			          catch (Exception e) {
 			        	  System.out.println(e);
 			          }
 		  	          break;
-
-		  	      case 4:// Cancel my appointment
+		  	        
+		  	      case "4":// Cancel my appointment
 			  	        userSSN = getUserSSN(input);
 			  	        currentPatient = getCurrentPatient(userSSN, patientList);
 			  	        
@@ -739,87 +415,8 @@ public class Main {
 				        }
 			  	        break;
 			  	        
-		  	      case 5:// Edit user profile
+		  	      case "5":// Edit user profile
 		  	    	  userSSN = getUserSSN(input);
-			  	        switch(selectedInput) {
-			  	      		case 1: //approve
-			  	      			Appointment updatedAppt = currentAM.approveApptRequest(currentAppt);
-			  	      			String approveApptQuery = "update Appointment set status=('Approved') where appt_id=('" + currentAppt.getApptID() + "');";
-			  	      			DataBase.executeUpdate(approveApptQuery, usrname, pswd);
-				  	    		for (int i=0; i<apptList.size(); i++) {
-				  	    			if (apptList.get(i).getApptID() == updatedAppt.getApptID()){
-				  	    				apptList.set(i, updatedAppt);
-				  	    			}
-				  	    		}	
-			  	      			System.out.println("Appointment approved.");
-			  	      			
-			  	      			break;
-			  	      		case 2: //deny
-			  	      			Appointment updatedAppt2 = currentAM.denyApptRequest(currentAppt);
-			  	      			String denyApptQuery = "update Appointment set status=('Denied') where appt_id=('" + updatedAppt2.getApptID() + "');";
-			  	      			DataBase.executeUpdate(denyApptQuery, usrname, pswd);
-				  	    		for (int i=0; i<apptList.size(); i++) {
-				  	    			if (apptList.get(i).getApptID() == updatedAppt2.getApptID()){
-				  	    				apptList.set(i, updatedAppt2);
-				  	    			}
-				  	    		}		
-			  	      			System.out.println("Appointment denied.");
-			  	      			
-			  	      			break;
-			  	      		default:
-			  	      			System.out.println("Sorry, you did not enter a valid option. Bye.");
-			  	        }
-	    	  		}
-	    	  		catch(Exception e) {
-	    	  			System.out.println(e);
-	    	  		}
-	    	  		
-	    	  		break;
-	    	  	case 6: //schedule appt
-	  	      		System.out.println("Fill out the below information to schedule an appointment.");
-	  	      		userSSN = getUserSSN(input);
-	  	      		currentPatient = getCurrentPatient(userSSN, patientList);
-
-	  	      		try {		            
-	  	      			Appointment newAppt = currentPatient.requestAppt(apptList, input);
-	  	      			apptList.add(newAppt);
-	  	      			
-	  	      			String newApptQuery = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', '" + newAppt.getPreferredDoc() + "', '" + newAppt.getRoomNum() + "');";
-	  	      			DataBase.executeUpdate(newApptQuery, usrname, pswd);
-		  	    		System.out.println("Appointment requested.");
-
-	  	      		}
-	  	      		catch (Exception e) {
-	  	      			System.out.println(e);
-	  	      		}	          
-	  	      		break;
-	    	  	default:
-	     	    	 System.out.println("Sorry, you did not enter a valid option. Bye.");
-	    	  	}
-	    	  break;
-	      case "6": //Patient Manager
-	    	  
-	    	  //Getting the Patient Manager's id
-	    	  System.out.println("Please enter your Patient Manager ID.");
-	    	  int PMid = input.nextInt();
-	    	  
-	    	  //Find the ArrayList index of the patient manager
-	    	  int PMIndex = patientManagerIndex(patientManagerList, PMid);
-	    	  
-	    	  //Patient Manager menu options
-	    	  System.out.println("Would you like to:\n\t1. Check-in patient.\n\t2. Edit patient user profile.\n\t3. Remove dead patient from database.");
-	    	  int PMchoice = input.nextInt();
-	    	  
-	    	  
-	    	  switch(PMchoice) {
-		    	  case 1://check-in patient
-		    		  apptList = patientManagerList.get(PMIndex).checkPatientIn(usrname, pswd, apptList);
-		    		  break;
-		    		  
-		    	  case 2://edit a patient's user profile
-		    		  //System.out.println("Please enter SSN:");
-		  		     // String pat_ssn = input.next();	
-		  		      userSSN = getUserSSN(input);
 		  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
 		  	        
 		  	    	  try {
@@ -842,17 +439,455 @@ public class Main {
 		  	    	  }
 		  	    	  System.out.println("Thank you. Have a good day.");
 		  	          break;
-		  	          
-		  	      case 6://exit patient menu
-		  	    	  patFlag = 1;
-		  	    	  break;
-		  	    	  
+		  	      case "6"://exit patient menu
+	 	  	    	  patFlag = 1;
+	 	  	    	  break;
 		  	      default:
 		  	    	  System.out.println("Sorry, you did not enter a valid option. Bye.");
 		    		}
-		      }
-		      break;
-		      case 7: //create a new patient profile
+			}
+	      break;
+	        case "2": //Doctor
+	    	  	docID = getUserID(input, "Doctor");
+	    	  	currentDoctor = getCurrentDoctor(docID, doctorList);
+	    	  	while (docFlag == 0) {
+			  	    int selected = doctorMenu(input);
+			  	    
+			  	    switch (selected) {
+			  	      case 1: //Update patient user profile
+			  	    	userSSN = getUserSSN(input);
+			  	        currentPatient = getCurrentPatient(userSSN, patientList);
+			  	        
+				  	    try {
+				  	    	Patient updatedPatient = currentDoctor.editUserProfile(currentPatient, input);
+				            
+				  	    	if (updatedPatient != null){
+				  	      	    String updatedPatientQuery = "update Patient set patientName=('" + updatedPatient.name + "'), birthDate=('" + currentPatient.birthDate + "'), allergies=('" + currentPatient.allergies + "'), preferredDoctor=('" + currentPatient.preferredDoctor + "'), bloodtype=('" + currentPatient.bloodType + "') where ssn=('" + currentPatient.ssn + "');";
+				        	    DataBase.executeUpdate(updatedPatientQuery, usrname, pswd);
+				        	  
+					  	        for (int i=0; i<patientList.size(); i++) {
+					  	    	    if (patientList.get(i).getSSN().equals(updatedPatient.ssn)){
+					  	    		    patientList.set(i, updatedPatient);
+					  	    	    }
+					  	        }
+				        	    System.out.println("Profile details updated.");
+				            }
+			            }
+				          catch (Exception e) {
+				            System.out.println(e);
+				          }
+				  	    System.out.println("Thank you. Have a good day.");
+			  	          break;
+			  	      case 2: //update appt notes
+			  	    	userSSN = getUserSSN(input);
+			  	        currentPatient = getCurrentPatient(userSSN, patientList);
+			  	        
+				  	    try {
+			  	    		currentAppt = currentPatient.selectAppt(apptList, input);
+				  	    	Appointment updatedAppt = currentDoctor.editApptNotes(currentAppt, input);
+				            if (currentAppt != null){
+						  	    String updatedApptQuery = "update Appointment set notes=('" + updatedAppt.getNotes() + "') where appt_id=('" + updatedAppt.getApptID() + "');";
+				        	    DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
+				        	  
+					  	        for (int i=0; i<apptList.size(); i++) {
+					  	    	    if (apptList.get(i).getApptID() == currentAppt.getApptID()){
+					  	    	    	apptList.set(i, currentAppt);
+					  	    	    }
+					  	        }
+				        	    System.out.println("Appointment details updated.");
+				            }
+			            }
+				          catch (Exception e) {
+				            System.out.println(e);
+				          }
+			  	        for (int i=0; i<apptList.size(); i++) {
+			  	    	    if (apptList.get(i).getApptID() == currentAppt.getApptID()){
+			  	    	    	System.out.println(apptList.get(i).getNotes());
+			  	    	    }
+			  	        }
+				  	    System.out.println("Thank you. Have a good day.");
+			  	          break;
+			  	      case 3:// exit to main menu
+	 		  	    	  docFlag = 1;
+	 		  	    	  break;
+			  	      default:
+			  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
+			  	    }
+	    	  	}
+	    	  break;
+	      case "3": //Doctor Manager
+		  	    
+		  	    int dmID = getUserID(input, "Doctor Manager");
+		  	    currentDM = getCurrentDM(dmID, dmList);
+		  	    while(DMFlag == 0) {
+			  	    int DMchoice = doctorManagerMenu(input);
+			  	    int numOfDoctors = doctorList.size();
+			  	    
+			  	    switch (DMchoice) {
+			  	      case 1: //Create doctor user profile
+			  	    	  try {
+			  	    		  Doctor newDoctor = currentDM.createDoctor(numOfDoctors, input);
+				  	    	  doctorList.add(newDoctor);
+				  	    	  String newDoctorQuery= "insert into Doctor values('" + newDoctor.getDocID() + "', '" + newDoctor.getName() + "', '" + newDoctor.getBirthDate() + "', '" + newDoctor.getSSN() + "');";
+				  	    	  DataBase.executeUpdate(newDoctorQuery,  usrname, pswd);
+			  	    	  }
+			  	    	  catch(Exception e) {
+			  	    		  System.out.println(e);
+			  	    	  }
+			  	    	  
+			  	    	  break;
+			  	      case 2:// Edit doctor user profile
+			  	    	  try {
+			  	    		  docID = getUserID(input, "Doctor");
+			  	    		  currentDoctor = getCurrentDoctor(docID, doctorList);
+			  	    		  Doctor editedDoctor = currentDM.editProfile(currentDoctor, input);
+				  	    	  String updatedDoctorQuery= "update Doctor set doctorName=('" + editedDoctor.getName() + "'), birthDate=('" + editedDoctor.getBirthDate() + "'), ssn=('" + editedDoctor.getSSN() + "') where doctor_id=('" + currentDoctor.getDocID() + "');";
+				  	    	  DataBase.executeUpdate(updatedDoctorQuery,  usrname, pswd);		
+				  	    	  
+					  	        for (int i=0; i<doctorList.size(); i++) {
+					  	    	    if (doctorList.get(i).getDocID() == currentDoctor.getDocID()){
+					  	    	    	doctorList.set(i, currentDoctor);
+					  	    	    }
+					  	        }
+				        	    System.out.println("Profile details updated.");
+			  	    	  }
+			  	    	  catch(Exception e) {
+			  	    		  System.out.println(e);
+			  	    	  }
+			  	    	  break;
+			  	      case 3:// Assign doctor to appointment
+		  	    		  docID = getUserID(input, "Doctor");
+		  	    		  currentDoctor = getCurrentDoctor(docID, doctorList);
+			  	    	  userSSN = getUserSSN(input);
+			  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
+			  	        
+			  	    	  try {
+			  	    		  currentAppt = currentPatient.selectAppt(apptList, input);
+			  	    		  
+			  	    		  Appointment updatedAppt = currentPatient.editAppt(currentAppt, input);
+			  	    		  
+					  	      String updatedApptQuery = "update Appointment set apptTime=('" + updatedAppt.getTime() + "'), apptDate=('" + updatedAppt.getDate() + "'), notes=('" + updatedAppt.getNotes() + "'), status=('Requested') where appt_id=('" + updatedAppt.getApptID() + "');";
+			  	    		  DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
+			  	    		  System.out.println("Appointment details updated.");
+			  	    	  }
+			  	    	  catch(Exception e) {
+			  	    		  System.out.println(e);
+			  	    	  }
+			  	        break;
+			  	      case 4://Exit to Main Menu
+ 			  	    	  DMFlag = 1;
+ 			  	    	  break;
+			  	      default:
+			  	    	System.out.println("Sorry, you did not enter a valid option. Bye.");
+			  	    }
+		  	    }
+	    	  break;
+	      case "4": //Room Manager
+	    	  //Getting the Patient Manager's id
+	    	  System.out.println("Please enter your Room Manager ID.");
+	    	  int RMid = input.nextInt();
+	    	  
+	    	  //Find the ArrayList index of the patient manager
+	    	  int RMindex = roomManagerIndex(roomManagerList, RMid);
+	    	  
+	    	  while (RMFlag == 0) {
+		    	  System.out.println("Would you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity. \n\t3. Check room availablilty \n\t4. Exit to Main Menu");
+		    	  int RMchoice = input.nextInt();
+		    	  
+		    	  switch (RMchoice) {
+		    	  	case 1:// Assign checked in patients to a room
+		    	  		apptList = roomManagerList.get(RMindex).assignPatientRoom(apptList, roomList, usrname, pswd);
+		    	  		//Headers for all checked-in appointments
+		    	  		System.out.println();
+		    			System.out.println("All checked-in appointments:");
+		    			System.out.println("Appointment ID" + "\t" + " Room Number" + "\t"+ " Patient SSN" + "\t" + " Appointment Date" + "\t" + " Appointment Time" + "\t" + " Appointment Status");	    	  		
+		    			
+		    			//iterating through appointment ArrayList to get all checked-in appointments
+		    			for (Appointment a: apptList) {	    				
+		    				if(a.getStatus() == "Checked-in") {
+		    					System.out.format("%s\t\t %s\t\t %s\t %s\t\t %s\t\t %s\t\n", a.getApptID(), a.getRoomNum(), a.getSSN(), a.getDate(), a.getTime(), a.getStatus());
+		    				}
+		    			}
+		    	  		break;
+		    	  	case 2:// Set room availability
+		    	  		
+		    	  		//Headers for clean and ready Room list
+		    	  		System.out.println();
+	    				System.out.println("All Rooms:");
+	    				System.out.println("Room Number" + "\t" + " Room Status");
+		    				
+		    	  	    //Query for all the Rooms
+		    	  		String allRooms = "SELECT * From Room";
+		    	  		
+		    	  		//ResultSet of all the checked in the appointments
+		    	  		ResultSet rs1 = DataBase.executeQuery(allRooms, usrname, pswd);
+		    	  		
+		    	  		//iterate through the ResultSet
+		    	  		while (rs1.next()) {
+		    	  			int id = rs1.getInt("roomNumber");
+		    	  			String avaliable = rs1.getString("avaliable");
+		    	  			
+		    	  			//Print the results
+		    	  			System.out.format("%s\t\t %s\t \n", id, avaliable);
+		    	  		}
+		    	  		
+		    	  		//Declare needed variables
+		    	  		String roomNum = null;
+		    	  		int statusChoice = 0;
+		    	  		
+		    	  		//Get number of room that status' needs to be changed
+		    	  		System.out.println("What is the number of the room you would like to set the availability for?");
+		    	  		roomNum = input.next();
+		    	  		
+		    	  		//Ask the user what status they are assigning to the room
+		    	  		System.out.println("What status would you like to assign to room " + roomNum +":\n\t1. Clean and Ready \n\t2. Occupied \n\t3. Empty and Dirty");
+		    	  		statusChoice = input.nextInt();
+		    	  		
+		    	  		//Switch statement to assign room selected availability
+		    	  		switch(statusChoice) {
+			    	  		case 1:// Assign room Clean and Ready status
+			    	  			RoomManager RoomManagerClean = new RoomManager();
+			    	  			RoomManagerClean.setRoomStatusToClean(roomNum, usrname, pswd);
+			    	  			System.out.println("Room number " + roomNum + " status' has been set to Clean and Ready");
+			    	  			break;
+			    	  		case 2:// Assign room Occupied status
+			    	  			RoomManager RoomManagerOccupied = new RoomManager();
+			    	  			RoomManagerOccupied.setRoomStatusToOccupied(roomNum, usrname, pswd);
+			    	  			System.out.println("Room number " + roomNum + " status' has been set to Occupied");
+			    	  			break;
+			    	  		case 3:// Assign room Empty and Dirty status
+			    	  			RoomManager RoomManagerDirty = new RoomManager();
+			    	  			RoomManagerDirty.setRoomStatusToDirty(roomNum, usrname, pswd);
+			    	  			System.out.println("Room number " + roomNum + " status' has been set to Empty and Dirty");
+			    	  			break;  			
+		    	  		}
+	
+		    	  		break;
+		    	  	case 3:// Check room availability
+		    	  		
+		    	  		//Declare needed variables
+		    	  		String roomNumber = null;
+		    	  		
+		    	  		//Get the room number from the RM 
+		    	  		System.out.println("Please enter the room number of the room you would like to know the status of.");
+		    	  		roomNumber = input.next();
+		    	  		
+		    	  		//Call getRoomStatusMethod
+		    	  		RoomManager RoomManager = new RoomManager();
+		    	  		String roomStatus = RoomManager.getRoomStatus(roomNumber, usrname, pswd);
+		    	  		
+		    			//Print the status of the room
+		    			System.out.println("The status of room number " + roomNumber + " is " + roomStatus);
+		    	  		break;
+		    	  	case 4://Quit to main menu
+ 		    	  		RMFlag = 1;
+ 		    	  		break;
+		    	  }
+	    	  }
+	    	  break;
+	      case "5": //Appointment Manager
+	    	  int manID = getUserID(input, "Appointment Manager");
+	    	  currentAM = getCurrentAM(manID, amList);
+	    	  
+	    	  while (AMFlag == 0) {
+	    	  
+		    	  int selectedInput = apptManagerMenu(input);
+		    	  
+		    	  switch(selectedInput) {
+		    	  	case 1: //View all appts
+		    	  		try {
+		    	  			currentAM.viewAppts(apptList);
+		    	  		}
+		    	  		catch(Exception e) {
+		    	  			System.out.println(e);
+		    	  		}
+		    	  		break;
+		    	  	case 2: //view approved appts
+		    	  		try {
+		    	  			currentAM.viewApprovedAppts(apptList);
+		    	  		}
+		    	  		catch(Exception e) {
+		    	  			System.out.println(e);
+		    	  		}
+		    	  		break;
+		    	  	case 3: //view requested appts
+		    	  		try {
+		    	  			currentAM.viewRequestedAppts(apptList);
+		    	  		}
+		    	  		catch(Exception e) {
+		    	  			System.out.println(e);
+		    	  		}
+		    	  		break;
+		    	  	case 4: //edit appts
+				  	    try {
+				  	    	currentAppt = currentAM.selectAppt(apptList, input);
+				  	    	
+				  	    	Appointment updatedAppt = currentAM.editAppt(currentAppt, input);
+				  	    	
+					  	    String updatedApptQuery = "update Appointment set apptTime=('" + updatedAppt.getTime() + "'), apptDate=('" + updatedAppt.getDate() + "'), notes=('" + updatedAppt.getNotes() + "'), status=('Requested') where appt_id=('" + updatedAppt.getApptID() + "');";
+			  	    		DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
+			  	    		for (int i=0; i<apptList.size(); i++) {
+			  	    			if (apptList.get(i).getApptID() == updatedAppt.getApptID()){
+			  	    				apptList.set(i, updatedAppt);
+			  	    			}
+			  	    		}	
+			  	    		System.out.println("Appointment details updated.");
+				          }
+				          catch (Exception e) {
+				        	  System.out.println(e);
+				          }
+			  	          break;
+		    	  	case 5: //approve/deny requested appts
+		    	  		try {
+		    	  			currentAppt = currentAM.selectAppt(apptList, input);
+		    	  			
+		    	  			System.out.println("\nWould you like to approve or deny this appointment? (input an integer to select)\n\t1. Approve\n\t2. Deny");
+		    	  			selectedInput = input.nextInt();
+			  	        
+				  	        switch(selectedInput) {
+				  	      		case 1: //approve
+				  	      			Appointment updatedAppt = currentAM.approveApptRequest(currentAppt);
+				  	      			String approveApptQuery = "update Appointment set status=('Approved') where appt_id=('" + currentAppt.getApptID() + "');";
+				  	      			DataBase.executeUpdate(approveApptQuery, usrname, pswd);
+					  	    		for (int i=0; i<apptList.size(); i++) {
+					  	    			if (apptList.get(i).getApptID() == updatedAppt.getApptID()){
+					  	    				apptList.set(i, updatedAppt);
+					  	    			}
+					  	    		}	
+				  	      			System.out.println("Appointment approved.");
+				  	      			
+				  	      			break;
+				  	      		case 2: //deny
+				  	      			Appointment updatedAppt2 = currentAM.denyApptRequest(currentAppt);
+				  	      			String denyApptQuery = "update Appointment set status=('Denied') where appt_id=('" + updatedAppt2.getApptID() + "');";
+				  	      			DataBase.executeUpdate(denyApptQuery, usrname, pswd);
+					  	    		for (int i=0; i<apptList.size(); i++) {
+					  	    			if (apptList.get(i).getApptID() == updatedAppt2.getApptID()){
+					  	    				apptList.set(i, updatedAppt2);
+					  	    			}
+					  	    		}		
+				  	      			System.out.println("Appointment denied.");
+				  	      			
+				  	      			break;
+				  	      		default:
+				  	      			System.out.println("Sorry, you did not enter a valid option. Bye.");
+				  	        }
+		    	  		}
+		    	  		catch(Exception e) {
+		    	  			System.out.println(e);
+		    	  		}
+		    	  		
+		    	  		break;
+		    	  	case 6: //schedule appt
+		  	      		System.out.println("Fill out the below information to schedule an appointment.");
+		  	      		userSSN = getUserSSN(input);
+		  	      		currentPatient = getCurrentPatient(userSSN, patientList);
+	
+		  	      		try {		            
+		  	      			Appointment newAppt = currentPatient.requestAppt(apptList, input);
+		  	      			apptList.add(newAppt);
+		  	      			
+		  	      			String newApptQuery = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', '" + newAppt.getPreferredDoc() + "', '" + newAppt.getRoomNum() + "');";
+		  	      			DataBase.executeUpdate(newApptQuery, usrname, pswd);
+			  	    		System.out.println("Appointment requested.");
+	
+		  	      		}
+		  	      		catch (Exception e) {
+		  	      			System.out.println(e);
+		  	      		}	          
+		  	      		break;
+			    	  case 7://Quit to main menu
+			    	  		AMFlag = 1;
+			    	  		break;
+		    	  	default:
+		     	    	 System.out.println("Sorry, you did not enter a valid option. Bye.");
+		    	  	}
+	    	  }
+	    	  break;
+	      case "6": //Patient Manager
+	    	  
+	    	  //Getting the Patient Manager's id
+	    	  System.out.println("Please enter your Patient Manager ID.");
+	    	  int PMid = input.nextInt();
+	    	  
+	    	  //Find the ArrayList index of the patient manager
+	    	  int PMIndex = patientManagerIndex(patientManagerList, PMid);
+	    	  
+	    	  
+	    	  while (PMFlag == 0) {
+		    	  //Patient Manager menu options
+		    	  System.out.println("Would you like to:\n\t1. Check-in patient.\n\t2. Edit patient user profile.\n\t3. Remove dead patient from database.\n\t4. Quit to Main Menu");
+		    	  int PMchoice = input.nextInt();
+		    	  
+		    	  
+		    	  switch(PMchoice) {
+			    	  case 1://check-in patient
+			    		  apptList = patientManagerList.get(PMIndex).checkPatientIn(usrname, pswd, apptList);
+			    		  break;
+			    		  
+			    	  case 2://edit a patient's user profile
+			    		  //System.out.println("Please enter SSN:");
+			  		     // String pat_ssn = input.next();	
+			  		      userSSN = getUserSSN(input);
+			  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
+			  	        
+			  	    	  try {
+			  	    		  Patient updatedPatient = currentPatient.editProfile(input);
+			  	    		  
+					          if (updatedPatient != null){
+					  	      	  String updatedPatientQuery = "update Patient set patientName=('" + updatedPatient.name + "'), birthDate=('" + updatedPatient.birthDate + "'), allergies=('" + updatedPatient.allergies + "'), preferredDoctor=('" + updatedPatient.preferredDoctor + "'), bloodtype=('" + updatedPatient.bloodType + "') where ssn=('" + updatedPatient.ssn + "');";
+					        	  DataBase.executeUpdate(updatedPatientQuery, usrname, pswd);
+					        	  
+						  	      for (int i=0; i<patientList.size(); i++) {
+						  	    	  if (patientList.get(i).getSSN().equals(updatedPatient.ssn)){
+						  	    		  patientList.set(i, updatedPatient);
+						  	    	  }
+						  	      }
+					        	  System.out.println("Profile details updated.");
+					          }
+			  	    	  }
+			  	    	  catch (Exception e) {
+			  	    		  System.out.println(e);
+			  	    	  }
+			  	    	  System.out.println("Thank you. Have a good day.");
+			  	          break;
+			  	          
+			    	  case 3: //Remove patient from database
+				    		  String pSSN = patientManagerList.get(PMIndex).removePatientFromDB(usrname, pswd, patientList, apptList);
+					    	  String pName = null;
+	
+					    	  //iterate through Patient ArrayList
+					    	  for (Patient p: patientList) {
+					    		//filter against the SSN entered
+					    		if(p.getSSN().equals(pSSN)) {
+					    			//Remove all the patient's appointments from the Appointment ArrayList
+					    			patientList.remove(p);
+					    			pName = p.getName();
+					    		}
+					    	  }
+	
+					    	  //iterate through Appointment ArrayList
+					    	  for (Appointment a: apptList) {
+					    		  //filter against the SSN entered
+					    		  if(a.getSSN().equals(pSSN)) {
+					    			  //Remove all the patient's appointments from the Appointment ArrayList
+					    			  apptList.remove(a);
+					    		  }
+					    	  }
+	
+					    	 //Confirming the Patient has been removed
+					    	 System.out.println(pName + " has been sucessfully deleted");
+	
+					    	 break;
+				    	  case 4://Quit to main menu
+				    	  		PMFlag = 1;
+				    	  		break;
+			  	      default:
+			  	    	  System.out.println("Sorry, you did not enter a valid option. Bye.");
+			    		}
+	    	  }
+	    	  break;
+		      case "7": //create a new patient profile
 	  	    	    System.out.println("Please enter first name:");
 	  		        String name = input.next();
 	  		        Patient patient = new Patient();
@@ -879,15 +914,16 @@ public class Main {
 	  			    // Add to patient array list
 	  			    patientList.add(patient);
 	  			    break;
-		      case 8:// Quit
+		      case "8":// Quit
 		    	  mainMenuFlag = 1;
 		    	  break;
 		    
 	  	       default:
 	  	    	 System.out.println("Sorry, you did not enter a valid option.");
 		    }
-	    }
-	     //Close objects
+
+		      }
+	    //Close objects
 	     input.close();
-	}
+	    }
 }
