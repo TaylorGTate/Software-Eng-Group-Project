@@ -267,7 +267,7 @@ class RoomManagerTest {
 	    RoomManager testRoomManager = new RoomManager(4, "Taylor Tate", "1997-05-03");
 
 		//Call check patient in method
-		results = testRoomManager.assignPatientRoom(apptList, roomList, username, password, input);
+		results = testRoomManager.assignPatientRoom(apptList, roomList, username, password);
 		
 		//Test to see if method returns correct appt id and room number 
 		actualAppointmentRoom = results.get(1);
