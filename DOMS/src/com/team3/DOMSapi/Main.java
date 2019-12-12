@@ -420,7 +420,7 @@ public class Main {
 		  	      		int numOfAppts = apptList.size();
 	
 		  	      		try {		            
-		  	      			Appointment newAppt = currentPatient.requestAppt(numOfAppts, input);
+		  	      			Appointment newAppt = currentPatient.requestAppt(numOfAppts);
 		  	      			apptList.add(newAppt);
 		  	      			
 		  	      			String newApptQuery = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', '" + newAppt.getPreferredDoc()+ "', '" + newAppt.getRoomNum() + "');";
@@ -444,9 +444,9 @@ public class Main {
 		  	        
 		  	      case "3":// Edit my appointment
 		  	    	  try {
-		  	    		  currentAppt = currentPatient.selectAppt(apptList, input);
+		  	    		  currentAppt = currentPatient.selectAppt(apptList);
 		  	    		  
-		  	    		  Appointment updatedAppt = currentPatient.editAppt(currentAppt, input);
+		  	    		  Appointment updatedAppt = currentPatient.editAppt(currentAppt);
 		  	    		  
 				  	      String updatedApptQuery = "update Appointment set apptTime=('" + updatedAppt.getTime() + "'), apptDate=('" + updatedAppt.getDate() + "'), notes=('" + updatedAppt.getNotes() + "'), status=('Requested') where appt_id=('" + updatedAppt.getApptID() + "');";
 		  	    		  DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
@@ -459,7 +459,7 @@ public class Main {
 		  	        
 		  	      case "4":// Cancel my appointment
 				  	    try {
-				  	    	currentAppt = currentPatient.selectAppt(apptList, input);
+				  	    	currentAppt = currentPatient.selectAppt(apptList);
 	
 				            Appointment cancelledAppt = currentPatient.cancelAppt(currentAppt, input);
 				            
@@ -476,7 +476,7 @@ public class Main {
 			  	        
 		  	      case "5":// Edit user profile
 		  	    	  try {
-		  	    		  Patient updatedPatient = currentPatient.editProfile(input);
+		  	    		  Patient updatedPatient = currentPatient.editProfile();
 		  	    		  
 				          if (updatedPatient != null){
 				  	      	  String updatedPatientQuery = "update Patient set patientName=('" + updatedPatient.name + "'), birthDate=('" + updatedPatient.birthDate + "'), allergies=('" + updatedPatient.allergies + "'), preferredDoctor=('" + updatedPatient.preferredDoctor + "'), bloodtype=('" + updatedPatient.bloodType + "') where ssn=('" + updatedPatient.ssn + "');";
@@ -542,7 +542,7 @@ public class Main {
 			  	        currentPatient = getCurrentPatient(userSSN, patientList);
 			  	        
 				  	    try {
-			  	    		currentAppt = currentPatient.selectAppt(apptList, input);
+			  	    		currentAppt = currentPatient.selectAppt(apptList);
 				  	    	Appointment updatedAppt = currentDoctor.editApptNotes(currentAppt, input);
 				            if (currentAppt != null){
 						  	    String updatedApptQuery = "update Appointment set notes=('" + updatedAppt.getNotes() + "') where appt_id=('" + updatedAppt.getApptID() + "');";
@@ -623,7 +623,7 @@ public class Main {
 			  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
 			  	    	  
 			  	    	  try {
-			  	    		  currentAppt = currentPatient.selectAppt(apptList, input);
+			  	    		  currentAppt = currentPatient.selectAppt(apptList);
 			  	    		  
 			  	    		  Appointment updatedAppt = currentDM.assignDoctorToAppt(currentAppt, currentDoctor, input);
 			  	    		  
@@ -862,7 +862,7 @@ public class Main {
 		  	      		int numOfAppts = apptList.size();
 	
 		  	      		try {		            
-		  	      			Appointment newAppt = currentPatient.requestAppt(numOfAppts, input);
+		  	      			Appointment newAppt = currentPatient.requestAppt(numOfAppts);
 		  	      			apptList.add(newAppt);
 		  	      			
 		  	      			String newApptQuery = "insert into Appointment values('" + newAppt.getApptID() + "', '" + newAppt.getSSN() + "', '" + newAppt.getDate() + "', '" + newAppt.getTime() + "', '" + newAppt.getNotes() + "', '" + newAppt.getStatus() + "', '" + newAppt.getPreferredDoc() + "', '" + newAppt.getRoomNum() + "');";
@@ -911,7 +911,7 @@ public class Main {
 			  	    	  currentPatient = getCurrentPatient(userSSN, patientList);
 			  	        
 			  	    	  try {
-			  	    		  Patient updatedPatient = currentPatient.editProfile(input);
+			  	    		  Patient updatedPatient = currentPatient.editProfile();
 			  	    		  
 					          if (updatedPatient != null){
 					  	      	  String updatedPatientQuery = "update Patient set patientName=('" + updatedPatient.name + "'), birthDate=('" + updatedPatient.birthDate + "'), allergies=('" + updatedPatient.allergies + "'), preferredDoctor=('" + updatedPatient.preferredDoctor + "'), bloodtype=('" + updatedPatient.bloodType + "') where ssn=('" + updatedPatient.ssn + "');";

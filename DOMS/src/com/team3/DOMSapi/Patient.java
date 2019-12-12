@@ -126,11 +126,11 @@ public class Patient {
 		bloodType = blood;
 	}
 	/**
-	   * Patient requests an appointment.
-	   * @param Scanner input  
+	   * Patient requests an appointment.  
 	   * @return newAppt Appointment object that contains the new appointment details
 	   */
-	public Appointment requestAppt(int numOfAppts, Scanner input) {
+	public Appointment requestAppt(int numOfAppts) {
+		Scanner input = new Scanner(System.in);
 		String patientName = this.name;
 		String patientSSN = this.ssn;
 		int newApptID = numOfAppts+1;
@@ -145,6 +145,7 @@ public class Patient {
         	System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
             apptDate = input.next();
         }
+        System.out.println(apptDate);
         
         System.out.println("Please enter a time for your appointment: (in the form hh:mm) ");
         String apptTime = input.next();
@@ -156,10 +157,13 @@ public class Patient {
         }
         //need to add the seconds for the database entry
         apptTime += ":00";
+        System.out.println(apptTime);
         input.nextLine();
         
         System.out.println("Please enter any notes you would like to include: ");
         String notes = input.nextLine();
+        System.out.println(notes);
+
         
         System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
         String preferredDoc = input.nextLine();
@@ -168,6 +172,8 @@ public class Patient {
         	System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
             preferredDoc = input.nextLine();
         }
+        System.out.println(preferredDoc);
+
         
         Appointment newAppt = new Appointment(newApptID, patientSSN, apptDate, apptTime, notes, statuses[0], preferredDoc, 0);
         return newAppt;
@@ -206,7 +212,8 @@ public class Patient {
 	   * @param apptList ArrayList containing all the appts
 	   * @return selectedAppt Appointment object that the user selected
 	   */
-	public Appointment selectAppt(ArrayList<Appointment> apptList, Scanner input) {
+	public Appointment selectAppt(ArrayList<Appointment> apptList) {
+		Scanner input = new Scanner(System.in);
 		Appointment selectedAppt = null;
 		ArrayList<Appointment> userAppts = new ArrayList<Appointment>();
 		
@@ -260,7 +267,8 @@ public class Patient {
 	   * @param currentAppt Appointment object of the Appointment the user is editing
 	   * @return editedAppt Appointment object that contains the new details that were supplied by the user
 	   */ 
-	public Appointment editAppt(Appointment currentAppt, Scanner input) {
+	public Appointment editAppt(Appointment currentAppt) {
+		Scanner input = new Scanner(System.in);
 		int apptID = currentAppt.getApptID();
 		String apptDate = currentAppt.getDate();
 		String apptTime = currentAppt.getTime();
@@ -391,7 +399,8 @@ public class Patient {
 	   * @param input Scanner object  
 	   * @return updatedPatient Patient object that contains the new details that were supplied by the user
 	   */ 
-	public Patient editProfile(Scanner input) {
+	public Patient editProfile() {
+		Scanner input = new Scanner(System.in);
 		String patientName = this.name;
 		String patientBirthDate = this.birthDate;
 		String patientAllergies = this.allergies;
