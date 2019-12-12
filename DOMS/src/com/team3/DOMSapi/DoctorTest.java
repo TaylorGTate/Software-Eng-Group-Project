@@ -3,6 +3,7 @@ package com.team3.DOMSapi;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
@@ -88,18 +89,24 @@ class DoctorTest {
 	@Test
 	void testEditUserProfile() {
 		Doctor currentDoctor = new Doctor(1, "Dr.Jones", "1970-12-10", "189-12-1237");
-		Patient currentPatient = new Patient(1, "Mandy", "1998-12-12", "123-12-5432", "none", "Dr.Jones", "A+");
-		ByteArrayInputStream in = new ByteArrayInputStream((1 + System.lineSeparator() + 1 + System.lineSeparator()).getBytes());
+		Patient actualPatient = new Patient(1, "Mandy", "1998-12-12", "123-12-5432", "none", "Dr.Jones", "A+");
+		
+		//ByteStream array to simulate user input
+		String userInput = "1\nTristan\nN/A\nN/A";
+		InputStream in = new ByteArrayInputStream(userInput.getBytes());
 		Scanner input = new Scanner(in);
-		currentDoctor.editUserProfile(currentPatient, input);
-		ByteArrayInputStream in2 = new ByteArrayInputStream((1 + System.lineSeparator() + "Mandy" + System.lineSeparator()).getBytes());
-		Scanner input2 = new Scanner(in2);
-		ByteArrayInputStream in3 = new ByteArrayInputStream((1 + System.lineSeparator() + "Max" + System.lineSeparator()).getBytes());
-		Scanner input3 = new Scanner(in3);
-		Patient updatedPatient = currentPatient.editProfile(input2);
-		assertEquals(currentPatient, updatedPatient);
 		
+		currentDoctor.editUserProfile(actualPatient, input);
 		
+		//ByteArrayInputStream in2 = new ByteArrayInputStream((1 + System.lineSeparator() + "Mandy" + System.lineSeparator()).getBytes());
+		//Scanner input2 = new Scanner(in2);
+		//ByteArrayInputStream in3 = new ByteArrayInputStream((1 + System.lineSeparator() + "Mandy" + System.lineSeparator()).getBytes());
+		//Scanner input3 = new Scanner(in3);
+		//String expectedResult = expectedValue.getApptID() + expectedValue.getSSN() + expectedValue.getDate()+ expectedValue.getTime() + expectedValue.getNotes() + expectedValue.getStatus() + expectedValue.getPreferredDoc() + expectedValue.getRoomNum();
+		String actualResult = actualPatient.getPatientID() + actualPatient.getName() + actualPatient.getBirthDate() + actualPatient.getSSN() + actualPatient.getAllergies() + actualPatient.getDoctor() + actualPatient.getBloodType();
+	    String expectedResult = "Tristan" + actualPatient.getName() + actualPatient.getBirthDate() + actualPatient.getSSN() + actualPatient.getAllergies() + actualPatient.getDoctor() + actualPatient.getBloodType();
+		 
+		assertEquals(actualResult, expectedResult);
 		
 	}
 
