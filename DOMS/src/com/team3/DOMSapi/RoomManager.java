@@ -79,25 +79,17 @@ public class RoomManager {
 	   * @return this room's status
 	 * @throws SQLException 
 	   */
-	public String getRoomStatus(String roomNum, String username, String password) throws SQLException {
+	public String getRoomStatus(int roomNumber, ArrayList<Room> rList, String username, String password) throws SQLException {
 		
 		//declare variables 
 		String roomStatus = null;
-		Scanner input = new Scanner(System.in);
-		
-		//Query to find room with specify roomNumber
-		String queryForRoom = "select * from room where roomNumber = ('" + roomNum + "');";
-		
-		//Execute query to find room in database
-		ResultSet rs = DataBase.executeQuery(queryForRoom, username, password);
-		
-		//Iterate through ResultSet to get status of room
-		while(rs.next()) {
-			roomStatus = rs.getString(2);
-		}
-		
-		//Close scanner
-		input.close();
+  		
+		//iterating through the room ArrayList
+  		for (Room r: rList) {
+  			if (r.getRoomNumber() == roomNumber) {
+  				roomStatus = r.isAvaliable();
+  			}
+  		}
 		
 		//Return roomStatus
 		return roomStatus;
@@ -108,7 +100,14 @@ public class RoomManager {
 	   * @param room The room to set the status for
 	 * @throws SQLException 
 	   */
-	public void setRoomStatusToClean(String roomNum, String username, String password) throws SQLException {
+	public ArrayList<Room> setRoomStatusToClean( ArrayList<Room> rList, int roomNum, String username, String password) throws SQLException {
+		
+		//iterating through the room ArrayList
+  		for (Room r: rList) {
+  			if (r.getRoomNumber() == roomNum) {
+  				r.setAvaliablity("Clean and Ready");
+  			}
+  		}
 		
 		//Query to update the room being passed to clean
 		String cleanQuery = "update room set avaliable = 'Clean and Ready' where roomNumber = ('" + roomNum + "')";
@@ -116,35 +115,58 @@ public class RoomManager {
 		//Execute update query on database
 		DataBase.executeUpdate(cleanQuery, username, password);
 		
+		return rList;
+		
 	}
 	/**
 	   * Sets the room status to occupied for the specified room.
 	   * @param room The room to set the status for
 	   * @throws SQLException
 	   */
-	public void setRoomStatusToOccupied(String roomNum, String username, String password) throws SQLException {
+	public ArrayList<Room> setRoomStatusToOccupied(ArrayList<Room> rList, int roomNum, String username, String password) throws SQLException {
+		
+		//iterating through the room ArrayList
+  		for (Room r: rList) {
+  			if (r.getRoomNumber() == roomNum) {
+  				r.setAvaliablity("Occupied");
+  			}
+  		}
+		
 		//Query to update the room being passed to clean
-		String cleanQuery = "update room set avaliable = 'Occupied' where roomNumber = ('" + roomNum + "')";
+		String occupiedQuery = "update room set avaliable = 'Occupied' where roomNumber = ('" + roomNum + "')";
 		
 		//Execute update query on database
-		DataBase.executeUpdate(cleanQuery, username, password);
+		DataBase.executeUpdate(occupiedQuery, username, password);
+		
+		return rList;
 	}
 	/**
 	   * Sets the room status to dirty for the specified room.
 	   * @param room The room to set the status for
 	   * @throws SQLException
 	   */
-	public void setRoomStatusToDirty(String roomNum, String username, String password) throws SQLException {
+	public ArrayList<Room> setRoomStatusToDirty( ArrayList<Room> rList, int roomNum, String username, String password) throws SQLException {
+		
+		//iterating through the room ArrayList
+  		for (Room r: rList) {
+  			if (r.getRoomNumber() == roomNum) {
+  				r.setAvaliablity("Empty and Dirty");
+  			}
+  		}
+		
 		//Query to update the room being passed to clean
-		String cleanQuery = "update room set avaliable = 'Empty and Dirty' where roomNumber = ('" + roomNum + "')";
+		String dirtyQuery = "update room set avaliable = 'Empty and Dirty' where roomNumber = ('" + roomNum + "')";
 		
 		//Execute update query on database
-		DataBase.executeUpdate(cleanQuery, username, password);	}
-	
-	public ArrayList<Appointment> assignPatientRoom(ArrayList<Appointment> aList, ArrayList<Room> rList, String username, String password) throws SQLException {
+		DataBase.executeUpdate( dirtyQuery, username, password);
 		
-		//Declare need variables
-		Scanner input = new Scanner(System.in);
+		return rList;
+	}
+	
+	public ArrayList<Integer> assignPatientRoom(ArrayList<Appointment> aList, ArrayList<Room> rList, String username, String password, Scanner input) throws SQLException {
+		
+		//Make ArrayList for appt id and room number
+  		ArrayList <Integer> apptIDRoomNum = new ArrayList<Integer>();
 		
 		//Headers for all checked-in appointments
   		System.out.println();
@@ -153,7 +175,7 @@ public class RoomManager {
 		
 		//iterating through appointment ArrayList to get all checked-in appointments
 		for (Appointment a: aList) {
-			if(a.getStatus() == "Checked-in") {
+			if(a.getStatus() == "Approved") {
 				System.out.format("%s\t\t %s\t\t %s\t %s\t\t %s\t\t %s\t\n", a.getApptID(), a.getRoomNum(), a.getSSN(), a.getDate(), a.getTime(), a.getStatus());
 			}
 		}
@@ -173,78 +195,34 @@ public class RoomManager {
 		//Get the appointment ID of the appointment to assign it to a room
   		System.out.println();
   		System.out.println("Enter appointment ID to assign to a room.");
-  		int appointmentID = input.nextInt();
+  		apptIDRoomNum.add(input.nextInt());
+  		
+  		//get apppointmentID
+  		int appointmentID = apptIDRoomNum.get(0);
+  		
   		System.out.println("Enter the room number you would like to assign to appointment ID " + appointmentID + ".");
-  		int roomNumber = input.nextInt();
-		
-		//iterating through the appointment ArrayList to find the ID entered and assign it to the room number entered
-  		for (Appointment a: aList) {
-  			if(a.getApptID() == appointmentID) {
-  				a.setRoomNum(roomNumber);
-  			}
-  		}
+  		apptIDRoomNum.add(input.nextInt());
+  		
+  		//get room number
+  		int roomNumber = apptIDRoomNum.get(1);
   		
   		//Query to assign room number to appointment
   		String assignRoomNumToAppointment = ("UPDATE Appointment SET roomNum = " + "'" + roomNumber + "'" + "WHERE appt_id = " + "'" + appointmentID +"'");
   		
-  		//Execute update on appointment table to assign room number to appointment
+  		//Query to assign Checked-in status to appointment
+  		String assignStatusToAppointment = ("UPDATE Appointment SET status = " + "'" + "Checked-in" + "'" + "WHERE appt_id = " + "'" + appointmentID +"'");
+  		
+  		//Query to assign room status to occupied
+  		String assignStatusToRoom = ("UPDATE Room SET avaliable = " + "'" + "Occupied" + "'" + "WHERE roomNumber = " + "'" + roomNumber +"'");
+  		
+  		//Execute updates on appointment and room tables 
   		DataBase.executeUpdate(assignRoomNumToAppointment, username, password);
-		
-  		//close the scanner
-  		input.close();
-  		
-  		//Return the appointment ArrayList
-  		return aList;	
-		
-  		/*Query for all the appointments that are currently checked-in
-  		String checkedInPatients = "SELECT * From Appointment WHERE status = 'Checked-in'";
-  		//ResultSet of all the checked in the appointments
-  		ResultSet rs = DataBase.executeQuery(checkedInPatients, username, password);
-  		//iterate through the ResultSet
-  		while (rs.next()) {
-  			int id = rs.getInt("appt_id");
-  			String Pssn = rs.getString("Pssn");
-  			String apptDate = rs.getString("apptDate");
-  			String apptTime = rs.getString("apptTime");
-  			String status = rs.getString("status");
-  			
-  			//Print the results
-  			System.out.format("%s\t\t %s\t %s\t\t %s\t\t %s\t\n", id, Pssn, apptDate, apptTime, status);
-  		}
-  		
-  		//Headers for clean and ready Room list
-  		System.out.println();
-			System.out.println("All avaliable rooms:");
-			System.out.println("Room Number" + "\t" + " Room Status");
+  		DataBase.executeUpdate(assignStatusToAppointment, username, password);
+  		DataBase.executeUpdate(assignStatusToRoom, username, password);
 
-  		//Query for all the rooms that are currently clean and ready
-  		String avaliableRooms = "SELECT * From Room WHERE avaliable = 'Clean and Ready'";
-  		//ResultSet of all the checked in the appointments
-  		ResultSet rs1 = DataBase.executeQuery(avaliableRooms, username, password);
-  		//iterate through the ResultSet
-  		while (rs1.next()) {
-  			int id = rs1.getInt("roomNumber");
-  			String avaliable = rs1.getString("avaliable");
-  			
-  			//Print the results
-  			System.out.format("%s\t\t %s\t \n", id, avaliable);
-  		}
-  		
-  		//Get the appointment ID of the appointment to assign it to a room
-  		System.out.println();
-  		System.out.println("Enter appointment ID to assign to a room.");
-  		int appointmentID = input.nextInt();
-  		System.out.println("Enter the room number you would like to assign to appointment ID " + appointmentID + ".");
-  		int roomNumber = input.nextInt();
-  		
-  		//Query to assign room number to appointment
-  		String assignRoomNumToAppointment = ("UPDATE Appointment SET roomNum = " + "'" + roomNumber + "'" + "WHERE appt_id = " + "'" + appointmentID +"'");
-  		
-  		//Execute update on appointment table to assign room number to appointment
-  		DataBase.executeUpdate(assignRoomNumToAppointment, username, password);
-  		input.close();
-  		
-  		//Print statement confirming appointment has been assigned to a room
-  		System.out.println("Appointment " + appointmentID + " has been assigned to room " + roomNumber);*/
+
+				
+  		//Return the appointment ArrayList
+  		return apptIDRoomNum;	
 	}
 }

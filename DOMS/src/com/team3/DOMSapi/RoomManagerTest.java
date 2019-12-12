@@ -77,9 +77,18 @@ class RoomManagerTest {
 	void testGetRoomStatus() throws SQLException {
 		
 		//Declare needed variables
+		ArrayList<Room> rList = new ArrayList<Room>();
 		String expectedRoomStatus = "Clean and Ready";
 		String actualRoomStatus = null;
+		
+		//create a room manager
 		RoomManager roomManager = new RoomManager (1, "Amanda", "1996-4-14");
+		
+		//create a test room
+		Room room = new Room (200, "Clean and Ready");
+		
+		//insert room into ArrayList
+		rList.add(room);
 		
 		//Query to insert room number 20
 		String insertRoomQuery = "insert into Room values ('200', 'Clean and Ready')";
@@ -88,7 +97,7 @@ class RoomManagerTest {
 		DataBase.executeUpdate(insertRoomQuery, username, password);
 		
 		//Getting the actual room status
-		actualRoomStatus = roomManager.getRoomStatus("200", username, password);
+		actualRoomStatus = roomManager.getRoomStatus(200, rList, username, password);
 		
 		//Compare actual result and expected result
 		assertEquals(expectedRoomStatus, actualRoomStatus);
@@ -104,8 +113,15 @@ class RoomManagerTest {
 	void testSetRoomStatusToClean() throws SQLException {
 		
 		//Declare needed variables
+		ArrayList<Room> rList = new ArrayList<Room>();
 		RoomManager roomManager = new RoomManager (1, "Amanda", "1996-4-14");
 		String expectedRoomStatus = "Clean and Ready";
+		
+		//create a test room
+		Room room = new Room (200, "Empty and Dirty");
+		
+		//insert room into ArrayList
+		rList.add(room);
 		
 		//Query to insert room number 200
 		String insertRoomQuery = "insert into Room values ('200', 'Empty and Dirty')";
@@ -114,10 +130,10 @@ class RoomManagerTest {
 		DataBase.executeUpdate(insertRoomQuery, username, password);
 		
 		//Assign room number 200 the status of clean and ready
-		roomManager.setRoomStatusToClean("200", username, password);
+		roomManager.setRoomStatusToClean(rList, 200, username, password);
 		
 		//Get the actual room status of room number 200
-		String actualRoomStatus = roomManager.getRoomStatus("200", username, password);
+		String actualRoomStatus = roomManager.getRoomStatus(200, rList, username, password);
 		
 		//Compare the two statuses 
 		assertEquals(expectedRoomStatus, actualRoomStatus);
@@ -133,9 +149,16 @@ class RoomManagerTest {
 	void testSetRoomStatusToOccupied() throws SQLException {
 		
 		//Declare needed variables
+		ArrayList<Room> rList = new ArrayList<Room>();
 		RoomManager roomManager = new RoomManager (1, "Amanda", "1996-4-14");
 		Scanner input = new Scanner(System.in);
 		String expectedRoomStatus = "Occupied";
+		
+		//create a test room
+		Room room = new Room (200, "Clean and Ready");
+		
+		//insert room into ArrayList
+		rList.add(room);
 		
 		//Query to insert room number 200
 		String insertRoomQuery = "insert into Room values ('200', 'Clean and Ready')";
@@ -144,10 +167,10 @@ class RoomManagerTest {
 		DataBase.executeUpdate(insertRoomQuery, username, password);
 		
 		//Assign room number 200 the status of clean and ready
-		roomManager.setRoomStatusToOccupied("200", username, password);
+		roomManager.setRoomStatusToOccupied(rList, 200, username, password);
 		
 		//Get the actual room status of room number 200
-		String actualRoomStatus = roomManager.getRoomStatus("200", username, password);
+		String actualRoomStatus = roomManager.getRoomStatus(200, rList, username, password);
 		
 		//Compare the two statuses 
 		assertEquals(expectedRoomStatus, actualRoomStatus);
@@ -166,9 +189,16 @@ class RoomManagerTest {
 	void testSetRoomStatusToDirty() throws SQLException {
 		
 		//Declare needed variables
+		ArrayList<Room> rList = new ArrayList<Room>();
 		RoomManager roomManager = new RoomManager (1, "Amanda", "1996-4-14");
 		Scanner input = new Scanner(System.in);
 		String expectedRoomStatus = "Empty and Dirty";
+		
+		//create a test room
+		Room room = new Room (200, "Clean and Ready");
+				
+		//insert room into ArrayList
+		rList.add(room);
 		
 		//Query to insert room number 200
 		String insertRoomQuery = "insert into Room values (200, 'Occupied')";
@@ -177,10 +207,10 @@ class RoomManagerTest {
 		DataBase.executeUpdate(insertRoomQuery, username, password);
 		
 		//Assign room number 200 the status of clean and ready
-		roomManager.setRoomStatusToDirty("200", username, password);
+		roomManager.setRoomStatusToDirty(rList, 200, username, password);
 		
 		//Get the actual room status of room number 200
-		String actualRoomStatus = roomManager.getRoomStatus("200", username, password);
+		String actualRoomStatus = roomManager.getRoomStatus(200, rList, username, password);
 		
 		//Compare the two statuses 
 		assertEquals(expectedRoomStatus, actualRoomStatus);
@@ -198,64 +228,63 @@ class RoomManagerTest {
 	@Test
 	void testAssignPatientRoom() throws SQLException {
 		
-		//declare variables 
-		String username = "root";
-		String password = "toor";
-		String expectedAppointmentRoom = "8";
-		String actualAppointmentRoom = null;
-		int apptID = 0;
+		//declare needed variables
+		int actualAppointmentID = 0;
+		int expectedAppointmentID = 200;
+		int expectedAppointmentRoom = 200;
+		int actualAppointmentRoom = 0;
 		ArrayList<Appointment> apptList = new ArrayList<Appointment>();
 		ArrayList<Room> roomList = new ArrayList<Room>();
+		ArrayList<Integer> results = new ArrayList<Integer>();
+
+		Scanner input = null;
+		
+		//create a test room
+		Room room = new Room (200, "Clean and Ready");
+		
+		//create a test appointment
+		Appointment appt = new Appointment (200, "123-12-4321", "2019-12-14", "12:30:00", "none", "Approved", "Dr.Jones", 0);
+				
+		//insert room and appt into ArrayList
+		roomList.add(room);
+		apptList.add(appt);
 		
 		//Query to create a test patient and test appointment
-		String queryMan = "insert into Patient values('" + "Taylor" + "', '" + "2000-12-12" + "', '" + "123-12-4321" + "', '" + "none" + "', '" + "none" + "', '" + "A+" + "');";
-		String queryManAppt = "insert into appointment values('" + 5 + "', '" + "123-12-4321" + "', '" + "2000-12-12" + "', '" + "12:30:00" + "', '" + "none" + "', '" + "Approved" + "', '" + "Dr.Jones" + "', '" + 9 + "');";
-		String queryManFakeRoom = "insert into room values('" + 9 + "', '" + "Clean and Ready" + "');";
-		String queryManRoom = "insert into room values('" + 8 + "', '" + "Clean and Ready" + "');";
-		String queryManApptID = "select * from appointment";
+		String testPatient = "insert into Patient values('" + "Taylor" + "', '" + "2000-12-12" + "', '" + "123-12-4321" + "', '" + "none" + "', '" + "none" + "', '" + "A+" + "');";
+		String testAppt = "insert into appointment values('" + 200 + "', '" + "123-12-4321" + "', '" + "2000-12-12" + "', '" + "12:30:00" + "', '" + "none" + "', '" + "Checked-in" + "', '" + "Dr.Jones" + "', '" + 200 + "');";
+		String testRoom = "insert into room values('" + 200 + "', '" + "Clean and Ready" + "');";
 		
 		//Execute query to make test patient and test appointment 
-		DataBase.executeUpdate(queryMan, username, password);
-		DataBase.executeUpdate(queryManRoom, username, password);
-		DataBase.executeUpdate(queryManFakeRoom, username, password);
-		DataBase.executeUpdate(queryManAppt, username, password);
-		ResultSet rs = DataBase.executeQuery(queryManApptID, username, password);
-		
-		//Get id of appointment
-		while (rs.next()) {
-			apptID = rs.getInt(1);
-		}
+		DataBase.executeUpdate(testPatient, username, password);
+		DataBase.executeUpdate(testRoom, username, password);		
+		DataBase.executeUpdate(testAppt, username, password);
 		
 		//ByteStream array to simulate user input
-		ByteArrayInputStream in = new ByteArrayInputStream((apptID + System.lineSeparator() + 8).getBytes());
-		System.setIn(in);
+		ByteArrayInputStream in = new ByteArrayInputStream((200 + System.lineSeparator() + 200 + System.lineSeparator()).getBytes());
+		input = new Scanner(in);
 		
 		//Create a test Patient Manager
 	    RoomManager testRoomManager = new RoomManager(4, "Taylor Tate", "1997-05-03");
 
 		//Call check patient in method
-		testRoomManager.assignPatientRoom(apptList, roomList, username, password);
+		results = testRoomManager.assignPatientRoom(apptList, roomList, username, password, input);
 		
-		//Get new status of appointment after test patient has been checked in
-		ResultSet rs1 = DataBase.executeQuery(queryManApptID, username, password);
-		
-		//Get id of appointment
-		while (rs1.next()) {
-			actualAppointmentRoom = rs1.getString(8);
-		}
+		//Test to see if method returns correct appt id and room number 
+		actualAppointmentRoom = results.get(1);
+		actualAppointmentID = results.get(0);
 	
 		//Check to see if statuses are equal
 		assertEquals(expectedAppointmentRoom, actualAppointmentRoom);
+		assertEquals(expectedAppointmentID, actualAppointmentID);
+
 		
 		//delete for patient, appointment, and room for next test
-		String DeleteQuery = "delete from Patient where ssn=('" + "123-12-4321" + "');";
+		String DeleteQuery1 = "delete from Patient where ssn=('" + "123-12-4321" + "');";
 		String DeleteQuery2 = "delete from Appointment where Pssn=('" + "123-12-4321" + "');";
-		String DeleteQuery3 = "delete from Room where roomNumber=('" + "8" + "');";
-		String DeleteQuery4 = "delete from Room where roomNumber=('" + "9" + "');";
+		String DeleteQuery3 = "delete from Room where roomNumber=('" + 200 + "');";
 
 		DataBase.executeUpdate(DeleteQuery2, username, password);
-		DataBase.executeUpdate(DeleteQuery, username, password);
+		DataBase.executeUpdate(DeleteQuery1, username, password);
 		DataBase.executeUpdate(DeleteQuery3, username, password);
-		DataBase.executeUpdate(DeleteQuery4, username, password);
 	}
 }

@@ -28,6 +28,13 @@ public class Main {
 		return typeOfAccountChoice;
 	}
 	
+	public static int roomManagerMenu(Scanner input) {
+		  System.out.println("Would you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity. \n\t3. Check room availablilty \n\t4. Exit to Main Menu");
+	  	  int RMchoice = input.nextInt();
+	  	    
+			return RMchoice;
+	}
+	
 	public static int patientManagerIndex(ArrayList<PatientManager> pmList, int pmID) {
 		//Declare needed variables
 		int pmIndex = 0;
@@ -591,12 +598,34 @@ public class Main {
 	    	  int RMindex = roomManagerIndex(roomManagerList, RMid);
 	    	  
 	    	  while (RMFlag == 0) {
-		    	  System.out.println("Would you like to:\n\t1. Assign checked in patient to a room. \n\t2. Set room availablity. \n\t3. Check room availablilty \n\t4. Exit to Main Menu");
-		    	  int RMchoice = input.nextInt();
+	    		  //Room manager options
+		    	  int RMchoice = roomManagerMenu(input);
 		    	  
 		    	  switch (RMchoice) {
 		    	  	case 1:// Assign checked in patients to a room
-		    	  		apptList = roomManagerList.get(RMindex).assignPatientRoom(apptList, roomList, usrname, pswd);
+		    	  		ArrayList <Integer> apptIDRoomNum = new ArrayList<Integer>();
+		    	  		apptIDRoomNum = roomManagerList.get(RMindex).assignPatientRoom(apptList, roomList, usrname, pswd, input);
+		    	  		
+		    	  		//get apppointmentID and room number
+		    	  		int appointmentID = apptIDRoomNum.get(0);
+		    	  		int roomNumber = apptIDRoomNum.get(1);
+
+		    	  		
+		    	  		//iterating through the appointment ArrayList to find the ID entered and assign it to the room number entered
+		    	  		for (Appointment a: apptList) {
+		    	  			if(a.getApptID() == appointmentID) {
+		    	  				a.setRoomNum(roomNumber);
+		    	  				a.setStatus("Checked-in");
+		    	  			}
+		    	  		}
+		    	  		
+		    	  		//iterating through the room ArrayList to find the roomNum entered and assign it the status Occupied
+		    	  		for (Room r: roomList) {
+		    	  			if(r.getRoomNumber() == roomNumber) {
+		    	  				r.setAvaliablity("Occupied");
+		    	  			}
+		    	  		}
+		    	  		
 		    	  		//Headers for all checked-in appointments
 		    	  		System.out.println();
 		    			System.out.println("All checked-in appointments:");
@@ -608,36 +637,26 @@ public class Main {
 		    					System.out.format("%s\t\t %s\t\t %s\t %s\t\t %s\t\t %s\t\n", a.getApptID(), a.getRoomNum(), a.getSSN(), a.getDate(), a.getTime(), a.getStatus());
 		    				}
 		    			}
+		    			System.out.println();
 		    	  		break;
 		    	  	case 2:// Set room availability
-		    	  		
 		    	  		//Headers for clean and ready Room list
 		    	  		System.out.println();
 	    				System.out.println("All Rooms:");
 	    				System.out.println("Room Number" + "\t" + " Room Status");
-		    				
-		    	  	    //Query for all the Rooms
-		    	  		String allRooms = "SELECT * From Room";
-		    	  		
-		    	  		//ResultSet of all the checked in the appointments
-		    	  		ResultSet rs1 = DataBase.executeQuery(allRooms, usrname, pswd);
-		    	  		
-		    	  		//iterate through the ResultSet
-		    	  		while (rs1.next()) {
-		    	  			int id = rs1.getInt("roomNumber");
-		    	  			String avaliable = rs1.getString("avaliable");
-		    	  			
+	    				
+	    				//iterating through the room ArrayList
+		    	  		for (Room r: roomList) {
 		    	  			//Print the results
-		    	  			System.out.format("%s\t\t %s\t \n", id, avaliable);
+		    	  			System.out.format("%s\t\t %s\t \n", r.getRoomNumber(), r.isAvaliable());
 		    	  		}
 		    	  		
 		    	  		//Declare needed variables
-		    	  		String roomNum = null;
 		    	  		int statusChoice = 0;
 		    	  		
 		    	  		//Get number of room that status' needs to be changed
 		    	  		System.out.println("What is the number of the room you would like to set the availability for?");
-		    	  		roomNum = input.next();
+		    	  		int roomNum = input.nextInt();
 		    	  		
 		    	  		//Ask the user what status they are assigning to the room
 		    	  		System.out.println("What status would you like to assign to room " + roomNum +":\n\t1. Clean and Ready \n\t2. Occupied \n\t3. Empty and Dirty");
@@ -646,42 +665,39 @@ public class Main {
 		    	  		//Switch statement to assign room selected availability
 		    	  		switch(statusChoice) {
 			    	  		case 1:// Assign room Clean and Ready status
-			    	  			RoomManager RoomManagerClean = new RoomManager();
-			    	  			RoomManagerClean.setRoomStatusToClean(roomNum, usrname, pswd);
+			    	  			roomList = roomManagerList.get(RMindex).setRoomStatusToClean(roomList, roomNum, usrname, pswd);
 			    	  			System.out.println("Room number " + roomNum + " status' has been set to Clean and Ready");
 			    	  			break;
 			    	  		case 2:// Assign room Occupied status
-			    	  			RoomManager RoomManagerOccupied = new RoomManager();
-			    	  			RoomManagerOccupied.setRoomStatusToOccupied(roomNum, usrname, pswd);
+			    	  			roomList = roomManagerList.get(RMindex).setRoomStatusToOccupied(roomList, roomNum, usrname, pswd);
 			    	  			System.out.println("Room number " + roomNum + " status' has been set to Occupied");
 			    	  			break;
 			    	  		case 3:// Assign room Empty and Dirty status
-			    	  			RoomManager RoomManagerDirty = new RoomManager();
-			    	  			RoomManagerDirty.setRoomStatusToDirty(roomNum, usrname, pswd);
+			    	  			roomList = roomManagerList.get(RMindex).setRoomStatusToDirty(roomList, roomNum, usrname, pswd);
 			    	  			System.out.println("Room number " + roomNum + " status' has been set to Empty and Dirty");
 			    	  			break;  			
-		    	  		}
+		    	  		}			    	  					    	
 	
 		    	  		break;
 		    	  	case 3:// Check room availability
 		    	  		
-		    	  		//Declare needed variables
-		    	  		String roomNumber = null;
-		    	  		
-		    	  		//Get the room number from the RM 
+		    	  		//declare needed variables
+		    	  		String roomStatus =null;
+		    			
+		    			//Get the room number from the RM 
 		    	  		System.out.println("Please enter the room number of the room you would like to know the status of.");
-		    	  		roomNumber = input.next();
+		    	  		int roomNumb = input.nextInt();
 		    	  		
 		    	  		//Call getRoomStatusMethod
-		    	  		RoomManager RoomManager = new RoomManager();
-		    	  		String roomStatus = RoomManager.getRoomStatus(roomNumber, usrname, pswd);
+		    	  		roomStatus = roomManagerList.get(RMindex).getRoomStatus(roomNumb, roomList, usrname, pswd);
 		    	  		
 		    			//Print the status of the room
-		    			System.out.println("The status of room number " + roomNumber + " is " + roomStatus);
+		    			System.out.println("The status of room number " + roomNumb + " is " + roomStatus);
 		    	  		break;
+		    	  		
 		    	  	case 4://Quit to main menu
- 		    	  		RMFlag = 1;
- 		    	  		break;
+		    	  		RMFlag = 1;
+		    	  		break;
 		    	  }
 	    	  }
 	    	  break;
