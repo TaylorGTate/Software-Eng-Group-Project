@@ -2,6 +2,10 @@ package com.team3.DOMSapi;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Scanner;
+
 import org.junit.jupiter.api.Test;
 
 class PatientTest {
@@ -115,7 +119,41 @@ class PatientTest {
 	}
 	@Test
 	void test_requestAppt() {
-	    Appointment expectedValue = new Appointment(13, "222-33-4444","2000-05-03","12:30:00","N/A",statuses[0], "N/A", 0);
+		//ByteStream array to simulate user input
+		String userInput = "2000-05-03\n12:30\nN/A\nN/A";
+	    InputStream in = new ByteArrayInputStream(userInput.getBytes());
+	    System.setIn(in);
+	    
+		int numOfAppts = 1;
+		
+		Patient p = new Patient(1, "Mandy Seasholtz", "1998-01-01", "123-01-1234", "pollen", "Dr. Williams", "A+");
+		
+		Appointment actualValue = p.requestAppt(numOfAppts);
+	    Appointment expectedValue = new Appointment(2, "123-01-1234","2000-05-03","12:30:00","N/A",statuses[0], "N/A", 0);
+		String expectedResult = expectedValue.getApptID() + expectedValue.getSSN() + expectedValue.getDate()+ expectedValue.getTime() + expectedValue.getNotes() + expectedValue.getStatus() + expectedValue.getPreferredDoc() + expectedValue.getRoomNum();
+		String actualResult = actualValue.getApptID() + actualValue.getSSN() + actualValue.getDate()+ actualValue.getTime() + actualValue.getNotes() + actualValue.getStatus() + actualValue.getPreferredDoc() + actualValue.getRoomNum();
+	    
+		assertEquals(actualResult, expectedResult);
 	}
+	/*
+	@Test
+	void test_selectAppt() {
+		//ByteStream array to simulate user input
+		String userInput = "2000-05-03\n12:30\nN/A\nN/A";
+	    InputStream in = new ByteArrayInputStream(userInput.getBytes());
+	    System.setIn(in);
+	    
+		int numOfAppts = 1;
+		
+		Patient p = new Patient(1, "Mandy Seasholtz", "1998-01-01", "123-01-1234", "pollen", "Dr. Williams", "A+");
+		
+		Appointment actualValue = p.requestAppt(numOfAppts);
+	    Appointment expectedValue = new Appointment(2, "123-01-1234","2000-05-03","12:30:00","N/A",statuses[0], "N/A", 0);
+		String expectedResult = expectedValue.getApptID() + expectedValue.getSSN() + expectedValue.getDate()+ expectedValue.getTime() + expectedValue.getNotes() + expectedValue.getStatus() + expectedValue.getPreferredDoc() + expectedValue.getRoomNum();
+		String actualResult = actualValue.getApptID() + actualValue.getSSN() + actualValue.getDate()+ actualValue.getTime() + actualValue.getNotes() + actualValue.getStatus() + actualValue.getPreferredDoc() + actualValue.getRoomNum();
+	    
+		assertEquals(actualResult, expectedResult);
+	}
+	*/
 
 }
