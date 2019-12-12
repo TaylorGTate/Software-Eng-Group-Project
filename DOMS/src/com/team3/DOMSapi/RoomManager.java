@@ -79,7 +79,7 @@ public class RoomManager {
 	   * @return this room's status
 	 * @throws SQLException 
 	   */
-	public String getRoomStatus( Scanner input, int roomNumber, ArrayList<Room> rList, String username, String password) throws SQLException {
+	public String getRoomStatus(int roomNumber, ArrayList<Room> rList, String username, String password) throws SQLException {
 		
 		//declare variables 
 		String roomStatus = null;
@@ -105,7 +105,7 @@ public class RoomManager {
 		//iterating through the room ArrayList
   		for (Room r: rList) {
   			if (r.getRoomNumber() == roomNum) {
-  				r.setAvaliablity("Claen and Ready");
+  				r.setAvaliablity("Clean and Ready");
   			}
   		}
 		

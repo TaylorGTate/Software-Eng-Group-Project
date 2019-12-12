@@ -689,7 +689,7 @@ public class Main {
 		    	  		int roomNumb = input.nextInt();
 		    	  		
 		    	  		//Call getRoomStatusMethod
-		    	  		roomStatus = roomManagerList.get(RMindex).getRoomStatus(input, roomNumb, roomList, usrname, pswd);
+		    	  		roomStatus = roomManagerList.get(RMindex).getRoomStatus(roomNumb, roomList, usrname, pswd);
 		    	  		
 		    			//Print the status of the room
 		    			System.out.println("The status of room number " + roomNumb + " is " + roomStatus);
