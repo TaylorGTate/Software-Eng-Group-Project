@@ -130,11 +130,10 @@ public class Patient {
 	   * @param Scanner input  
 	   * @return newAppt Appointment object that contains the new appointment details
 	   */
-	public Appointment requestAppt(ArrayList<Appointment> apptList, Scanner input) {
+	public Appointment requestAppt(int numOfAppts, Scanner input) {
 		String patientName = this.name;
 		String patientSSN = this.ssn;
-		int apptID = apptList.size();
-		apptID++;
+		int newApptID = numOfAppts+1;
 		
 		System.out.println("\nPatient name: " + patientName + "\n"); 
 		
@@ -170,7 +169,7 @@ public class Patient {
             preferredDoc = input.nextLine();
         }
         
-        Appointment newAppt = new Appointment(apptID, patientSSN, apptDate, apptTime, notes, statuses[0], preferredDoc, 0);
+        Appointment newAppt = new Appointment(newApptID, patientSSN, apptDate, apptTime, notes, statuses[0], preferredDoc, 0);
         return newAppt;
 	}
 	
@@ -189,9 +188,10 @@ public class Patient {
 					String apptTime = apptList.get(i).getTime();
 					String apptNotes = apptList.get(i).getNotes();
 					String apptStatus = apptList.get(i).getStatus();
+					String preferredDoc = apptList.get(i).getPreferredDoc();
 					
 					// Display results
-		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus+ "\n\tPreferred Doctor: " + preferredDoc);
 	    		}
 	    	}
 		}
@@ -220,9 +220,10 @@ public class Patient {
 					String apptTime = apptList.get(i).getTime();
 					String apptNotes = apptList.get(i).getNotes();
 					String apptStatus = apptList.get(i).getStatus();
+					String preferredDoc = apptList.get(i).getPreferredDoc();
 					
 					// Display results
-		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus+ "\n\tPreferred Doctor: " + preferredDoc);
 	    		}
 	    	}
 		
@@ -283,7 +284,7 @@ public class Patient {
 	  	    switch(selectedInput) {
 	  	    	case "1":
 	  	    		System.out.println("Current Appt Date: " + apptDate);
-		  	    	System.out.println("What date would you like to change it to? (in the form YYYY-MM-DD)");
+	  	        	System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
 		  	    	apptDate = input.next();
 		  	        //add error checking for making sure dates are current
 		  	        while (!apptDate.matches("(\\d{4}-\\d{2}-\\d{2})")) {
@@ -296,7 +297,7 @@ public class Patient {
 		  	    	break;
 	  	    	case "2":
 	  	      		System.out.println("Current Appt Time: " + apptTime);
-	  	      		System.out.println("What time would you like to change it to? (in the form hh:mm)");
+  	      			System.out.println("Please enter a time for your appointment: (in the form hh:mm) ");
 	  	      		apptTime = input.next();
 	  	      		//add error checking for making sure dates are current
 	  	      		while (!apptTime.matches("(\\d{2}:\\d{2})")) {
@@ -318,7 +319,7 @@ public class Patient {
 	  	      		break;
 	  	    	case "4":
 	  	      		System.out.println("Current Preferred Doctor: " + preferredDoc);
-	  	      		System.out.println("Who would you like to change the Preferred Doctor to? (or 'N/A' if no preferred doctor)");
+  	      			System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
 	  	      		input.nextLine();
 	  	      		preferredDoc = input.nextLine();
 	  	      		while (!preferredDoc.matches("([Nn]\\/[Aa])|([a-zA-Z.\\s])")) {
@@ -415,7 +416,7 @@ public class Patient {
 	  	    		System.out.println("Please enter new patient name: ");
 	  	    		input.nextLine();
 	  	    		patientName = input.nextLine();
-	  	    		while (!patientName.matches("([a-zA-Z.\\s])")) {
+	  	    		while (!patientName.matches("([a-zA-Z.\\s]*)")) {
 	  	    			System.out.println("\n** Incorrect input. Please try again. **");
 		  	    		System.out.println("Please enter new patient name: ");
 	  	    			patientName = input.nextLine();
