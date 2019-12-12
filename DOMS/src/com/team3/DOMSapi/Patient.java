@@ -8,15 +8,16 @@ import java.util.Scanner;
  * A patient can have many appointments.
  */
 public class Patient {
-	 String name;
-	 String birthDate;
-	 String ssn;
-	 String allergies;
-	 String preferredDoctor;
-	 String bloodType;
-	 String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
-	 int patientid;
+	String name;
+	String birthDate;
+	String ssn;
+	String allergies;
+	String preferredDoctor;
+	String bloodType;
+	String statuses[] = {"Requested", "Approved", "Denied", "Edited"};
+	int patientid;
 
+	//full constructor
 	public Patient(int id, String patientName, String birthDay, String social, String allergy, String preferredDoc, String blood) {
 		patientid = id;
 		name = patientName;
@@ -46,6 +47,7 @@ public class Patient {
 	public String getName() {
 		return name;
 	}
+	
 	/**
 	   * Changes the name of this Patient.
 	   * @param patientName This patient's new name.  
@@ -55,6 +57,7 @@ public class Patient {
 	public void setName(String patientName) {
 		name = patientName;
 	}
+	
 	/**
 	   * Gets the birthday of this patient.
 	   * @return this patient's birthday.
@@ -62,6 +65,7 @@ public class Patient {
 	public String getBirthDate() {
 		return birthDate;
 	}
+	
 	/**
 	   * Changes the birthday of this patient.
 	   * @param birthday This patient's birthday.  
@@ -69,6 +73,7 @@ public class Patient {
 	public void setBirthDate(String birthday) {
 		birthDate = birthday;
 	}
+	
 	/**
 	   * Gets the SSN of this patient.
 	   * @return this patient's SSN.
@@ -76,6 +81,7 @@ public class Patient {
 	public String getSSN() {
 		return ssn;
 	}
+	
 	/**
 	   * Changes the SSN of this patient.
 	   * @param social This patient's SSN.  
@@ -83,6 +89,7 @@ public class Patient {
 	public void setSSN(String social) {
 		ssn = social;
 	}
+	
 	/**
 	   * Gets the allergies of this patient.
 	   * @return this patient's allergies.
@@ -90,6 +97,7 @@ public class Patient {
 	public String getAllergies() {
 		return allergies;
 	}
+	
 	/**
 	   * Updates the allergies of this patient.
 	   * @param allergy This patient's allergies.  
@@ -97,6 +105,7 @@ public class Patient {
 	public void setAllergies(String allergy) {
 		allergies = allergy;
 	}
+	
 	/**
 	   * Gets the preferred doctor of this patient.
 	   * @return this patient's preferred doctor.
@@ -104,6 +113,7 @@ public class Patient {
 	public String getDoctor() {
 		return preferredDoctor;
 	}
+	
 	/**
 	   * Changes the preferred doctor of this patient.
 	   * @param docName This patient's preferred doctor.  
@@ -111,6 +121,7 @@ public class Patient {
 	public void setDoctor(String docName) {
 		preferredDoctor = docName;
 	}
+	
 	/**
 	   * Gets the blood type of this patient.
 	   * @return this patient's blood type.
@@ -118,6 +129,7 @@ public class Patient {
 	public String getBloodType() {
 		return bloodType;
 	}
+	
 	/**
 	   * Changes the blood type of this patient.
 	   * @param blood This patient's blood type.  
@@ -125,6 +137,7 @@ public class Patient {
 	public void setBloodType(String blood) {
 		bloodType = blood;
 	}
+	
 	/**
 	   * Patient requests an appointment.  
 	   * @return newAppt Appointment object that contains the new appointment details
@@ -208,7 +221,6 @@ public class Patient {
 	
 	/**
 	   * Displays all the appts and prompts the user to select an appt
-	   * @param input Scanner object  
 	   * @param apptList ArrayList containing all the appts
 	   * @return selectedAppt Appointment object that the user selected
 	   */
@@ -263,7 +275,6 @@ public class Patient {
 	
 	/**
 	   * Allows the user to edit the details of a selected appt
-	   * @param input Scanner object  
 	   * @param currentAppt Appointment object of the Appointment the user is editing
 	   * @return editedAppt Appointment object that contains the new details that were supplied by the user
 	   */ 
@@ -351,7 +362,6 @@ public class Patient {
 	
 	/**
 	   * Allows the user to cancel a selected appt
-	   * @param input Scanner object  
 	   * @param currentAppt Appointment object of the Appointment the user is canceling
 	   * @return cancelledAppt Appointment object that is to be canceled, after user verification
 	   */ 
@@ -396,7 +406,6 @@ public class Patient {
 	
 	/**
 	   * Allows the user to edit the details of their user profile
-	   * @param input Scanner object  
 	   * @return updatedPatient Patient object that contains the new details that were supplied by the user
 	   */ 
 	public Patient editProfile() {
