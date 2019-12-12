@@ -19,9 +19,9 @@ class DataBaseTest {
 		String pswd = "toor";		
 		Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
 		Statement mystmt = myconn.createStatement();
-		String queryMan = "insert into Patient values('" + "Mandy" + "', '" + "2000-12-12" + "', '" + "123-12-4321" + "', '" + "none" + "', '" + "none" + "', '" + "A+" + "');";
+		String queryMan = "insert into Patient values('" + "Mandy" + "', '" + "2000-12-12" + "', '" + "123-12-4323" + "', '" + "none" + "', '" + "none" + "', '" + "A+" + "');";
 		DataBase.executeUpdate(queryMan, usrname, pswd);
-		String deadSSN = "123-12-4321";
+		String deadSSN = "123-12-4323";
         try {
           String deadSSNquery = "select * from Patient where ssn=('" + deadSSN + "');";
           ResultSet deadResult = mystmt.executeQuery(deadSSNquery);

@@ -70,9 +70,6 @@ public class RoomManager {
 		return birthDate;
 	}
 	
-	/*public Boolean isBirthday() {
-		return false;
-	}*/
 	/**
 	   * Gets the room status for the specified room.
 	   * @param room The room to check the status for

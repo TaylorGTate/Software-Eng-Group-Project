@@ -64,21 +64,6 @@ public class AppointmentManager {
 	public void setBirthDate(String birthday) {
 		birthDate = birthday;
 	}
-	
-	/*
-	public boolean isBirthday(Patient patient) {
-		final DateFormat dateFormat = new SimpleDateFormat("MM-dd");
-		Date date = new Date();
-		String currentDate = dateFormat.format(date);
-		System.out.println(currentDate);
-		if (patient.birthDate == currentDate) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	*/
 	/**
 	   * Changes the appointment's status to denied.
 	   * @param appt Appointment to be denied.  
