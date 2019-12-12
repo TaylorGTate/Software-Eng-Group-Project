@@ -85,7 +85,7 @@ public class Doctor {
 	public Patient editUserProfile(Patient currentPatient, Scanner input) {
 		Patient updatedPatient = new Patient();
 		
-		updatedPatient = currentPatient.editProfile(input);
+		updatedPatient = currentPatient.editProfile();
 		
 		return updatedPatient;
 	}
