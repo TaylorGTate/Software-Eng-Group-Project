@@ -2,6 +2,9 @@ package com.team3.DOMSapi;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.ByteArrayInputStream;
+import java.util.Scanner;
+
 import org.junit.jupiter.api.Test;
 
 class DoctorTest {
@@ -80,6 +83,24 @@ class DoctorTest {
 		int expectedID = 1;
 		int actualID = doctor.getDocID();
 		assertEquals(expectedID, actualID);	
+	}
+	
+	@Test
+	void testEditUserProfile() {
+		Doctor currentDoctor = new Doctor(1, "Dr.Jones", "1970-12-10", "189-12-1237");
+		Patient currentPatient = new Patient(1, "Mandy", "1998-12-12", "123-12-5432", "none", "Dr.Jones", "A+");
+		ByteArrayInputStream in = new ByteArrayInputStream((1 + System.lineSeparator() + 1 + System.lineSeparator()).getBytes());
+		Scanner input = new Scanner(in);
+		currentDoctor.editUserProfile(currentPatient, input);
+		ByteArrayInputStream in2 = new ByteArrayInputStream((1 + System.lineSeparator() + "Mandy" + System.lineSeparator()).getBytes());
+		Scanner input2 = new Scanner(in2);
+		ByteArrayInputStream in3 = new ByteArrayInputStream((1 + System.lineSeparator() + "Max" + System.lineSeparator()).getBytes());
+		Scanner input3 = new Scanner(in3);
+		Patient updatedPatient = currentPatient.editProfile(input2);
+		assertEquals(currentPatient, updatedPatient);
+		
+		
+		
 	}
 
 }
