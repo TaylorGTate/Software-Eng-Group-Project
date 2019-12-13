@@ -160,9 +160,8 @@ public class RoomManager {
 		return rList;
 	}
 	
-	public ArrayList<Integer> assignPatientRoom(ArrayList<Appointment> aList, ArrayList<Room> rList, String username, String password) throws SQLException {
+	public ArrayList<Integer> assignPatientRoom(Scanner input, ArrayList<Appointment> aList, ArrayList<Room> rList, String username, String password) throws SQLException {
 		
-		Scanner input = new Scanner(System.in);
 		//Make ArrayList for appt id and room number
   		ArrayList <Integer> apptIDRoomNum = new ArrayList<Integer>();
 		
