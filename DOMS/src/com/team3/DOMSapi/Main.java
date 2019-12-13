@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+	
+	static String usrname = "";
+	static String pswd = "";
 
 	/*
 	 * Input: the Scanner input
@@ -318,6 +320,36 @@ public class Main {
 			e.printStackTrace();
 	  	} 
 	}
+	
+	public static void loginDB() {
+	    try {
+			Scanner input = new Scanner(System.in);
+		    System.out.println("Enter DB user name: ");
+		    usrname = input.next();
+		    System.out.println("Enter password: ");
+		    pswd = input.next();
+		    input.nextLine();
+		    
+		    Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
+		    System.out.println("DB connected..");
+		    
+	    	//seeds the DB using the seeds.txt file
+		    //check with user first before seeding DB
+		    System.out.print("Seed DB? (y or n): ");
+		    String userInput = input.nextLine();
+	    	while (!userInput.matches("([yYnN]{1})")) {
+	        	System.out.println("\n** Incorrect input. Please try again. **");
+	    	    System.out.print("Seed DB? (y or n): ");
+				userInput = input.nextLine();
+	    	}
+		    if (userInput.equals("y") || userInput.equals("Y")) {
+		      seedDB(usrname, pswd);
+		    }
+		} catch (Exception e) {
+			System.out.println(e + "\n** Incorrect login. Please try again. **\n");
+			loginDB();
+	  	} 
+	}
   
 	 /**
 	   * Connects to Database. Displays menu on login of choices to select from. 
@@ -325,24 +357,7 @@ public class Main {
 	   */
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException{
 		Scanner input = new Scanner(System.in);
-	    System.out.println("Enter DB user name: ");
-	    String usrname = input.next();
-	    System.out.println("Enter password: ");
-	    String pswd = input.next();
-	    input.nextLine();
-	    /*
-		String myQueryTest = "SELECT count(*)\r\n" + 
-   				"FROM information_schema.TABLES\r\n" + 
-   				"WHERE (TABLE_SCHEMA = 'domsdb') AND (TABLE_NAME = 'Patient')";
-
-  	  	int validCount = DataBase.executeQueryCount(myQueryTest, usrname, pswd);
-		if (validCount > 0){
-			System.out.println("The table exists!");
-		}
-		else{
-			System.out.println("Table does not exist!");
-		}
-		*/
+		loginDB();
 		
 		//Declaring ArrayList from all of the different objects
 		ArrayList<Patient> patientList = new ArrayList<Patient>();
@@ -362,23 +377,6 @@ public class Main {
 		RoomManager currentRM = new RoomManager();
 		PatientManager currentPM = new PatientManager();
 
-		Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
-	    System.out.println("DB connected..");
-	    Statement mystmt = myconn.createStatement();
-    
-    	//seeds the DB using the seeds.txt file
-	    //check with user first before seeding DB
-	    System.out.print("Seed DB? (y or n): ");
-	    String userInput = input.nextLine();
-    	while (!userInput.matches("([yYnN]{1})")) {
-        	System.out.println("\n** Incorrect input. Please try again. **");
-    	    System.out.print("Seed DB? (y or n): ");
-			userInput = input.nextLine();
-    	}
-	    if (userInput.equals("y") || userInput.equals("Y")) {
-	      seedDB(usrname, pswd);
-	    }
-	    
 	    //populating ArrayLists with DB info
 	    patientList = DataBase.populatePatientAL(patientList, pswd, usrname);
 	    doctorList = DataBase.populateDoctorAL(doctorList, pswd, usrname);
@@ -429,7 +427,7 @@ public class Main {
 	
 		  	      		}
 		  	      		catch (Exception e) {
-		  	      			System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
 		  	      		}	          
 		  	      		break;
 		  	          
@@ -438,7 +436,8 @@ public class Main {
 				            currentPatient.viewAppts(apptList);
 				        }
 				        catch (Exception e) {
-				            System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 				        }
 			  	        break;
 		  	        
@@ -453,7 +452,8 @@ public class Main {
 		  	    		  System.out.println("Appointment details updated.");
 			          }
 			          catch (Exception e) {
-			        	  System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 			          }
 		  	          break;
 		  	        
@@ -461,7 +461,7 @@ public class Main {
 				  	    try {
 				  	    	currentAppt = currentPatient.selectAppt(apptList);
 	
-				            Appointment cancelledAppt = currentPatient.cancelAppt(currentAppt, input);
+				            Appointment cancelledAppt = currentPatient.cancelAppt(currentAppt);
 				            
 				            if (cancelledAppt != null){
 				  	    		String cancelApptQuery = "delete from Appointment where appt_id=('" + cancelledAppt.getApptID() + "');";
@@ -470,7 +470,8 @@ public class Main {
 				            }
 				        }
 				        catch (Exception e) {
-				            System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 				        }
 			  	        break;
 			  	        
@@ -491,9 +492,9 @@ public class Main {
 				          }
 		  	    	  }
 		  	    	  catch (Exception e) {
-		  	    		  System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 		  	    	  }
-		  	    	  System.out.println("Thank you. Have a good day.");
 		  	          break;
 		  	      case "6"://exit patient menu
 	 	  	    	  patFlag = 1;
@@ -531,12 +532,12 @@ public class Main {
 					  	        }
 				        	    System.out.println("Profile details updated.");
 				            }
-			            }
+				  	    }
 				          catch (Exception e) {
-				            System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 				          }
-				  	    System.out.println("Thank you. Have a good day.");
-			  	          break;
+				  	    break;
 			  	      case "2": //update appt notes
 			  	    	userSSN = getUserSSN();
 			  	        currentPatient = getCurrentPatient(userSSN, patientList);
@@ -557,15 +558,15 @@ public class Main {
 				            }
 			            }
 				          catch (Exception e) {
-				            System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 				          }
 			  	        for (int i=0; i<apptList.size(); i++) {
 			  	    	    if (apptList.get(i).getApptID() == currentAppt.getApptID()){
 			  	    	    	System.out.println(apptList.get(i).getNotes());
 			  	    	    }
 			  	        }
-				  	    System.out.println("Thank you. Have a good day.");
-			  	          break;
+			  	        break;
 			  	      case "3":// exit to main menu
 	 		  	    	  docFlag = 1;
 	 		  	    	  break;
@@ -593,7 +594,8 @@ public class Main {
 				  	    	  DataBase.executeUpdate(newDoctorQuery,  usrname, pswd);
 			  	    	  }
 			  	    	  catch(Exception e) {
-			  	    		  System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 			  	    	  }
 			  	    	  
 			  	    	  break;
@@ -613,7 +615,8 @@ public class Main {
 				        	    System.out.println("Profile details updated.");
 			  	    	  }
 			  	    	  catch(Exception e) {
-			  	    		  System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 			  	    	  }
 			  	    	  break;
 			  	      case "3":// Assign doctor to appointment
@@ -638,7 +641,8 @@ public class Main {
 			  	    		  System.out.println("Appointment details updated.");
 			  	    	  }
 			  	    	  catch(Exception e) {
-			  	    		  System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 			  	    	  }
 			  	        break;
 			  	      case "4"://Exit to Main Menu
@@ -776,7 +780,8 @@ public class Main {
 		    	  			currentAM.viewAppts(apptList);
 		    	  		}
 		    	  		catch(Exception e) {
-		    	  			System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 		    	  		}
 		    	  		break;
 		    	  	case "2": //view approved appts
@@ -784,7 +789,8 @@ public class Main {
 		    	  			currentAM.viewApprovedAppts(apptList);
 		    	  		}
 		    	  		catch(Exception e) {
-		    	  			System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 		    	  		}
 		    	  		break;
 		    	  	case "3": //view requested appts
@@ -792,7 +798,8 @@ public class Main {
 		    	  			currentAM.viewRequestedAppts(apptList);
 		    	  		}
 		    	  		catch(Exception e) {
-		    	  			System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 		    	  		}
 		    	  		break;
 		    	  	case "4": //edit appts
@@ -811,7 +818,8 @@ public class Main {
 			  	    		System.out.println("Appointment details updated.");
 				          }
 				          catch (Exception e) {
-				        	  System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 				          }
 			  	          break;
 		    	  	case "5": //approve/deny requested appts
@@ -851,7 +859,8 @@ public class Main {
 				  	        }
 		    	  		}
 		    	  		catch(Exception e) {
-		    	  			System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 		    	  		}
 		    	  		
 		    	  		break;
@@ -871,7 +880,8 @@ public class Main {
 	
 		  	      		}
 		  	      		catch (Exception e) {
-		  	      			System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 		  	      		}	          
 		  	      		break;
 			    	  case "7"://Quit to main menu
@@ -926,9 +936,9 @@ public class Main {
 					          }
 			  	    	  }
 			  	    	  catch (Exception e) {
-			  	    		  System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 			  	    	  }
-			  	    	  System.out.println("Thank you. Have a good day.");
 			  	          break;
 			  	          
 			    	  case "3": //Remove patient from database
@@ -995,6 +1005,7 @@ public class Main {
 	  			    break;
 		      case "8":// Quit
 		    	  mainMenuFlag = 1;
+		    	  System.out.println("Thank you Have a good day.");
 		    	  break;
 	  	       default:
 	  	    	 System.out.println("Sorry, you did not enter a valid option.");
