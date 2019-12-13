@@ -365,7 +365,8 @@ public class Patient {
 	   * @param currentAppt Appointment object of the Appointment the user is canceling
 	   * @return cancelledAppt Appointment object that is to be canceled, after user verification
 	   */ 
-	public Appointment cancelAppt(Appointment currentAppt, Scanner input) {
+	public Appointment cancelAppt(Appointment currentAppt) {
+		Scanner input = new Scanner(System.in);
 		int apptID = currentAppt.getApptID();
 		String apptDate = currentAppt.getDate();
 		String apptTime = currentAppt.getTime();
