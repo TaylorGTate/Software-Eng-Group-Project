@@ -518,7 +518,7 @@ public class Main {
 			  	        currentPatient = getCurrentPatient(userSSN, patientList);
 			  	        
 				  	    try {
-				  	    	Patient updatedPatient = currentDoctor.editUserProfile(currentPatient, input);
+				  	    	Patient updatedPatient = currentDoctor.editUserProfile(currentPatient);
 				            
 				  	    	if (updatedPatient != null){
 				  	      	    String updatedPatientQuery = "update Patient set patientName=('" + updatedPatient.name + "'), birthDate=('" + currentPatient.birthDate + "'), allergies=('" + currentPatient.allergies + "'), preferredDoctor=('" + currentPatient.preferredDoctor + "'), bloodtype=('" + currentPatient.bloodType + "') where ssn=('" + currentPatient.ssn + "');";

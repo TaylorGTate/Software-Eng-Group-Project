@@ -82,7 +82,7 @@ public class Doctor {
 	   * @param currentPatient Patient object of the patient to be edited  
 	   * @return updatedPatient Patient object that contains the new details that were supplied by the doctor
 	   */ 
-	public Patient editUserProfile(Patient currentPatient, Scanner input) {
+	public Patient editUserProfile(Patient currentPatient) {
 		Patient updatedPatient = new Patient();
 		
 		updatedPatient = currentPatient.editProfile();
