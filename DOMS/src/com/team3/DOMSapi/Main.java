@@ -427,7 +427,7 @@ public class Main {
 	
 		  	      		}
 		  	      		catch (Exception e) {
-		  	      			System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
 		  	      		}	          
 		  	      		break;
 		  	          
@@ -436,7 +436,8 @@ public class Main {
 				            currentPatient.viewAppts(apptList);
 				        }
 				        catch (Exception e) {
-				            System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 				        }
 			  	        break;
 		  	        
@@ -451,7 +452,8 @@ public class Main {
 		  	    		  System.out.println("Appointment details updated.");
 			          }
 			          catch (Exception e) {
-			        	  System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 			          }
 		  	          break;
 		  	        
@@ -468,7 +470,8 @@ public class Main {
 				            }
 				        }
 				        catch (Exception e) {
-				            System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 				        }
 			  	        break;
 			  	        
@@ -489,7 +492,8 @@ public class Main {
 				          }
 		  	    	  }
 		  	    	  catch (Exception e) {
-		  	    		  System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 		  	    	  }
 		  	          break;
 		  	      case "6"://exit patient menu
@@ -530,7 +534,8 @@ public class Main {
 				            }
 				  	    }
 				          catch (Exception e) {
-				            System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 				          }
 				  	    break;
 			  	      case "2": //update appt notes
@@ -553,7 +558,8 @@ public class Main {
 				            }
 			            }
 				          catch (Exception e) {
-				            System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 				          }
 			  	        for (int i=0; i<apptList.size(); i++) {
 			  	    	    if (apptList.get(i).getApptID() == currentAppt.getApptID()){
@@ -588,7 +594,8 @@ public class Main {
 				  	    	  DataBase.executeUpdate(newDoctorQuery,  usrname, pswd);
 			  	    	  }
 			  	    	  catch(Exception e) {
-			  	    		  System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 			  	    	  }
 			  	    	  
 			  	    	  break;
@@ -608,7 +615,8 @@ public class Main {
 				        	    System.out.println("Profile details updated.");
 			  	    	  }
 			  	    	  catch(Exception e) {
-			  	    		  System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 			  	    	  }
 			  	    	  break;
 			  	      case "3":// Assign doctor to appointment
@@ -633,7 +641,8 @@ public class Main {
 			  	    		  System.out.println("Appointment details updated.");
 			  	    	  }
 			  	    	  catch(Exception e) {
-			  	    		  System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 			  	    	  }
 			  	        break;
 			  	      case "4"://Exit to Main Menu
@@ -771,7 +780,8 @@ public class Main {
 		    	  			currentAM.viewAppts(apptList);
 		    	  		}
 		    	  		catch(Exception e) {
-		    	  			System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 		    	  		}
 		    	  		break;
 		    	  	case "2": //view approved appts
@@ -779,7 +789,8 @@ public class Main {
 		    	  			currentAM.viewApprovedAppts(apptList);
 		    	  		}
 		    	  		catch(Exception e) {
-		    	  			System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 		    	  		}
 		    	  		break;
 		    	  	case "3": //view requested appts
@@ -787,7 +798,8 @@ public class Main {
 		    	  			currentAM.viewRequestedAppts(apptList);
 		    	  		}
 		    	  		catch(Exception e) {
-		    	  			System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 		    	  		}
 		    	  		break;
 		    	  	case "4": //edit appts
@@ -806,7 +818,8 @@ public class Main {
 			  	    		System.out.println("Appointment details updated.");
 				          }
 				          catch (Exception e) {
-				        	  System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 				          }
 			  	          break;
 		    	  	case "5": //approve/deny requested appts
@@ -846,7 +859,8 @@ public class Main {
 				  	        }
 		    	  		}
 		    	  		catch(Exception e) {
-		    	  			System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 		    	  		}
 		    	  		
 		    	  		break;
@@ -866,7 +880,8 @@ public class Main {
 	
 		  	      		}
 		  	      		catch (Exception e) {
-		  	      			System.out.println(e);
+				            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 		  	      		}	          
 		  	      		break;
 			    	  case "7"://Quit to main menu
@@ -921,7 +936,8 @@ public class Main {
 					          }
 			  	    	  }
 			  	    	  catch (Exception e) {
-			  	    		  System.out.println(e);
+					            System.out.println(e + "\n** Looks like an error occured. Please try again. ** ");
+
 			  	    	  }
 			  	          break;
 			  	          

@@ -158,7 +158,6 @@ public class Patient {
         	System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
             apptDate = input.next();
         }
-        System.out.println(apptDate);
         
         System.out.println("Please enter a time for your appointment: (in the form hh:mm) ");
         String apptTime = input.next();
@@ -170,13 +169,10 @@ public class Patient {
         }
         //need to add the seconds for the database entry
         apptTime += ":00";
-        System.out.println(apptTime);
         input.nextLine();
         
         System.out.println("Please enter any notes you would like to include: ");
         String notes = input.nextLine();
-        System.out.println(notes);
-
         
         System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
         String preferredDoc = input.nextLine();
@@ -185,8 +181,6 @@ public class Patient {
         	System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
             preferredDoc = input.nextLine();
         }
-        System.out.println(preferredDoc);
-
         
         Appointment newAppt = new Appointment(newApptID, patientSSN, apptDate, apptTime, notes, statuses[0], preferredDoc, 0);
         return newAppt;
