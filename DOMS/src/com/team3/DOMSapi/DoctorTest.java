@@ -99,11 +99,6 @@ class DoctorTest {
 		
 		Patient actualPatient = currentDoctor.editUserProfile(originalPatient);
 		
-		//ByteArrayInputStream in2 = new ByteArrayInputStream((1 + System.lineSeparator() + "Mandy" + System.lineSeparator()).getBytes());
-		//Scanner input2 = new Scanner(in2);
-		//ByteArrayInputStream in3 = new ByteArrayInputStream((1 + System.lineSeparator() + "Mandy" + System.lineSeparator()).getBytes());
-		//Scanner input3 = new Scanner(in3);
-		//String expectedResult = expectedValue.getApptID() + expectedValue.getSSN() + expectedValue.getDate()+ expectedValue.getTime() + expectedValue.getNotes() + expectedValue.getStatus() + expectedValue.getPreferredDoc() + expectedValue.getRoomNum();
 		String actualResult = actualPatient.getPatientID() + actualPatient.getName() + actualPatient.getBirthDate() + actualPatient.getSSN() + actualPatient.getAllergies() + actualPatient.getDoctor() + actualPatient.getBloodType();
 		String expectedResult = editedPatient.getPatientID() + editedPatient.getName() + editedPatient.getBirthDate() + editedPatient.getSSN() + editedPatient.getAllergies() + editedPatient.getDoctor() + editedPatient.getBloodType();
 
