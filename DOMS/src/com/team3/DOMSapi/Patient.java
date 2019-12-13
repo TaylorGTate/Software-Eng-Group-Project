@@ -210,7 +210,7 @@ public class Patient {
 					String preferredDoc = apptList.get(i).getPreferredDoc();
 					
 					// Display results
-		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus+ "\n\tPreferred Doctor: " + preferredDoc);
+		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus+ "\n\tPreferred Doctor: " + preferredDoc + "\n");
 	    		}
 	    	}
 		}

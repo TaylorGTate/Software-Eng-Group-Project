@@ -11,7 +11,6 @@ public class DoctorManager {
 	String name;
 	String birthDate;
 
-	
 	public DoctorManager(int managerID, String docName, String birth_date) {
 		manager_id = managerID;
 		name = docName;
@@ -21,6 +20,7 @@ public class DoctorManager {
 	//empty constructor
 	public DoctorManager() {
 	}
+	
 	/**
 	   * Gets the first and last name of this doctor manager.
 	   * @return this doctor manager's name.
@@ -28,6 +28,7 @@ public class DoctorManager {
 	public String getName() {
 		return name;
 	}
+	
 	/**
 	   * Changes the name of this doctor manager.
 	   * @param Name This doctor manager's new name.  
@@ -37,6 +38,7 @@ public class DoctorManager {
 	public void setName(String doctorName) {
 		name = doctorName;
 	}
+	
 	/**
 	   * Gets the birthday of this doctor manager.
 	   * @return this doctor manager's birthday.
@@ -44,6 +46,7 @@ public class DoctorManager {
 	public String getBirthDate() {
 		return birthDate;
 	}
+	
 	/**
 	   * Changes the doctor manager's birthday.
 	   * @param birthday This doctor manager's birthday.  
@@ -51,6 +54,7 @@ public class DoctorManager {
 	public void setBirthDate(String birthday) {
 		birthDate = birthday;
 	}
+	
 	/**
 	   * Gets the manager ID of this doctor manager.
 	   * @return this doctor manager's ID.
@@ -58,6 +62,7 @@ public class DoctorManager {
 	public int getID() {
 		return manager_id;
 	}
+	
 	/**
 	   * Changes the manager ID of this doctor manager.
 	   * @param managerID This doctor manager's new manager ID.  
@@ -69,17 +74,16 @@ public class DoctorManager {
 	
 	/**
 	   * Patient requests an appointment.
-	   * @param Scanner input  
 	   * @param numOfDoctors Integer that contains the current number of doctors
 	   * @return newDoctor Doctor object that contains the new doctor information
 	   */
-	public Doctor createDoctor(int numOfDoctors, Scanner input) {
+	public Doctor createDoctor(int numOfDoctors) {
+		Scanner input = new Scanner(System.in);
 		int newID = numOfDoctors+1;
 
 	    System.out.println("Please enter the doctor's name:");
-	    input.nextLine();
   		String doctorName = input.nextLine();
-  		while (!doctorName.matches("([a-zA-Z.\\s])")) {
+  		while (!doctorName.matches("([a-zA-Z.\\s]+)")) {
   			System.out.println("\n** Incorrect input. Please try again. **");
 	    		System.out.println("Please enter new doctor name: ");
 	    		doctorName = input.nextLine();
@@ -108,17 +112,17 @@ public class DoctorManager {
 	
 	/**
 	   * Allows the doctor manager to edit the details of the doctor profile
-	   * @param input Scanner object  
+	   * @param currentDoctor Doctor object  
 	   * @return updatedPatient Patient object that contains the new details that were supplied by the user
 	   */ 
-	public Doctor editProfile(Doctor currentDoctor, Scanner input) {
+	public Doctor editProfile(Doctor currentDoctor) {
+		Scanner input = new Scanner(System.in);
 		int docID = currentDoctor.getDocID();
 		String doctorName = currentDoctor.getName();
 		String docBirthDate = currentDoctor.getBirthDate();
 		String docSSN = currentDoctor.getSSN();
 		
 		Doctor updatedDoctor = currentDoctor;
-		//updatedDoctor.setDocID(docID);
 		
 		System.out.println("\t1. Name: " + doctorName + "\n\t2. Birthday: " + docBirthDate + "\n\t3. SSN: " + docSSN);
 		System.out.println("What would you like to edit? (input an integer to select)");
@@ -136,7 +140,7 @@ public class DoctorManager {
 	  	    		System.out.println("Please enter new doctor name: ");
 	  	    		input.nextLine();
 	  	    		doctorName = input.nextLine();
-	  	    		while (!doctorName.matches("([a-zA-Z.\\s])")) {
+	  	    		while (!doctorName.matches("([a-zA-Z.\\s]+)")) {
 	  	    			System.out.println("\n** Incorrect input. Please try again. **");
 		  	    		System.out.println("Please enter new doctor name: ");
 		  	    		doctorName = input.nextLine();
@@ -146,6 +150,7 @@ public class DoctorManager {
 	  	      	case "2"://birthday
 	  	      		System.out.println("Current Birthday: " + docBirthDate);
 	  	      		System.out.println("Please enter birthday: (in the form YYYY-MM-DD)");
+	  	    		input.nextLine();
 	  	      		String doctorBirthDate = input.nextLine();	
 	  	      		//add error checking for making sure dates are current
 	  	      		while (!doctorBirthDate.matches("(\\d{4}-\\d{2}-\\d{2})")) {
@@ -158,7 +163,7 @@ public class DoctorManager {
 	  	      	case "3"://ssn
 	  	      		System.out.println("Current SSN: " + docSSN);
 	  	      		System.out.println("What would you like to change it to?");
-	  	      		input.nextLine();
+	  	    		input.nextLine();
 	  	      		docSSN = input.nextLine();
 	  	      		while (!docSSN.matches("(\\d{3}-\\d{2}-\\d{4})")){
 	  	      			System.out.println("\n** Incorrect input. Please try again. **");
@@ -178,7 +183,14 @@ public class DoctorManager {
 		return updatedDoctor;
 	}
 	
-	public Appointment assignDoctorToAppt(Appointment currentAppt, Doctor currentDoctor, Scanner input) {
+	/**
+	   * Allows the doctor manager to edit the details of the doctor profile
+	   * @param currentAppt Appointment object 
+	   * @param currentDoctor Doctor object  
+	   * @return updatedAppt Appointment object that contains the new details that were supplied by the user
+	   */ 	
+	public Appointment assignDoctorToAppt(Appointment currentAppt, Doctor currentDoctor) {
+		Scanner input = new Scanner(System.in);
 		int apptID = currentAppt.getApptID();
 		String apptDate = currentAppt.getDate();
 		String apptTime = currentAppt.getTime();

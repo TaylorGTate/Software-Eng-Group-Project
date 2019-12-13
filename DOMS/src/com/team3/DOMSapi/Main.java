@@ -543,7 +543,7 @@ public class Main {
 			  	        
 				  	    try {
 			  	    		currentAppt = currentPatient.selectAppt(apptList);
-				  	    	Appointment updatedAppt = currentDoctor.editApptNotes(currentAppt, input);
+				  	    	Appointment updatedAppt = currentDoctor.editApptNotes(currentAppt);
 				            if (currentAppt != null){
 						  	    String updatedApptQuery = "update Appointment set notes=('" + updatedAppt.getNotes() + "') where appt_id=('" + updatedAppt.getApptID() + "');";
 				        	    DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
@@ -587,7 +587,7 @@ public class Main {
 			  	    switch (DMchoice) {
 			  	      case "1": //Create doctor user profile
 			  	    	  try {
-			  	    		  Doctor newDoctor = currentDM.createDoctor(numOfDoctors, input);
+			  	    		  Doctor newDoctor = currentDM.createDoctor(numOfDoctors);
 				  	    	  doctorList.add(newDoctor);
 				  	    	  String newDoctorQuery= "insert into Doctor values('" + newDoctor.getDocID() + "', '" + newDoctor.getName() + "', '" + newDoctor.getBirthDate() + "', '" + newDoctor.getSSN() + "');";
 				  	    	  DataBase.executeUpdate(newDoctorQuery,  usrname, pswd);
@@ -601,7 +601,7 @@ public class Main {
 			  	    	  try {
 			  	    		  docID = getUserID("Doctor");
 			  	    		  currentDoctor = getCurrentDoctor(docID, doctorList);
-			  	    		  Doctor editedDoctor = currentDM.editProfile(currentDoctor, input);
+			  	    		  Doctor editedDoctor = currentDM.editProfile(currentDoctor);
 				  	    	  String updatedDoctorQuery= "update Doctor set doctorName=('" + editedDoctor.getName() + "'), birthDate=('" + editedDoctor.getBirthDate() + "'), ssn=('" + editedDoctor.getSSN() + "') where doctor_id=('" + currentDoctor.getDocID() + "');";
 				  	    	  DataBase.executeUpdate(updatedDoctorQuery,  usrname, pswd);		
 				  	    	  
@@ -625,7 +625,7 @@ public class Main {
 			  	    	  try {
 			  	    		  currentAppt = currentPatient.selectAppt(apptList);
 			  	    		  
-			  	    		  Appointment updatedAppt = currentDM.assignDoctorToAppt(currentAppt, currentDoctor, input);
+			  	    		  Appointment updatedAppt = currentDM.assignDoctorToAppt(currentAppt, currentDoctor);
 			  	    		  
 					  	      String updatedApptQuery = "update Appointment set preferredDoc=('" + updatedAppt.getPreferredDoc() + "') where appt_id=('" + updatedAppt.getApptID() + "');";
 			  	    		  DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
@@ -797,9 +797,9 @@ public class Main {
 		    	  		break;
 		    	  	case "4": //edit appts
 				  	    try {
-				  	    	currentAppt = currentAM.selectAppt(apptList, input);
+				  	    	currentAppt = currentAM.selectAppt(apptList);
 				  	    	
-				  	    	Appointment updatedAppt = currentAM.editAppt(currentAppt, input);
+				  	    	Appointment updatedAppt = currentAM.editAppt(currentAppt);
 				  	    	
 					  	    String updatedApptQuery = "update Appointment set apptTime=('" + updatedAppt.getTime() + "'), apptDate=('" + updatedAppt.getDate() + "'), notes=('" + updatedAppt.getNotes() + "'), status=('Requested') where appt_id=('" + updatedAppt.getApptID() + "');";
 			  	    		DataBase.executeUpdate(updatedApptQuery, usrname, pswd);
@@ -816,7 +816,7 @@ public class Main {
 			  	          break;
 		    	  	case "5": //approve/deny requested appts
 		    	  		try {
-		    	  			currentAppt = currentAM.selectAppt(apptList, input);
+		    	  			currentAppt = currentAM.selectAppt(apptList);
 		    	  			
 		    	  			System.out.println("\nWould you like to approve or deny this appointment? (input an integer to select)\n\t1. Approve\n\t2. Deny");
 		    	  			selectedInput = input.nextLine();
