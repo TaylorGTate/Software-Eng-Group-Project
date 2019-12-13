@@ -663,7 +663,7 @@ public class Main {
 	    	  		switch (RMchoice) {
 	    	  		case "1":// Assign checked in patients to a room
 	    	  			ArrayList <Integer> apptIDRoomNum = new ArrayList<Integer>();
-	    	  			apptIDRoomNum = currentRM.assignPatientRoom(apptList, roomList, usrname, pswd);
+	    	  			apptIDRoomNum = currentRM.assignPatientRoom(input, apptList, roomList, usrname, pswd);
 		    	  		
 		    	  		//get apppointmentID and room number
 		    	  		int appointmentID = apptIDRoomNum.get(0);
@@ -932,7 +932,7 @@ public class Main {
 			  	          break;
 			  	          
 			    	  case "3": //Remove patient from database
-				    		  String pSSN = currentPM.removePatientFromDB(usrname, pswd, patientList, apptList);
+				    		  String pSSN = currentPM.removePatientFromDB(usrname, pswd, patientList);
 					    	  String pName = null;
 	
 					    	  //iterate through Patient ArrayList

@@ -39,5 +39,14 @@ class RoomTest {
 		String actualAvaliblity = room.isAvaliable();
 		assertEquals(expectedAvaliblity, actualAvaliblity);
 	}
+	
+	@Test
+	void testSetAvaliable() {
+		Room room = new Room(1, "Clean and Ready");
+		room.setAvaliablity("Occupied");
+		String expectedAvaliblity = "Occupied";
+		String actualAvaliblity = room.isAvaliable();
+		assertEquals(expectedAvaliblity, actualAvaliblity);
+	}
 
 }

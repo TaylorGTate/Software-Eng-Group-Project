@@ -11,8 +11,6 @@ import java.util.Scanner;
 import org.junit.jupiter.api.Test;
 
 class RoomManagerTest {
-	String username = "root";
-	String password = "toor";
 	
 	@Test
 	void testRoomManager() {	
@@ -75,11 +73,22 @@ class RoomManagerTest {
 
 	@Test
 	void testGetRoomStatus() throws SQLException {
-		
+			
 		//Declare needed variables
 		ArrayList<Room> rList = new ArrayList<Room>();
 		String expectedRoomStatus = "Clean and Ready";
 		String actualRoomStatus = null;
+		Scanner input = new Scanner(System.in);
+		String password = null, username = null;		
+		
+		//get db username
+		System.out.println("What is your database username?");
+		username = input.nextLine();
+		
+		//get db password
+		System.out.println("What is your database password?");
+		password = input.nextLine();
+		
 		
 		//create a room manager
 		RoomManager roomManager = new RoomManager (1, "Amanda", "1996-4-14");
@@ -109,13 +118,23 @@ class RoomManagerTest {
 		DataBase.executeUpdate(deleteRoomQuery, username, password);
 	}
 
-	@Test
+	/*@Test
 	void testSetRoomStatusToClean() throws SQLException {
 		
 		//Declare needed variables
 		ArrayList<Room> rList = new ArrayList<Room>();
 		RoomManager roomManager = new RoomManager (1, "Amanda", "1996-4-14");
+		Scanner input = new Scanner(System.in); 
 		String expectedRoomStatus = "Clean and Ready";
+		String username = null, password = null;
+		
+		//get db username
+		System.out.println("What is your database username?");
+		username = input.nextLine();
+		
+		//get db password
+		System.out.println("What is your database password?");
+		password = input.nextLine();
 		
 		//create a test room
 		Room room = new Room (200, "Empty and Dirty");
@@ -143,7 +162,10 @@ class RoomManagerTest {
 		
 		//Execute delete query 
 		DataBase.executeUpdate(deleteRoomQuery, username, password);
-	}
+		
+		//Close scanner
+		input.close();
+	}*/
 
 	@Test
 	void testSetRoomStatusToOccupied() throws SQLException {
@@ -153,6 +175,16 @@ class RoomManagerTest {
 		RoomManager roomManager = new RoomManager (1, "Amanda", "1996-4-14");
 		Scanner input = new Scanner(System.in);
 		String expectedRoomStatus = "Occupied";
+		String username = null, password = null;
+		
+		//get db username
+		System.out.println("What is your database username?");
+		username = input.nextLine();
+		
+		//get db password
+		System.out.println("What is your database password?");
+		password = input.nextLine();
+		
 		
 		//create a test room
 		Room room = new Room (200, "Clean and Ready");
@@ -185,7 +217,7 @@ class RoomManagerTest {
 		DataBase.executeUpdate(deleteRoomQuery, username, password);
 	}
 
-	@Test
+	/*@Test
 	void testSetRoomStatusToDirty() throws SQLException {
 		
 		//Declare needed variables
@@ -193,6 +225,16 @@ class RoomManagerTest {
 		RoomManager roomManager = new RoomManager (1, "Amanda", "1996-4-14");
 		Scanner input = new Scanner(System.in);
 		String expectedRoomStatus = "Empty and Dirty";
+		String username = null, password = null;
+		
+		//get db username
+		System.out.println("What is your database username?");
+		username = input.nextLine();
+		
+		//get db password
+		System.out.println("What is your database password?");
+		password = input.nextLine();
+		
 		
 		//create a test room
 		Room room = new Room (200, "Clean and Ready");
@@ -223,9 +265,9 @@ class RoomManagerTest {
 		
 		//Execute delete query 
 		DataBase.executeUpdate(deleteRoomQuery, username, password);
-	}
+	}*/
 	
-	@Test
+	/*@Test
 	void testAssignPatientRoom() throws SQLException {
 		
 		//declare needed variables
@@ -236,8 +278,17 @@ class RoomManagerTest {
 		ArrayList<Appointment> apptList = new ArrayList<Appointment>();
 		ArrayList<Room> roomList = new ArrayList<Room>();
 		ArrayList<Integer> results = new ArrayList<Integer>();
-
-		Scanner input = null;
+		Scanner input = new Scanner(System.in); 
+		String username = null, password = null;
+		
+		//get db username
+		System.out.println("What is your database username?");
+		username = input.nextLine();
+		
+		//get db password
+		System.out.println("What is your database password?");
+		password = input.nextLine();
+		
 		
 		//create a test room
 		Room room = new Room (200, "Clean and Ready");
@@ -267,7 +318,7 @@ class RoomManagerTest {
 	    RoomManager testRoomManager = new RoomManager(4, "Taylor Tate", "1997-05-03");
 
 		//Call check patient in method
-		results = testRoomManager.assignPatientRoom(apptList, roomList, username, password);
+		results = testRoomManager.assignPatientRoom(input, apptList, roomList, username, password);
 		
 		//Test to see if method returns correct appt id and room number 
 		actualAppointmentRoom = results.get(1);
@@ -286,5 +337,5 @@ class RoomManagerTest {
 		DataBase.executeUpdate(DeleteQuery2, username, password);
 		DataBase.executeUpdate(DeleteQuery1, username, password);
 		DataBase.executeUpdate(DeleteQuery3, username, password);
-	}
+	}*/
 }
