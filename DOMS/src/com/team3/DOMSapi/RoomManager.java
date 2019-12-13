@@ -70,9 +70,6 @@ public class RoomManager {
 		return birthDate;
 	}
 	
-	/*public Boolean isBirthday() {
-		return false;
-	}*/
 	/**
 	   * Gets the room status for the specified room.
 	   * @param room The room to check the status for
@@ -163,8 +160,9 @@ public class RoomManager {
 		return rList;
 	}
 	
-	public ArrayList<Integer> assignPatientRoom(ArrayList<Appointment> aList, ArrayList<Room> rList, String username, String password, Scanner input) throws SQLException {
+	public ArrayList<Integer> assignPatientRoom(ArrayList<Appointment> aList, ArrayList<Room> rList, String username, String password) throws SQLException {
 		
+		Scanner input = new Scanner(System.in);
 		//Make ArrayList for appt id and room number
   		ArrayList <Integer> apptIDRoomNum = new ArrayList<Integer>();
 		

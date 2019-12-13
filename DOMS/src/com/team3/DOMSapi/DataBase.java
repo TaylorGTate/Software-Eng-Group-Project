@@ -38,16 +38,7 @@ public class DataBase{
 		Statement mystmt = myconn.createStatement();
 		return mystmt.executeQuery(Query);
 	}
-	
 
-	/*public static int executeQueryCount(String Query, String usrname, String pswd) throws SQLException {
-		Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DOMSdb?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false&useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true", usrname, pswd);
-		Statement mystmt = myconn.createStatement();
-		ResultSet re = mystmt.executeQuery(Query);
-		System.out.print(re);
-		return Integer.parseInt(re.toString());*/
-
-	
 	public static ArrayList<Patient> populatePatientAL(ArrayList<Patient> pList, String password, String username) throws SQLException {
 		//Declare needed variables
 		int i = 0;
@@ -141,6 +132,7 @@ public class DataBase{
 	  		String apptTime = rs.getString("apptTime");
 	  		String notes = rs.getString("notes");
 	  		String status = rs.getString("status");
+	  		String preferredDoc = rs.getString("preferredDoc");
 	
 	  		//Add appts' info to the ArrayList
 	  		aList.get(i).setApptID(apptID);
@@ -150,6 +142,7 @@ public class DataBase{
 	  		aList.get(i).setTime(apptTime);
 	  		aList.get(i).setNotes(notes);
 	  		aList.get(i).setStatus(status);
+	  		aList.get(i).setPreferredDoc(preferredDoc);
 	
 	  		//increase i by 1
 	  		i++;
