@@ -158,7 +158,6 @@ public class Patient {
         	System.out.println("Please enter a date for your appointment: (in the form YYYY-MM-DD) ");
             apptDate = input.next();
         }
-        System.out.println(apptDate);
         
         System.out.println("Please enter a time for your appointment: (in the form hh:mm) ");
         String apptTime = input.next();
@@ -170,13 +169,10 @@ public class Patient {
         }
         //need to add the seconds for the database entry
         apptTime += ":00";
-        System.out.println(apptTime);
         input.nextLine();
         
         System.out.println("Please enter any notes you would like to include: ");
         String notes = input.nextLine();
-        System.out.println(notes);
-
         
         System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
         String preferredDoc = input.nextLine();
@@ -185,8 +181,6 @@ public class Patient {
         	System.out.println("Please enter your Preferred Doctor (or 'N/A' if no doctor preferred): ");
             preferredDoc = input.nextLine();
         }
-        System.out.println(preferredDoc);
-
         
         Appointment newAppt = new Appointment(newApptID, patientSSN, apptDate, apptTime, notes, statuses[0], preferredDoc, 0);
         return newAppt;
@@ -210,7 +204,7 @@ public class Patient {
 					String preferredDoc = apptList.get(i).getPreferredDoc();
 					
 					// Display results
-		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus+ "\n\tPreferred Doctor: " + preferredDoc);
+		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus+ "\n\tPreferred Doctor: " + preferredDoc + "\n");
 	    		}
 	    	}
 		}
@@ -365,7 +359,8 @@ public class Patient {
 	   * @param currentAppt Appointment object of the Appointment the user is canceling
 	   * @return cancelledAppt Appointment object that is to be canceled, after user verification
 	   */ 
-	public Appointment cancelAppt(Appointment currentAppt, Scanner input) {
+	public Appointment cancelAppt(Appointment currentAppt) {
+		Scanner input = new Scanner(System.in);
 		int apptID = currentAppt.getApptID();
 		String apptDate = currentAppt.getDate();
 		String apptTime = currentAppt.getTime();

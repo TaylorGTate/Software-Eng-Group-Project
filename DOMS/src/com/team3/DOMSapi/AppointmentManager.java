@@ -22,6 +22,7 @@ public class AppointmentManager {
 	//empty constructor
 	public AppointmentManager() {
 	}
+	
 	/**
 	   * Gets the first and last name of this appointment manager.
 	   * @return this appointment manager's name.
@@ -29,6 +30,7 @@ public class AppointmentManager {
 	public String getName() {
 		return name;
 	}
+	
 	/**
 	   * Changes the manager ID of this appointment manager.
 	   * @param manID This appointment manager's new manager ID.  
@@ -36,6 +38,7 @@ public class AppointmentManager {
 	public void setManID(int manID) {
 		man_id = manID;
 	}
+	
 	/**
 	   * Gets the manager ID of this appointment manager.
 	   * @return this appointment manager's ID.
@@ -43,6 +46,7 @@ public class AppointmentManager {
 	public int getManID() {
 		return man_id;
 	}
+	
 	/**
 	   * Changes the appointment manager's name.
 	   * @param apptMgrName This appointment manager's new name.  
@@ -50,6 +54,7 @@ public class AppointmentManager {
 	public void setName(String apptMgrName) {
 		name = apptMgrName;
 	}
+	
 	/**
 	   * Gets the birthday of this appointment manager.
 	   * @return this appointment manager's birthday.
@@ -57,6 +62,7 @@ public class AppointmentManager {
 	public String getBirthDate() {
 		return birthDate;
 	}
+	
 	/**
 	   * Changes the appointment manager's birthday.
 	   * @param birthday This appointment manager's birthday.  
@@ -64,6 +70,7 @@ public class AppointmentManager {
 	public void setBirthDate(String birthday) {
 		birthDate = birthday;
 	}
+	
 	/**
 	   * Changes the appointment's status to denied.
 	   * @param appt Appointment to be denied.  
@@ -74,9 +81,8 @@ public class AppointmentManager {
 		currentAppt.status = statuses[2];
 		
 		return currentAppt;
-
-		
 	}
+	
 	/**
 	   * Changes the appointment's status to approved.
 	   * @param appt Appointment to be approved.  
@@ -103,9 +109,10 @@ public class AppointmentManager {
 				String apptTime = apptList.get(i).getTime();
 				String apptNotes = apptList.get(i).getNotes();
 				String apptStatus = apptList.get(i).getStatus();
+				String preferredDoc = apptList.get(i).getPreferredDoc();
 				
 				// Display results
-	            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+	            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus+ "\n\tPreferred Doctor: " + preferredDoc);
     		}
 		}
 		catch(Exception e) {
@@ -129,9 +136,10 @@ public class AppointmentManager {
 					String apptTime = apptList.get(i).getTime();
 					String apptNotes = apptList.get(i).getNotes();
 					String apptStatus = apptList.get(i).getStatus();
-					
+					String preferredDoc = apptList.get(i).getPreferredDoc();
+
 					// Display results
-		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus+ "\n\tPreferred Doctor: " + preferredDoc);
 	    		}
 			}
 		}
@@ -156,9 +164,10 @@ public class AppointmentManager {
 					String apptTime = apptList.get(i).getTime();
 					String apptNotes = apptList.get(i).getNotes();
 					String apptStatus = apptList.get(i).getStatus();
-					
+					String preferredDoc = apptList.get(i).getPreferredDoc();
+
 					// Display results
-		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus);
+		            System.out.println("Appt ID: " + apptID + "\n\tAppt Date: " + apptDate + "\n\tAppt Time: " + apptTime + "\n\tAppt Notes: " + apptNotes + "\n\tAppt Status: " + apptStatus+ "\n\tPreferred Doctor: " + preferredDoc);
 	    		}
 			}
 		}
@@ -173,7 +182,8 @@ public class AppointmentManager {
 	   * @param apptList ArrayList containing all the appts
 	   * @return selectedAppt Appointment object that the user selected
 	   */
-	public Appointment selectAppt(ArrayList<Appointment> apptList, Scanner input) {
+	public Appointment selectAppt(ArrayList<Appointment> apptList) {
+		Scanner input = new Scanner(System.in);
 		Appointment selectedAppt = new Appointment();
 		
 		try {
@@ -211,7 +221,8 @@ public class AppointmentManager {
 	   * @param currentAppt Appointment object of the Appointment the user is editing
 	   * @return editedAppt Appointment object that contains the new details that were supplied by the user
 	   */ 
-	public Appointment editAppt(Appointment currentAppt, Scanner input) {
+	public Appointment editAppt(Appointment currentAppt) {
+		Scanner input = new Scanner(System.in);
 		int apptID = currentAppt.getApptID();
 		String apptDate = currentAppt.getDate();
 		String apptTime = currentAppt.getTime();

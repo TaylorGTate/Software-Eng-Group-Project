@@ -1,6 +1,5 @@
 package com.team3.DOMSapi;
 
-import java.sql.ResultSet;
 import java.util.Scanner;
 
 /**
@@ -96,7 +95,8 @@ public class Doctor {
 	   * @param currentAppt Appointment object of the appt to be edited  
 	   * @return updatedAppt Appointment object that contains the new details that were supplied by the doctor
 	   */ 
-	public Appointment editApptNotes(Appointment currentAppt, Scanner input) {
+	public Appointment editApptNotes(Appointment currentAppt) {
+		Scanner input = new Scanner(System.in);
 		int apptID = currentAppt.getApptID();
 		String apptDate = currentAppt.getDate();
 		String apptTime = currentAppt.getTime();
